@@ -1,0 +1,15 @@
+﻿## Interface: 40000
+## Author: Tukz, Odine
+## Project Collaborators: Elv22, Nightcracker
+## Credits to: Caith, Caellian, Shestak, Haste, Tekkub, Alza, Roth, P3lim, Tulla, Hungtar, hankthetank, Ishtara and others...
+## Special Thanks to: Admins, Moderator and VIP's from tukui.org
+## Version: 13
+## Title: |cffC495DDTukui|r
+## Notes: UI of awesomeness!
+## SavedVariables: TukuiData
+## SavedVariablesPerCharacter: TukuiDataPerChar, TukuiSaved
+## OptionalDeps:  Ace3, LibSharedMedia-3.0
+## OptionalDeps: TinyDPS, Tukui_ConfigUI, Tukui_Config, !ClassColors, Clique, Skada, Recount, Omen, KLE, DBM-Core
+## X-oUF: oUFTukui
+
+Tukui.xml 

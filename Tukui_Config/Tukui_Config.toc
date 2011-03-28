@@ -1,0 +1,12 @@
+## Interface: 40000
+## Title: |cffC495DDTukui|r Config
+## Notes: Config for TukUI
+## Author: Odine
+## Version: 5.5
+## SavedVariables: OUIDB
+## RequiredDeps: Tukui
+
+libs\load_ace.xml
+local\english.lua
+
+core.lua

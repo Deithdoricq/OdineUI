@@ -223,8 +223,8 @@ StaticPopupDialogs["TUKUIDISABLE_RAID"] = {
 	text = L.popup_2raidactive,
 	button1 = "DPS - TANK",
 	button2 = "HEAL",
-	OnAccept = function() DisableAddOn("Tukui_Heal_Layout") EnableAddOn("Tukui_Dps_Layout") ReloadUI() end,
-	OnCancel = function() EnableAddOn("Tukui_Heal_Layout") DisableAddOn("Tukui_Dps_Layout") ReloadUI() end,
+	OnAccept = function() DisableAddOn("Tukui_Heal") EnableAddOn("Tukui_DPS") ReloadUI() end,
+	OnCancel = function() EnableAddOn("Tukui_Heal") DisableAddOn("Tukui_DPS") ReloadUI() end,
 	timeout = 0,
 	whileDead = 1,
 }
@@ -282,7 +282,7 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 		end
 	end
 	
-	if (IsAddOnLoaded("Tukui_Dps_Layout") and IsAddOnLoaded("Tukui_Heal_Layout")) then
+	if (IsAddOnLoaded("Tukui_DPS") and IsAddOnLoaded("Tukui_Heal")) then
 		StaticPopup_Show("TUKUIDISABLE_RAID")
 	end
 	

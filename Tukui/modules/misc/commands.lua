@@ -9,16 +9,16 @@ SLASH_ENABLE_ADDON1 = "/enable"
 -- switch to heal layout via a command
 SLASH_TUKUIHEAL1 = "/heal"
 SlashCmdList.TUKUIHEAL = function()
-	DisableAddOn("Tukui_Dps_Layout")
-	EnableAddOn("Tukui_Heal_Layout")
+	DisableAddOn("Tukui_DPS")
+	EnableAddOn("Tukui_Heal")
 	ReloadUI()
 end
 
 -- switch to dps layout via a command
 SLASH_TUKUIDPS1 = "/dps"
 SlashCmdList.TUKUIDPS = function()
-	DisableAddOn("Tukui_Heal_Layout")
-	EnableAddOn("Tukui_Dps_Layout")
+	DisableAddOn("Tukui_Heal")
+	EnableAddOn("Tukui_Dps")
 	ReloadUI()
 end
 

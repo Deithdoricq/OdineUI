@@ -1431,7 +1431,7 @@ local f = CreateFrame("Frame")
 f:RegisterEvent("ADDON_LOADED")
 f:SetScript("OnEvent", function(self, event, addon)
 
-	if addon == "Tukui_Dps_Layout" then
+	if addon == "Tukui_DPS" then
 		--[ DPS ]--
 		-- points
 		if T.lowversion then
@@ -1449,7 +1449,7 @@ f:SetScript("OnEvent", function(self, event, addon)
 
 			focus:Point("TOP", UIParent, "BOTTOM", 0, 230)
 		end
-	elseif addon == "Tukui_Heal_Layout" then
+	elseif addon == "Tukui_Heal" then
 		--[ HEAL ]--
 		-- points
 		if T.lowversion then

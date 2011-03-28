@@ -6,7 +6,7 @@ Kill:RegisterEvent("ADDON_LOADED")
 Kill:RegisterEvent("PLAYER_LOGIN")
 Kill:SetScript("OnEvent", function(self, event, addon)
 	if event == "PLAYER_LOGIN" then
-		if IsAddOnLoaded("Tukui_Dps_Layout") or IsAddOnLoaded("Tukui_Heal_Layout") then
+		if IsAddOnLoaded("Tukui_DPS") or IsAddOnLoaded("Tukui_Heal") then
 			InterfaceOptionsFrameCategoriesButton10:SetScale(0.00001)
 			InterfaceOptionsFrameCategoriesButton10:SetAlpha(0)		
 			InterfaceOptionsFrameCategoriesButton11:SetScale(0.00001)

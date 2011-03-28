@@ -12,8 +12,16 @@ if T.client ~= "enUS" and T.client ~= "enGB" then return end
 ----------------------------------------------------------------------------------
 
 function T.SPELL_FILTER(self, event, arg1)
-    if strfind(arg1,"You have unlearned") or strfind(arg1,"You have learned a new spell:") or strfind(arg1,"You have learned a new ability:") or strfind(arg1,"Your pet has unlearned") then
-        return true
+    if strfind(arg1,"You have unlearned") 
+    or strfind(arg1,"You have learned a new spell:") 
+    or strfind(arg1,"You have learned a new ability:")  
+    or strfind(arg1,"Your pet has unlearned")
+    or strfind(arg1,"Your pet has learned a new ability:")
+    or strfind(arg1,"You are not in a raid group")
+    or strfind(arg1,"Interface action failed because of an AddOn.")
+    or strfind(arg1,"No player named")
+    or strfind(arg1,"You have gained the maximum amount of guild reputation allowed this week.")
+        then return true
     end
 end
 ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", T.SPELL_FILTER)

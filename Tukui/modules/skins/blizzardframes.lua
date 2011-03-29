@@ -39,7 +39,7 @@ local function SkinButton(f)
 	if f.SetDisabledTexture then
 		f:SetDisabledTexture("")
 	end
-	f:SetTemplate("Default")
+	f:SetTemplate("Default", true)
 	
 	f:HookScript("OnEnter", SetModifiedBackdrop)
 	f:HookScript("OnLeave", SetOriginalBackdrop)
@@ -53,19 +53,13 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 	-- stuff not in Blizzard load-on-demand
 	if addon == "Tukui" then
 		-- Blizzard frame we want to reskin
-		local bgskins = {
+		local skins = {
 			"StaticPopup1",
 			"StaticPopup2",
-			"StaticPopup3",
 			"GameMenuFrame",
 			"InterfaceOptionsFrame",
 			"VideoOptionsFrame",
 			"AudioOptionsFrame",
-			"ReadyCheckFrame",
-			"StackSplitFrame",
-		}
-		
-		local insetskins = {
 			"LFDDungeonReadyStatus",
 			"BNToastFrame",
 			"TicketStatusFrameButton",
@@ -75,8 +69,10 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"DropDownList2Backdrop",
 			"LFDSearchStatus",
 			"AutoCompleteBox", -- this is the /w *nickname* box, press tab
+			"ReadyCheckFrame",
 			"GhostFrameContentsFrame",
 			"ColorPickerFrame",
+			"StackSplitFrame",
 		}
 
 		-- reskin popup buttons
@@ -86,17 +82,11 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			end
 		end
 		
-		for i = 1, getn(insetskins) do
-			_G[insetskins[i]]:SetTemplate("Default")
-			if _G[insetskins[i]] ~= _G["AutoCompleteBox"] and _G[insetskins[i]] ~= _G["BNToastFrame"] then -- frame to blacklist from create shadow function
-				_G[insetskins[i]]:CreateShadow("Default")
+		for i = 1, getn(skins) do
+			_G[skins[i]]:SetTemplate("Default", true)
+			if _G[skins[i]] ~= _G["AutoCompleteBox"] then -- frame to blacklist from create shadow function
+				_G[skins[i]]:CreateShadow("Default")
 			end
-		end
-		
-		for i = 1, getn(bgskins) do
-			_G[bgskins[i]]:SetTemplate("Transparent")
-			_G[bgskins[i]]:CreateBorder(true, true)
-			_G[bgskins[i]]:CreateShadow("Default")
 		end
 		
 		local ChatMenus = {

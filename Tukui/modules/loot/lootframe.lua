@@ -150,11 +150,12 @@ addon:SetMovable(true)
 addon:RegisterForClicks"anyup"
 
 addon:SetParent(UIParent)
-addon:SetUserPlaced(true)
+--addon:SetUserPlaced(true)
 addon:Point("TOPLEFT", 0, -104)
 addon:SetTemplate("Default")
 addon:Width(256)
 addon:Height(64)
+
 
 addon:SetClampedToScreen(true)
 addon:SetClampRectInsets(0, 0, T.Scale(14), 0)
@@ -190,6 +191,10 @@ addon.LOOT_OPENED = function(self, event, autoloot)
 		self:Point("TOPLEFT", nil, "BOTTOMLEFT", x - 40, y + 20)
 		self:GetCenter()
 		self:Raise()
+	else
+		self:ClearAllPoints()
+		self:SetUserPlaced(false)
+		self:Point("TOPLEFT", 0, -104)		
 	end
 
 	local m, w, t = 0, 0, title:GetStringWidth()
@@ -203,14 +208,14 @@ addon.LOOT_OPENED = function(self, event, autoloot)
 				item = item:gsub("\n", ", ")
 			end
 
-			if(quantity and quantity > 1) then
+			if(quantity > 1) then
 				slot.count:SetText(quantity)
 				slot.count:Show()
 			else
 				slot.count:Hide()
 			end
 
-			if(quality and quality > 1) then
+			if(quality > 1) then
 				slot.drop:SetVertexColor(color.r, color.g, color.b)
 				slot.drop:Show()
 			else
@@ -218,20 +223,11 @@ addon.LOOT_OPENED = function(self, event, autoloot)
 			end
 
 			slot.quality = quality
-			
-			if item then
-				slot.name:SetText(item)
-			end
-			
-			if color then
-				slot.name:SetTextColor(color.r, color.g, color.b)
-			end
-			
+			slot.name:SetText(item)
+			slot.name:SetTextColor(color.r, color.g, color.b)
 			slot.icon:SetTexture(texture)
 
-			if quality then
-				m = math.max(m, quality)
-			end
+			m = math.max(m, quality)
 			w = math.max(w, slot.name:GetStringWidth())
 
 			slot:Enable()

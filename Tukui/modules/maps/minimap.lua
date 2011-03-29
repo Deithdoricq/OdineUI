@@ -75,6 +75,21 @@ local function UpdateLFG()
 	MiniMapLFGFrame:ClearAllPoints()
 	MiniMapLFGFrame:Point("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", 2, 1)
 	MiniMapLFGFrameBorder:Hide()
+	
+--	LFDDungeonReadyStatus:ClearAllPoints()
+--	LFDDungeonReadyStatus:SetPoint("TOPRIGHT", Minimap, "BOTTOMLEFT", 5, -5)
+--	LFDDungeonReadyStatus:SetScale(1)
+--	LFDDungeonReadyStatus:SetAlpha(1,0.8)
+
+--	LFDDungeonReadyDialog:ClearAllPoints()
+--	LFDDungeonReadyDialog:SetPoint("TOPRIGHT", Minimap, "BOTTOMLEFT", -5, 5)
+--	LFDDungeonReadyDialog:SetScale(1)
+--	LFDDungeonReadyDialog:SetAlpha(1,0.8)
+
+	LFDSearchStatus:ClearAllPoints()
+	LFDSearchStatus:Point("TOPRIGHT", Minimap, "BOTTOMLEFT", -5, -5)
+	LFDSearchStatus:SetScale(1)
+	LFDSearchStatus:SetAlpha(1,0.8)
 end
 hooksecurefunc("MiniMapLFG_UpdateIsShown", UpdateLFG)
 
@@ -148,11 +163,11 @@ local menuList = {
     func = function() if IsInGuild() then if not GuildFrame then LoadAddOn("Blizzard_GuildUI") end GuildFrame_Toggle() end end},
     {text = LFG_TITLE,
     func = function() ToggleFrame(LFDParentFrame) end},
-    {text = LOOKING_FOR_RAID,
+    {text = L_LFRAID,
     func = function() ToggleFrame(LFRParentFrame) end},
     {text = HELP_BUTTON,
     func = function() ToggleHelpFrame() end},
-    {text = CALENDAR_VIEW_EVENT,
+    {text = L_CALENDAR,
     func = function()
     if(not CalendarFrame) then LoadAddOn("Blizzard_Calendar") end
         Calendar_Toggle()
@@ -179,3 +194,11 @@ end)
 
 -- eyefinity fix to not show tracking behind bezel
 --MiniMapTrackingDropDown:SetParent(TukuiMinimap)
+
+-- Move the zonetext
+local pvpTextString = PVPInfoTextString
+PVPInfoTextString:SetText("")
+ZoneTextFrame:ClearAllPoints()									      --Location of Zone text
+ZoneTextFrame:SetPoint("TOP", UIParent, "TOP", 0, -250)
+SubZoneTextFrame:ClearAllPoints()									  --Location of Subzone Text
+SubZoneTextFrame:SetPoint("TOP", UIParent, "TOP", 0, -270)

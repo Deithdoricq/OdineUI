@@ -351,7 +351,7 @@ local function Shared(self, unit)
 			self:RegisterEvent("PARTY_LEADER_CHANGED", T.MLAnchorUpdate)
 			self:RegisterEvent("PARTY_MEMBERS_CHANGED", T.MLAnchorUpdate)
 			
-			-- Vengeance Bar (WIP)
+			-- Vengeance Bar
 
 			if C["unitframes"].vengeance == true then
 				local Vengeance = CreateFrame("StatusBar", self:GetName()..'_Vengeance', TukuiDataBottom)
@@ -1346,7 +1346,7 @@ local function Shared(self, unit)
 	
 	if(self:GetParent():GetName():match"TukuiMainTank" or self:GetParent():GetName():match"TukuiMainAssist") then
 		-- Right-click focus on maintank or mainassist units
-		--[[self:SetAttribute("type2", "focus")
+		self:SetAttribute("type2", "focus")
 		
 		local health = CreateFrame('StatusBar', nil, self)
 		health:Height(20 / 2)
@@ -1394,7 +1394,7 @@ local function Shared(self, unit)
 			health.bg:SetVertexColor(unpack(C["unitframes"].healthBgColor))
 			
 			self:Tag(Name, '[Tukui:getnamecolor][Tukui:nameshort]')
-		end--]]
+		end
 	end
 	
 	return self

@@ -76,39 +76,31 @@ if (buffs and buffs[1]) then
 			for i, buff in pairs(buffs) do
 				local name = GetSpellInfo(buff)
 				if (name and UnitBuff("player", name)) then
-					self:FadeOut()
+					self:Hide()
 					sound = true
 					return
 				end
 			end
-			self:FadeIn()
+			self:Show()
 			if C["buffreminder"].sound == true and sound == true then
 				PlaySoundFile(C["media"].warning)
 				sound = false
 			end
 		else
-			self:FadeOut()
+			self:Hide()
 			sound = true
 		end
 	end
 	
 	local frame = CreateFrame("Frame", _, UIParent)
-	frame:SetAlpha(0)
 	
 	frame.icon = frame:CreateTexture(nil, "OVERLAY")
 	frame.icon:SetPoint("CENTER")
 	frame:CreatePanel("Default", 40, 40, "CENTER", UIParent, "CENTER", 0, 200)
-	frame.icon:SetTexCoord(.09, .91, .09, .91)
+	frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	frame.icon:Size(36)
+	frame:Hide()
 	
-	function frame:FadeIn()
-		UIFrameFadeIn(self, (0.3 * (1-self:GetAlpha())), self:GetAlpha(), 1)
-	end
-	
-	function frame:FadeOut()
-		UIFrameFadeOut(self, (0.3 * (0+self:GetAlpha())), self:GetAlpha(), 0)
-	end
-
 	frame:RegisterEvent("UNIT_AURA")
 	frame:RegisterEvent("PLAYER_LOGIN")
 	frame:RegisterEvent("PLAYER_REGEN_ENABLED")

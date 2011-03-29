@@ -18,20 +18,6 @@ T.DataTextTooltipAnchor = function(self)
 		anchor = "ANCHOR_TOPLEFT"
 	elseif panel == TukuiInfoRight then
 		anchor = "ANCHOR_TOPRIGHT"
-	elseif panel == TukuiMinimapStatsLeft or panel == TukuiMinimapStatsRight then
-		local position = TukuiMinimap:GetPoint()
-		if position:match("LEFT") then
-			anchor = "ANCHOR_BOTTOMRIGHT"
-			yoff = T.Scale(-3)
-			xoff = 0 - TukuiMinimapStatsRight:GetWidth()
-		elseif position:match("RIGHT") then
-			anchor = "ANCHOR_BOTTOMLEFT"
-			yoff = T.Scale(-3)
-			xoff = TukuiMinimapStatsRight:GetWidth()
-		else
-			anchor = "ANCHOR_BOTTOM"
-			yoff = T.Scale(-3)
-		end
 	end
 	
 	return anchor, panel, xoff, yoff
@@ -158,6 +144,13 @@ T.buttonsize = T.Scale(C.actionbar.buttonsize)
 T.petbuttonsize = T.Scale(C.actionbar.petbuttonsize)
 T.stancebuttonsize = T.Scale(C.actionbar.stancebuttonsize)
 T.buttonspacing = T.Scale(C.actionbar.buttonspacing)
+
+-- Base width of panels
+if T.lowversion or C["general"].uiscale > 0.85 then
+	T.DataWidth = 300
+else
+	T.DataWidth = (T.buttonsize * 12) + (T.buttonspacing * 11)
+end
 
 T.Round = function(number, decimals)
 	if not decimals then decimals = 0 end

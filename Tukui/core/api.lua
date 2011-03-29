@@ -203,24 +203,27 @@ local function StyleButton(b, c)
 	
 	local hover = b:CreateTexture("frame", nil, self) -- hover
 	hover:SetTexture(1,1,1,0.3)
-	hover:Size(button:GetWidth(), button:GetHeight())
-	hover:Point("TOPLEFT", button, 2, -2)
-	hover:Point("BOTTOMRIGHT", button, -2, 2)
+	hover:SetHeight(button:GetHeight())
+	hover:SetWidth(button:GetWidth())
+	hover:Point("TOPLEFT",button,2,-2)
+	hover:Point("BOTTOMRIGHT",button,-2,2)
 	button:SetHighlightTexture(hover)
 
 	local pushed = b:CreateTexture("frame", nil, self) -- pushed
 	pushed:SetTexture(0.9,0.8,0.1,0.3)
-	pushed:Size(button:GetWidth(), button:GetHeight())
-	pushed:Point("TOPLEFT", button, 2, -2)
-	pushed:Point("BOTTOMRIGHT", button, -2, 2)
+	pushed:SetHeight(button:GetHeight())
+	pushed:SetWidth(button:GetWidth())
+	pushed:Point("TOPLEFT",button,2,-2)
+	pushed:Point("BOTTOMRIGHT",button,-2,2)
 	button:SetPushedTexture(pushed)
  
 	if c then
 		local checked = b:CreateTexture("frame", nil, self) -- checked
 		checked:SetTexture(0,1,0,0.3)
-		checked:Size(button:GetWidth(), button:GetHeight())
-		checked:Point("TOPLEFT", button, 2, -2)
-		checked:Point("BOTTOMRIGHT", button, -2, 2)
+		checked:SetHeight(button:GetHeight())
+		checked:SetWidth(button:GetWidth())
+		checked:Point("TOPLEFT",button,2,-2)
+		checked:Point("BOTTOMRIGHT",button,-2,2)
 		button:SetCheckedTexture(checked)
 	end
 end

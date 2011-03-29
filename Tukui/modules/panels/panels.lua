@@ -2,7 +2,7 @@ local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, vari
 
 -- Chat Frames
 local TukuiChatLeft = CreateFrame("Frame", "TukuiChatLeft", UIParent)
-TukuiChatLeft:CreatePanel("Transparent", T.InfoLeftRightWidth, C["chat"].height, "BOTTOMLEFT", UIParent, "BOTTOMLEFT", 8, 8)
+TukuiChatLeft:CreatePanel("Transparent", T.DataWidth, C["chat"].height, "BOTTOMLEFT", UIParent, "BOTTOMLEFT", 8, 8)
 
 local TukuiChatRight = CreateFrame("Frame", "TukuiChatRight", UIParent)
 TukuiChatRight:CreatePanel("Transparent", T.InfoLeftRightWidth, C["chat"].height, "BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -8, 8)

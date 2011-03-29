@@ -7,6 +7,7 @@ if not C["actionbar"].enable == true then return end
 ---------------------------------------------------------------------------
 
 local bar = TukuiBar2
+bar:SetAlpha(1)
 MultiBarBottomLeft:SetParent(bar)
 
 -- setup the bar

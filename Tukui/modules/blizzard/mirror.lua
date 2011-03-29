@@ -83,15 +83,19 @@ do
 		border:Point("TOPLEFT", frame, -2, 2)
 		border:Point("BOTTOMRIGHT", frame, 2, -2)
 		border:SetTemplate("Default")
+		border:CreateShadow("Default")
 		border:SetFrameLevel(0)
 
 		local text = frame:CreateFontString(nil, 'OVERLAY')
-		text:SetFont(C["media"].uffont, 12, "THINOUTLINE")
+		text:SetFont(font, fonts, fontf)
 
 		text:SetJustifyH'CENTER'
 		text:SetTextColor(1, 1, 1)
 
-		text:SetPoint('CENTER', 0, 1)
+		text:SetPoint('LEFT', frame)
+		text:SetPoint('RIGHT', frame)
+		text:SetPoint('TOP', frame)
+		text:SetPoint('BOTTOM', frame)
 
 		frame:SetSize(settings.width, settings.height)
 

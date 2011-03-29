@@ -867,12 +867,6 @@ local ouioptions = {
 							name = "Announce interrupts",
 							desc = "Toggles whether you want to announce your interrupts to chat.",
 						},
-						combo = {
-							type = "toggle",
-							order = 2,
-							name = "Combo bar",
-							desc = "Toggles whether you want to use a combo bar for rogues/druids.",
-						},
 						autoaccept = {
 							type = "toggle",
 							order = 3,

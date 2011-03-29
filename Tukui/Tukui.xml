@@ -118,10 +118,10 @@
 	<Script file="modules\blizzard\achievements.lua"/>
 	<Script file="modules\misc\raidMark.lua"/>
 	<Script file="modules\misc\raidUtility.lua"/>
+	<Script file="modules\misc\combo.lua"/>
 	<Script file="modules\misc\announceint.lua"/>
 	<Script file="modules\misc\viewport.lua"/>
 	<Script file="modules\misc\sct.lua"/>
-	<Script file="modules\misc\combo.lua"/>
 	<Script file="modules\misc\autoquest.lua"/>
 	
 	<Script file="developer\test.lua"/>

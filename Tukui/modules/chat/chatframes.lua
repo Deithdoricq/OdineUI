@@ -214,7 +214,7 @@ local function SetupChatPosAndFont(self)
 			chat:Point("TOPLEFT", TukuiTabsLeft, "BOTTOMLEFT", 0, -4)
 			chat:Point("BOTTOMRIGHT", TukuiInfoLeft, "TOPRIGHT", 0, 4)
 			FCF_SavePositionAndDimensions(chat)			
-		elseif i == 4 and name == "Trade / Loot" then
+		elseif i == 4 and (name == "Trade / Loot" or name == LOOT) then
 			chat:SetSize(T.InfoLeftRightWidth + 1, C["chat"].height)
 			if not chat.isDocked then
 				chat:ClearAllPoints()

@@ -157,7 +157,6 @@ DB["misc"] = {
 	["epgp"] = false,									-- enable to show epgp points in guild datatext
 	["viewport"] = false,								-- enable viewport
 	["autoquest"] = false,								-- enable automatic turn in/autoaccept quests
-	["combo"] = true,									-- enable or disabled Smellys sCombo mod
 	["sct"] = true,										-- enable lightweight scrolling combat text mod by Monolit
 }
 

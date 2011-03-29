@@ -1,7 +1,7 @@
 -- sCombo by Smelly
 local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
 
-if C["unitframes"].enable ~= true or C["misc"].combo ~= true then return end
+if C["unitframes"].enable ~= true then return end
 
 TukuiTarget:DisableElement('CPoints')
 if TukuiTarget.CPoints then

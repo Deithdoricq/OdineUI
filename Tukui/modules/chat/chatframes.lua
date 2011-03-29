@@ -214,7 +214,7 @@ local function SetupChatPosAndFont(self)
 			chat:Point("TOPLEFT", TukuiTabsLeft, "BOTTOMLEFT", 0, -4)
 			chat:Point("BOTTOMRIGHT", TukuiInfoLeft, "TOPRIGHT", 0, 4)
 			FCF_SavePositionAndDimensions(chat)			
-		elseif i == 4 and name == LOOT then
+		elseif i == 4 and name == "Trade / Loot" then
 			chat:SetSize(T.InfoLeftRightWidth + 1, C["chat"].height)
 			if not chat.isDocked then
 				chat:ClearAllPoints()
@@ -227,8 +227,6 @@ local function SetupChatPosAndFont(self)
 				end
 			end
 		end
-		--chat:SetHeight(0)
-		--chat:SetWidth(0)
 	end
 			
 	-- reposition battle.net popup over chat #1

@@ -68,7 +68,7 @@ local function install()
 			FCF_SavePositionAndDimensions(frame)
 			
 			-- set default tukui font size
-			FCF_SetChatWindowFontSize(nil, frame, 12)
+			FCF_SetChatWindowFontSize(nil, frame, C["chat"].fsize)
 			
 			-- rename windows general and combat log
 			if i == 1 then FCF_SetWindowName(frame, "G, S & W") end

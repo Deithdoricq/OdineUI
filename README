@@ -61,3 +61,5 @@
 [03/29/2011]
 * sooooooo many changes here and there, cant even remember them all
 * removed vertical right bars as im in the process of recoding alot of stuff related to the actionbars
+* fixed problem with tooltips fading when they shouldn't
+* lots of code cleanup, renamed layout folders please delete old named versions as no longer needed!

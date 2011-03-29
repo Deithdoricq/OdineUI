@@ -411,7 +411,7 @@ local function Shared(self, unit)
 			end
 			
 			if C["unitframes"].classbar then
-				if T.myclass == "DRUID" and C["unitframes"].druid then			
+				if T.myclass == "DRUID" then			
 					local eclipseBar = CreateFrame('Frame', nil, self)
 					eclipseBar:Point("LEFT", panel, "TOPLEFT", 10, 5)
 					if T.lowversion then
@@ -461,7 +461,7 @@ local function Shared(self, unit)
 				end
 
 				-- set holy power bar or shard bar
-				if (T.myclass == "WARLOCK" and C["unitframes"].warlock) or (T.myclass == "PALADIN" and C["unitframes"].paladin) then		
+				if (T.myclass == "WARLOCK" or T.myclass == "PALADIN") then		
 					local bars = CreateFrame("Frame", nil, self)
 					bars:CreatePanel("Default", 150, 9, "LEFT", panel, "TOPLEFT", 10, 5)
 					if T.lowversion then
@@ -511,7 +511,7 @@ local function Shared(self, unit)
 				end
 
 				-- deathknight runes
-				if T.myclass == "DEATHKNIGHT" and C["unitframes"].deathknight then
+				if T.myclass == "DEATHKNIGHT" then
 					local Runes = CreateFrame("Frame", nil, self)
 					local rB = CreateFrame("Frame", nil, self)
 				
@@ -541,7 +541,7 @@ local function Shared(self, unit)
 				end
 				
 				-- shaman totem bar
-				if T.myclass == "SHAMAN" and (C["unitframes"].shaman and not IsAddOnLoaded("TotemTimers")) then				
+				if T.myclass == "SHAMAN" and not IsAddOnLoaded("TotemTimers") then				
 					local TotemBar = {}
 					TotemBar.Destroy = true
 					
@@ -965,29 +965,25 @@ local function Shared(self, unit)
 		if C["unitframes"].showsmooth == true then
 			health.Smooth = true
 		end
-
-		-- colors
+		
 		if C["unitframes"].unicolor == true then
+			health.colorTapping = false
 			health.colorDisconnected = false
 			health.colorClass = false
 			health:SetStatusBarColor(unpack(C["unitframes"].healthColor))
+			health.bg:SetTexture(1, 1, 1)
 			health.bg:SetVertexColor(unpack(C["unitframes"].healthBgColor))
 			
 			power.colorTapping = true
 			power.colorDisconnected = true
 			power.colorClass = true
 			power.colorReaction = true
-			if T.myclass == "HUNTER" and unit == "pet" then
-				power.colorHappiness = true
-			end
-			power.bg.multiplier = 0.1				
+			power.bg.multiplier = 0.1
 		else
 			health.colorDisconnected = true
+			health.colorTapping = true	
 			health.colorClass = true
 			health.colorReaction = true			
-			if T.myclass == "HUNTER" and unit == "pet" then
-				health.colorHappiness = true
-			end
 			
 			power.colorPower = true
 		end

@@ -83,11 +83,6 @@ DB["unitframes"] = {
 	
 	-- class bar
 	["classbar"] = true,                                -- enable tukui classbar over player unit, false disables all classes
-		["deathknight"] = true,
-		["warlock"] = true,
-		["shaman"] = true,
-		["druid"] = true,
-		["paladin"] = true,
 }
 
 DB["arena"] = {

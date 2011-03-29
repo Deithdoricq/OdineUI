@@ -14,7 +14,7 @@ T.incombat = UnitAffectingCombat("player")
 T.patch = GetBuildInfo()
 T.level = UnitLevel("player")
 T.myrealm = GetRealmName()
-T.InfoLeftRightWidth = 401
+T.InfoLeftRightWidth = 401 -- this is really wide, but with current buttonsizing its needed... need to change soon
 
 if not TukuiSaved then
 	TukuiSaved = {	

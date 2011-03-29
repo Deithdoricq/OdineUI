@@ -2,7 +2,7 @@ local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, vari
 
 -- Chat Frames
 local TukuiChatLeft = CreateFrame("Frame", "TukuiChatLeft", UIParent)
-TukuiChatLeft:CreatePanel("Transparent", T.DataWidth, C["chat"].height, "BOTTOMLEFT", UIParent, "BOTTOMLEFT", 8, 8)
+TukuiChatLeft:CreatePanel("Transparent", T.InfoLeftRightWidth, C["chat"].height, "BOTTOMLEFT", UIParent, "BOTTOMLEFT", 8, 8)
 
 local TukuiChatRight = CreateFrame("Frame", "TukuiChatRight", UIParent)
 TukuiChatRight:CreatePanel("Transparent", T.InfoLeftRightWidth, C["chat"].height, "BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -8, 8)
@@ -53,7 +53,7 @@ rightsd:SetFrameLevel(2)
 -- Action Bars
 if C["actionbar"].enable then
 	local TukuiBar1 = CreateFrame("Frame", "TukuiBar1", UIParent, "SecureHandlerStateTemplate")
-	TukuiBar1:CreatePanel("Transparent", (T.buttonsize * 12) + (T.buttonspacing * 13) + 2, (T.buttonsize * 2) + (T.buttonspacing * 3) + 2, "BOTTOM", UIParent, "BOTTOM", 0, 8)
+	TukuiBar1:CreatePanel("Default", (T.buttonsize * 12) + (T.buttonspacing * 13) + 2, (T.buttonsize * 2) + (T.buttonspacing * 3) + 2, "BOTTOM", UIParent, "BOTTOM", 0, 8)
 	TukuiBar1:SetPoint("BOTTOM", TukuiDataBottom, "TOP", 0, T.Scale(3))
 
 	local TukuiBar2 = CreateFrame("Frame", "TukuiBar2", UIParent)
@@ -66,13 +66,13 @@ if C["actionbar"].enable then
 	TukuiBar2:SetAllPoints(TukuiBar1)--Point("BOTTOM")
 
 	local TukuiSplitBarLeft = CreateFrame("Frame", "TukuiSplitBarLeft", UIParent)
-	TukuiSplitBarLeft:CreatePanel("Transparent", (T.buttonsize * 3) + (T.buttonspacing * 4) + 2, TukuiBar1:GetHeight(), "BOTTOMRIGHT", TukuiBar1, "BOTTOMLEFT", -6, 0)
+	TukuiSplitBarLeft:CreatePanel("Default", (T.buttonsize * 3) + (T.buttonspacing * 4) + 2, TukuiBar1:GetHeight(), "BOTTOMRIGHT", TukuiBar1, "BOTTOMLEFT", -6, 0)
 
 	local TukuiSplitBarRight = CreateFrame("Frame", "TukuiSplitBarRight", UIParent)
-	TukuiSplitBarRight:CreatePanel("Transparent", (T.buttonsize * 3) + (T.buttonspacing * 4) + 2, TukuiBar1:GetHeight(), "BOTTOMLEFT", TukuiBar1, "BOTTOMRIGHT", 6, 0)
+	TukuiSplitBarRight:CreatePanel("Default", (T.buttonsize * 3) + (T.buttonspacing * 4) + 2, TukuiBar1:GetHeight(), "BOTTOMLEFT", TukuiBar1, "BOTTOMRIGHT", 6, 0)
 
 	local TukuiRightBar = CreateFrame("Frame", "TukuiRightBar", UIParent)
-	TukuiRightBar:CreatePanel("Transparent", (T.buttonsize * 12 + T.buttonspacing * 13) + 2,  (T.buttonsize * 12 + T.buttonspacing * 13) + 2, "BOTTOMRIGHT", TukuiChatRight, "TOPRIGHT", 0, 3)
+	TukuiRightBar:CreatePanel("Default", (T.buttonsize * 12 + T.buttonspacing * 13) + 2,  (T.buttonsize * 12 + T.buttonspacing * 13) + 2, "BOTTOMRIGHT", TukuiChatRight, "TOPRIGHT", 0, 3)
 	if not C["chat"].background then
 		TukuiRightBar:ClearAllPoints()
 		TukuiRightBar:Point("RIGHT", UIParent, "RIGHT", -8, -250)

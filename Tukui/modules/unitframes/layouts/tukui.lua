@@ -9,10 +9,13 @@ local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, vari
 
 if not C["unitframes"].enable == true then return end
 
+--T.InfoLeftRightWidth = 401
+local tempo = (T.InfoLeftRightWidth / 2) + T.buttonsize
+
 if T.lowversion then
 	T.Player, T.Target, T.ToT, T.Pet, T.Focus, T.Boss = 182, 182, 182, 182, 130, 200
 else
-	T.Player, T.Target, T.ToT, T.Pet, T.Focus, T.Boss = 250, 250, 130, 130, 150, 200
+	T.Player, T.Target, T.ToT, T.Pet, T.Focus, T.Boss = tempo, tempo, 130, 130, 150, 200
 end
 
 local font, fonts, fontf = C["media"].uffont, 14, "OUTLINE"

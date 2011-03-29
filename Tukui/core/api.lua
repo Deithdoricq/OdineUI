@@ -1,6 +1,6 @@
 -- Tukui API, see DOCS/API.txt for more informations
 
-local T, C, L, DB = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
+local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
 
 local noop = T.dummy
 local floor = math.floor
@@ -242,14 +242,6 @@ local function FontString(parent, name, fontName, fontHeight, fontStyle)
 	return fs
 end
 
-local function FadeIn(f)
-	UIFrameFadeIn(f, .4, f:GetAlpha(), 1)
-end
-	
-local function FadeOut(f)
-	UIFrameFadeOut(f, .8, f:GetAlpha(), 0)
-end
-
 local function addapi(object)
 	local mt = getmetatable(object).__index
 	mt.Width = Width
@@ -264,8 +256,6 @@ local function addapi(object)
 	mt.Kill = Kill
 	mt.StyleButton = StyleButton
 	mt.FontString = FontString
-	mt.FadeIn = FadeIn
-	mt.FadeOut = FadeOut
 end
 
 local handled = {["Frame"] = true}

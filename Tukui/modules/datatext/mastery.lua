@@ -15,7 +15,7 @@ if not C["datatext"].mastery == nil or C["datatext"].mastery > 0 then
 	local function Update(self, t)
 		int = int - t
 		if int < 0 then
-			Text:SetText(T.cStart .. "Mastery: " .. T.cEnd .. GetCombatRating(26))
+			Text:SetText(GetCombatRating(26).." "..T.cStart.."Mastery")
 			int = 1
 		end
 	end

@@ -80,13 +80,8 @@ if C["actionbar"].enable then
 
 	local TukuiPetBar = CreateFrame("Frame", "TukuiPetBar", UIParent)
 	TukuiPetBar:CreatePanel("Transparent", 1, 1, "BOTTOMRIGHT", TukuiRightBar, "TOPRIGHT", 0, 3)
-	if C["actionbar"].vertical_rightbars == true then
-		TukuiPetBar:Width((T.petbuttonsize + T.buttonspacing * 2) + 2)
-		TukuiPetBar:Height((T.petbuttonsize * NUM_PET_ACTION_SLOTS + T.buttonspacing * 11) + 2)
-	else
-		TukuiPetBar:Width((T.petbuttonsize * NUM_PET_ACTION_SLOTS + T.buttonspacing * 11) + 2)
-		TukuiPetBar:Height((T.petbuttonsize + T.buttonspacing * 2) + 2)
-	end
+	TukuiPetBar:Width((T.petbuttonsize * NUM_PET_ACTION_SLOTS + T.buttonspacing * 11) + 2)
+	TukuiPetBar:Height((T.petbuttonsize + T.buttonspacing * 2) + 2)
 end
 
 --BATTLEGROUND STATS FRAME

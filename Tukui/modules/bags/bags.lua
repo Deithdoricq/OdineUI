@@ -428,22 +428,14 @@ function Stuffing:CreateBagFrame(w)
 				if not C["chat"].background then
 					f:SetPoint("BOTTOMLEFT", TukuiInfoRight, "TOPLEFT", 0, 3)
 				elseif HasPetUI() then
-					if C["actionbar"].vertical_rightbars then
-						f:SetPoint("BOTTOMRIGHT", TukuiChatRight, "TOPRIGHT", 0, 3)
-					else
-						f:SetPoint("BOTTOMRIGHT", TukuiPetBar, "TOPRIGHT", 0, 3)
-					end
+					f:SetPoint("BOTTOMRIGHT", TukuiPetBar, "TOPRIGHT", 0, 3)
 				elseif UnitHasVehicleUI("player") then
 					f:SetPoint("BOTTOMRIGHT", TukuiChatRight, "TOPRIGHT", 0, 3)
 				else
-					if C["actionbar"].vertical_rightbars then
-						f:SetPoint("BOTTOMRIGHT", TukuiChatRight, "TOPRIGHT", 0, 3)
+					if TukuiSaved.rightbars >= 1 then
+						f:SetPoint("BOTTOMRIGHT", TukuiRightBar, "TOPRIGHT", 0, 3)
 					else
-						if TukuiSaved.rightbars >= 1 then
-							f:SetPoint("BOTTOMRIGHT", TukuiRightBar, "TOPRIGHT", 0, 3)
-						else
-							f:SetPoint("BOTTOMRIGHT", TukuiChatRight, "TOPRIGHT", 0, 3)
-						end
+						f:SetPoint("BOTTOMRIGHT", TukuiChatRight, "TOPRIGHT", 0, 3)
 					end
 				end
 			end

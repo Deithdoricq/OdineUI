@@ -107,7 +107,6 @@ DB["actionbar"] = {
 	["petbuttonsize"] = 30,                             -- pet & stance buttons size
 	["stancebuttonsize"] = 30,                             -- pet & stance buttons size
 	["buttonspacing"] = 3,                              -- buttons spacing 4 
-	["vertical_rightbars"] = false,
 }
 
 DB["bags"] = {
@@ -151,6 +150,7 @@ DB["datatext"] = {
 	["battleground"] = true,                            -- enable 3 stats in battleground only that replace stat1,stat2,stat3.
 	["time24"] = false,                                  -- set time to 24h format.
 	["localtime"] = true,                              -- set time to local time instead of server time.
+	["bars"] = true,									-- enable rep/exp bars under minimap
 	["fsize"] = 13,										-- default font size
 	
 	["classcolor"] = true,

@@ -1,22 +1,37 @@
 local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
 
-local rep = CreateFrame("Frame", "TukuiReputation", UIParent)
-if UnitLevel("player") ~= MAX_PLAYER_LEVEL then
-	rep:CreatePanel("Default", TukuiMinimap:GetWidth()+1, 10, "TOPLEFT", TukuiExperience, "BOTTOMLEFT", 0, -3)
+local font, fonts, fontf = C["media"].dfont, C["datatext"].fsize - 2, "OUTLINE"
+local space = 0
+local dtext = false
+
+if not dtext then
+	height = T.buttonsize - 20
 else
-	rep:CreatePanel("Default", TukuiMinimap:GetWidth()+1, 10, "TOPLEFT", TukuiMinimap, "BOTTOMLEFT", 0, -3)
+	height = T.buttonsize - 10
+end
+
+local rep = CreateFrame("Frame", "TukuiReputation", UIParent)
+if T.level ~= 85 then
+	rep:CreatePanel("Default", TukuiMinimap:GetWidth(), height, "TOPLEFT", TukuiExperience, "BOTTOMLEFT", 0, -3)
+else
+	if C["datatext"].bars then
+		rep:CreatePanel("Default", TukuiMinimap:GetWidth(), height, "TOPLEFT", TukuiMinimap, "BOTTOMLEFT", 0, -3)
+	else
+		rep:CreatePanel("Default", TukuiMinimap:GetWidth(), height, "TOP", UIParent, "TOP", 0, -10)
+	end
 end
 rep:EnableMouse(true)
 
 local bar = CreateFrame("StatusBar", "TukuiReputationBar", rep)
-bar:SetPoint("TOPLEFT", rep, TukuiDB.Scale(2), TukuiDB.Scale(-2))
-bar:SetPoint("BOTTOMRIGHT", rep, TukuiDB.Scale(-2), TukuiDB.Scale(2))
+bar:Point("TOPLEFT", rep, 1, -1)
+bar:Point("BOTTOMRIGHT", rep, -1, 1)
 bar:SetStatusBarTexture(C["media"].normTex)
 rep.bar = bar
 
 local text = bar:CreateFontString(nil, "LOW")
-text:SetFont(C["media"].dfont, C["datatext"].fsize, "OUTLINE")
-text:SetPoint("CENTER", rep)
+text:SetFont(font, fonts, fontf)
+text:SetShadowOffset(1, -1)
+text:Point("CENTER", rep, 0, space)
 rep.text = text
 
 local factioncolors = {
@@ -38,7 +53,11 @@ local function event(self, event, ...)
 	bar:SetValue(value)
 	
 	if id > 0 then
-		text:SetText(" ")
+    if dtext then
+		  text:SetText((value - min) .. " / " .. (max - min))
+    else
+		  text:SetText(" ")
+    end
 		bar:SetStatusBarColor(colors.r, colors.g, colors.b)
 		
 		rep:Show()
@@ -58,15 +77,15 @@ rep:HookScript("OnEnter", function()
 	local perGain = format("%.1f%%", (perGValue / perMax) * 100)
 	local perNeed = format("%.1f%%", (perNValue / perMax) * 100)
 
-	GameTooltip:SetOwner(rep, "ANCHOR_BOTTOMRIGHT", -rep:GetWidth(), -(rep:GetHeight() - 10 + 3))
+	GameTooltip:SetOwner(rep, "ANCHOR_BOTTOMLEFT", -T.buttonspacing, -(rep:GetHeight() - height + T.buttonspacing))
 	GameTooltip:ClearLines()
-	GameTooltip:AddLine(T.cStart .. "Reputation:|r")
+	GameTooltip:AddLine("Reputation:|r")
 	GameTooltip:AddLine" "
-	GameTooltip:AddDoubleLine(T.cStart .. "Faction: |r", name, 1, 1, 1, 1, 1, 1)
-	GameTooltip:AddDoubleLine(T.cStart .. "Standing: |r", _G['FACTION_STANDING_LABEL'..id], 1, 1, 1, colors.r, colors.g, colors.b)
-	GameTooltip:AddDoubleLine(T.cStart .. "Gained: |r", value - min .. " (" .. perGain .. ")", 1, 1, 1, 1, 1, 1)
-	GameTooltip:AddDoubleLine(T.cStart .. "Needed: |r", max - value .. " (" .. perNeed .. ")", 1, 1, 1, .8, .2, .2)
-	GameTooltip:AddDoubleLine(T.cStart .. "Total: |r", max - min, 1, 1, 1, 1, 1, 1)
+	GameTooltip:AddDoubleLine("Faction: |r", name, 1, 1, 1, 1, 1, 1)
+	GameTooltip:AddDoubleLine("Standing: |r", _G['FACTION_STANDING_LABEL'..id], 1, 1, 1, colors.r, colors.g, colors.b)
+	GameTooltip:AddDoubleLine("Gained: |r", value - min .. " (" .. perGain .. ")", 1, 1, 1, 1, 1, 1)
+	GameTooltip:AddDoubleLine("Needed: |r", max - value .. " (" .. perNeed .. ")", 1, 1, 1, .8, .2, .2)
+	GameTooltip:AddDoubleLine("Total: |r", max - min, 1, 1, 1, 1, 1, 1)
 	
 	GameTooltip:Show()
 end)

@@ -722,18 +722,6 @@ local ouioptions = {
 					name = "Show Grid",
 					desc = "Toggle whether you want to show a grid on empty buttons.",									
 				},
-				vertical_rightbars = {
-					type = "toggle",
-					order = 5,
-					name = "Vertical Rightbars",
-					desc = "Toggle whether you want .",									
-				},
-				empty8 = {
-					name = "   ",
-					width = "full",
-					type = "description",
-					order = 6,
-				},
 				buttonsize = {
 					type = "range",
 					order = 7,

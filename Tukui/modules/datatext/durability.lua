@@ -44,7 +44,7 @@ if C["datatext"].dur and C["datatext"].dur > 0 then
 	Stat:SetScript("OnMouseDown", function() ToggleCharacter("PaperDollFrame") end)
 	Stat:SetScript("OnEvent", OnEvent)
 	Stat:SetScript("OnEnter", function(self)
-		-- if not InCombatLockdown() then
+		if not InCombatLockdown() then
 			local anchor, panel, xoff, yoff = T.DataTextTooltipAnchor(Text)
 			GameTooltip:SetOwner(panel, anchor, xoff, yoff)
 			GameTooltip:ClearLines()
@@ -56,7 +56,7 @@ if C["datatext"].dur and C["datatext"].dur > 0 then
 				end
 			end
 			GameTooltip:Show()
-		-- end
+		end
 	end)
 	Stat:SetScript("OnLeave", function() GameTooltip:Hide() end)
 end

@@ -1,23 +1,35 @@
 local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
-if UnitLevel("player") == MAX_PLAYER_LEVEL then return end
+if T.level == 85 then return end
 
-infoheight = 10
+local space = 0
+local font, fonts, fontf = C["media"].dfont, C["datatext"].fsize - 2, "OUTLINE"
+local dtext = false
 
+if not dtext then
+	height = T.buttonsize - 20
+else
+	height = T.buttonsize - 10
+end
 
 local xp = CreateFrame("Frame", "TukuiExperience", UIParent)
-xp:CreatePanel("Default", TukuiMinimap:GetWidth()+1, infoheight, "TOPLEFT", TukuiMinimap, "BOTTOMLEFT", 0, -3)
-xp:HookScript("OnUpdate", function(self) xp:SetPoint("TOPLEFT", TukuiMinimap, "BOTTOMLEFT", 0, -3) end)
+if C["datatext"].bars then
+	xp:CreatePanel("Default", TukuiMinimap:GetWidth(), height, "TOPLEFT", TukuiMinimap, "BOTTOMLEFT", 0, -3)
+	xp:HookScript("OnUpdate", function(self) xp:SetPoint("TOPLEFT", TukuiMinimap, "BOTTOMLEFT", 0, -3) end)
+else
+	xp:CreatePanel("Default", TukuiMinimap:GetWidth(), height, "TOPLEFT", UIParent, "TOPLEFT", 8, -8)
+end
 xp:EnableMouse(true)
 
 local bar = CreateFrame("StatusBar", "TukuiExperienceBar", xp)
-bar:SetPoint("TOPLEFT", xp, T.Scale(2), T.Scale(-2))
-bar:SetPoint("BOTTOMRIGHT", xp, T.Scale(-2), T.Scale(2))
+bar:Point("TOPLEFT", xp, 1, -1)
+bar:Point("BOTTOMRIGHT", xp, -1, 1)
 bar:SetStatusBarTexture(C["media"].normTex)
 xp.bar = bar
 
 local text = bar:CreateFontString(nil, "LOW")
-text:SetFont(C["media"].dfont, C["datatext"].fsize, "OUTLINE")
-text:SetPoint("CENTER", xp)
+text:SetFont(font, fonts, fontf)
+text:SetShadowOffset(1, -1)
+text:Point("CENTER", xp, 0, space)
 xp.text = text
 
 
@@ -51,11 +63,19 @@ local function event(self, event, ...)
 	end
 	
 	if restXP then
-		text:SetText(" ")
+    if dtext then
+		  text:SetText(currValue .. " / " .. maxValue .. " R: " .. restXP)
+    else
+		  text:SetText(" ")
+    end
 		
 		bar:SetStatusBarColor(xpcolors[2].r, xpcolors[2].g, xpcolors[2].b, xpcolors[2].a)
 	else
-		text:SetText(" ")
+    if dtext then
+		  text:SetText(currValue .. " / " .. maxValue)
+    else
+		  text:SetText(" ")
+    end
 		
 		bar:SetStatusBarColor(xpcolors[1].r, xpcolors[1].g, xpcolors[1].b, xpcolors[1].a)
 	end
@@ -72,16 +92,16 @@ xp:HookScript("OnEnter", function()
 	
 	local bars = format("%.1f", currValue / maxValue * 20)
 
-	GameTooltip:SetOwner(xp, "ANCHOR_BOTTOMRIGHT", -xp:GetWidth(), -(xp:GetHeight() - infoheight + 3))
+	GameTooltip:SetOwner(xp, "ANCHOR_BOTTOMLEFT", -T.buttonspacing, -(xp:GetHeight() - height + T.buttonspacing))
 	GameTooltip:ClearLines()
-	GameTooltip:AddLine(T.cStart .. "Experience:|r")
+	GameTooltip:AddLine("Experience:|r")
 	GameTooltip:AddLine" "
-	GameTooltip:AddDoubleLine(T.cStart .. "Bars: |r", bars.." / 20", _, _, _, 1, 1, 1)
-	GameTooltip:AddDoubleLine(T.cStart .. "Gained: |r", shortvalue(currValue).." ("..perGain..")", _, _, _, 1, 1, 1)
-	GameTooltip:AddDoubleLine(T.cStart .. "Remaining: |r", shortvalue(maxValue - currValue).." ("..perRem..")", _, _, _, xpcolors[1].r, xpcolors[1].g, xpcolors[1].b)
-	GameTooltip:AddDoubleLine(T.cStart .. "Total: |r", shortvalue(maxValue), _, _, _, 1, 1, 1)
+	GameTooltip:AddDoubleLine("Bars: |r", bars.." / 20", _, _, _, 1, 1, 1)
+	GameTooltip:AddDoubleLine("Gained: |r", shortvalue(currValue).." ("..perGain..")", _, _, _, 1, 1, 1)
+	GameTooltip:AddDoubleLine("Remaining: |r", shortvalue(maxValue - currValue).." ("..perRem..")", _, _, _, xpcolors[1].r, xpcolors[1].g, xpcolors[1].b)
+	GameTooltip:AddDoubleLine("Total: |r", shortvalue(maxValue), _, _, _, 1, 1, 1)
 	if restXP ~= nil and restXP > 0 then
-		GameTooltip:AddDoubleLine(T.cStart .. "Rested: |r", shortvalue(restXP).." ("..format("%.f%%", restXP / maxValue * 100)..")", _, _, _, xpcolors[2].r, xpcolors[2].g, xpcolors[2].b)
+		GameTooltip:AddDoubleLine("Rested: |r", shortvalue(restXP).." ("..format("%.f%%", restXP / maxValue * 100)..")", _, _, _, xpcolors[2].r, xpcolors[2].g, xpcolors[2].b)
 	end
 	
 	GameTooltip:Show()

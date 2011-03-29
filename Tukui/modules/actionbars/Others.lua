@@ -1,5 +1,5 @@
 
-local T, C, L, DB = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
+local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
 if not C["actionbar"].enable == true then return end
 ---------------------------------------------------------------------------
 -- Manage all others stuff for actionbars

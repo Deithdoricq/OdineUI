@@ -45,12 +45,10 @@ end
 Stat:SetScript("OnEnter", function(self)
 	if InCombatLockdown() then return end
 
-	GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, T.Scale(3))
-	GameTooltip:ClearAllPoints()
-	GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, T.mult)
+	local anchor, panel, xoff, yoff = T.DataTextTooltipAnchor(Text)
+	GameTooltip:SetOwner(panel, anchor, xoff, yoff)
+
 	GameTooltip:ClearLines()
-
-
 	for i = 1, GetNumTalentGroups() do
 		GameTooltip:AddLine(string.join(" ", string.format(talentString, select(2, GetTalentTabInfo(GetPrimaryTalentTree(false, false, i))), talent[i][1], talent[i][2], talent[i][3]), (i == active and activeString or inactiveString)),1,1,1)
 	end

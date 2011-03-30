@@ -171,7 +171,6 @@ local function SetTemplate(f, t, tex)
 		backdropa = .7
 	else 
 		backdropa = 1
-		--f:CreateOverlay()
 	end
 	
 	f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)

@@ -553,7 +553,7 @@ local function Shared(self, unit)
 					end
 					TotemBarBG:SetFrameLevel(panel: GetFrameLevel() + 2)
 					TotemBarBG:SetFrameStrata(panel:GetFrameStrata())
-					TotemBarBG.shadow:SetFrameStrata("BACKGROUND")
+					--TotemBarBG.shadow:SetFrameStrata("BACKGROUND")
 					
 					for i = 1, 4 do
 						TotemBar[i] = CreateFrame("StatusBar", self:GetName().."_TotemBar"..i, health)

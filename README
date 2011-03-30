@@ -3,3 +3,4 @@ V5.6 - [03/29/2011]
 * PLEASE TAKE NOTE DPS/HEAL LAYOUT FOLDERS WERE RENAMED, DELETE THE OLD NAMES FROM YOUR ADDONS FOLDER WHEN INSTALLING!!!!
 * fixed problem with tooltips fading when they shouldn't be
 * compatibility fix for chat loot frame
+* fixed StackSplitFrame and tweaked some api stuff in the process

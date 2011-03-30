@@ -1,5 +1,6 @@
-local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
 -- credits : Haste
+
+local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
 
 if not C["loot"].lootframe == true then return end
 
@@ -30,7 +31,7 @@ local OnEnter = function(self)
 end
 
 local OnLeave = function(self)
-	if(self.quality and self.quality > 1) then
+	if self.quality and (self.quality > 1) then
 		local color = ITEM_QUALITY_COLORS[self.quality]
 		self.drop:SetVertexColor(color.r, color.g, color.b)
 	else
@@ -96,6 +97,8 @@ local createSlot = function(id)
 	count:SetJustifyH"RIGHT"
 	count:Point("BOTTOMRIGHT", iconFrame, -1, 2)
 	count:SetFont(C["media"].font, 12, "OUTLINE")
+	count:SetShadowOffset(.8, -.8)
+	count:SetShadowColor(0, 0, 0, 1)
 	count:SetText(1)
 	frame.count = count
 
@@ -105,7 +108,9 @@ local createSlot = function(id)
 	name:SetPoint("LEFT", frame)
 	name:SetPoint("RIGHT", icon, "LEFT")
 	name:SetNonSpaceWrap(true)
-	name:SetFont(C["media"].font, 12, "OUTLINE")
+	name:SetFont(C["media"].font, 13, "OUTLINE")
+	name:SetShadowOffset(.8, -.8)
+	name:SetShadowColor(0, 0, 0, 1)
 	frame.name = name
 
 	local drop = frame:CreateTexture(nil, "ARTWORK")
@@ -155,7 +160,7 @@ addon:Point("TOPLEFT", 0, -104)
 addon:SetTemplate("Default")
 addon:Width(256)
 addon:Height(64)
-
+addon:SetBackdropColor(0.1, 0.1, 0.1, 1)
 
 addon:SetClampedToScreen(true)
 addon:SetClampRectInsets(0, 0, T.Scale(14), 0)

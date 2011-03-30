@@ -39,7 +39,7 @@ local function SkinButton(f)
 	if f.SetDisabledTexture then
 		f:SetDisabledTexture("")
 	end
-	f:SetTemplate("Default", true)
+	f:SetTemplate("Default")
 	
 	f:HookScript("OnEnter", SetModifiedBackdrop)
 	f:HookScript("OnLeave", SetOriginalBackdrop)
@@ -83,8 +83,8 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		end
 		
 		for i = 1, getn(skins) do
-			_G[skins[i]]:SetTemplate("Default", true)
-			if _G[skins[i]] ~= _G["AutoCompleteBox"] then -- frame to blacklist from create shadow function
+			_G[skins[i]]:SetTemplate("Default")
+			if _G[skins[i]] ~= _G["AutoCompleteBox"] and _G[skins[i]] ~= _G["BNToastFrame"] then -- frame to blacklist from create shadow function
 				_G[skins[i]]:CreateShadow("Default")
 			end
 		end

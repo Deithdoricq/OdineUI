@@ -7,7 +7,7 @@ GhostFrameContentsFrame.SetPoint = T.dummy
 GhostFrame:SetFrameStrata("HIGH")
 GhostFrame:SetFrameLevel(10)
 GhostFrame:ClearAllPoints()
-GhostFrame:Point("TOP", UIParent, 0, -50)
+GhostFrame:Point("TOP", UIParent, 0, -100)
 GhostFrameContentsFrameIcon:SetAlpha(0)
 GhostFrameContentsFrameText:ClearAllPoints()
 GhostFrameContentsFrameText:Point("BOTTOM", 0, 5)

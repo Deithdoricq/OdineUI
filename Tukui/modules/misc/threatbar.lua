@@ -1,8 +1,10 @@
 local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
 -- Very simple threat bar for T.
 
--- cannot work without Info Right DataText Panel.
-if not TukuiInfoRight then return end
+if not TukuiInfoLeft then return end
+
+local font, fonts, fontf = C["media"].dfont, C["datatext"].fsize, "OUTLINE"
+
 
 local aggroColors = {
 	[1] = {12/255, 151/255,  15/255},
@@ -11,21 +13,26 @@ local aggroColors = {
 }
 
 -- create the bar
-local TukuiThreatBar = CreateFrame("StatusBar", "TukuiThreatBar", UIParent)
+local TukuiThreatBar = CreateFrame("StatusBar", "TukuiThreatBar", TukuiTabsLeft)
+TukuiThreatBar:Point("TOPLEFT", 2, -2)
+TukuiThreatBar:Point("BOTTOMRIGHT", -2, 2)
+TukuiThreatBar:SetFrameStrata("TOOLTIP")
+TukuiThreatBar:SetFrameLevel(0)
 TukuiThreatBar:SetStatusBarTexture(C.media.normTex)
 TukuiThreatBar:GetStatusBarTexture():SetHorizTile(false)
-TukuiThreatBar:SetBackdrop({bgFile = C.media.blank})
-TukuiThreatBar:SetBackdropColor(0, 0, 0, 0)
 TukuiThreatBar:SetMinMaxValues(0, 100)
-TukuiThreatBar:SetOrientation("VERTICAL")
+TukuiThreatBar:SetTemplate("Default")
 
-local TukuiThreatBarBG = CreateFrame("Frame", nil, TukuiThreatBar)
-TukuiThreatBarBG:CreatePanel("Default", 10, 1, "CENTER")
-TukuiThreatBarBG:Point("TOPLEFT", TukuiChatLeft, "TOPRIGHT", 3, 0)
-TukuiThreatBarBG:Point("BOTTOMLEFT", TukuiChatLeft, "BOTTOMRIGHT", 3, 0)
+TukuiThreatBar.text = T.SetFontString(TukuiThreatBar, font, fonts, fontf)
+TukuiThreatBar.text:Point("RIGHT", TukuiThreatBar, "RIGHT", -10, 0)
 
-TukuiThreatBar:Point("TOPLEFT", TukuiThreatBarBG, 2, -2)
-TukuiThreatBar:Point("BOTTOMRIGHT", TukuiThreatBarBG, -2, 2)
+TukuiThreatBar.Title = T.SetFontString(TukuiThreatBar, font, fonts, fontf)
+TukuiThreatBar.Title:SetText(L.unitframes_ouf_threattext)
+TukuiThreatBar.Title:Point("LEFT", TukuiThreatBar, "LEFT", 10, 0)
+	  
+TukuiThreatBar.bg = TukuiThreatBar:CreateTexture(nil, 'BORDER')
+TukuiThreatBar.bg:SetAllPoints()
+TukuiThreatBar.bg:SetTexture(unpack(C["media"].backdropcolor))
 
 -- event func
 local function OnEvent(self, event, ...)
@@ -34,24 +41,24 @@ local function OnEvent(self, event, ...)
 	local pet = select(1, HasPetUI())
 	
 	if event == "PLAYER_ENTERING_WORLD" then
-		self:Hide() -- hide
+		self:Hide()
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 	elseif event == "PLAYER_REGEN_ENABLED" then
-		self:Hide() -- hide
+		self:Hide()
 	elseif event == "PLAYER_REGEN_DISABLED" then
 		-- look if we have a pet, party or raid active
 		-- having threat bar solo is totally useless
 		if party > 0 or raid > 0 or pet == 1 then
 			self:Show()
 		else
-			self:Hide() -- hide
+			self:Hide()
 		end
 	else
 		-- update when pet, party or raid change.
 		if (InCombatLockdown()) and (party > 0 or raid > 0 or pet == 1) then
 			self:Show()
 		else
-			self:Hide() -- hide
+			self:Hide()
 		end
 	end
 end
@@ -63,6 +70,7 @@ local function OnUpdate(self, event, unit)
 		local threatval = threatpct or 0
 		
 		self:SetValue(threatval)
+		self.text:SetFormattedText("%3.1f", threatval)
 		
 		if( threatval < 30 ) then
 			self:SetStatusBarColor(unpack(self.Colors[1]))
@@ -71,11 +79,11 @@ local function OnUpdate(self, event, unit)
 		else
 			self:SetStatusBarColor(unpack(self.Colors[3]))
 		end
-
+				
 		if threatval > 0 then
 			self:SetAlpha(1)
 		else
-			self:SetAlpha(0) -- 0
+			self:SetAlpha(0)
 		end		
 	end
 end

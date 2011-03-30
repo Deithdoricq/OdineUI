@@ -977,6 +977,12 @@ local ouioptions = {
 							name = "OMEN",
 							desc = "Toggles skinning of this addon.",
 						},
+						--[[totemtimers = {
+							type = "toggle",
+							order = 6,
+							name = "Totem Timers",
+							desc = "Toggles skinning of this addon.",
+						},--]]
 					},
 				},
 			},

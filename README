@@ -1,3 +1,6 @@
+V5.8 - [03/21/2011]
+* more changes to hopefully fix chat windows in windowed mode if resized
+
 V5.7 - [03/31/2011]
 * hopefully fixed problem with chat anchors getting messed up when switching to windows mode
 * /resetui no longer resets OdineUI ingame config settings (do this in the profile section of /odineui from now on)

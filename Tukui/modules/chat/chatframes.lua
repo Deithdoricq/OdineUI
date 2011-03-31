@@ -84,9 +84,9 @@ local function SetChatStyle(frame)
 	-- Stop the chat chat from fading out
 	_G[chat]:SetFading(C["chat"].fading)
 	
-	-- set min height/width to original tukui size
-	_G[chat]:SetMinResize(371, 150)
-	_G[chat]:SetMinResize(T.InfoLeftRightWidth + 1,150)
+	-- set the size of chat frames and report sir
+	_G[chat]:Size(T.InfoLeftRightWidth + 1, C["chat"].height)
+	SetChatWindowSavedDimensions(id, T.Scale(T.InfoLeftRightWidth + 1), T.Scale(C["chat"].height - 65))
 	
 	-- set font style
 	_G[chat]:SetFont(C["media"].cfont, C["chat"].fsize, "NONE")

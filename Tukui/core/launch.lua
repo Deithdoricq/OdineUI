@@ -47,22 +47,12 @@ local function install()
 			local chatFrameId = frame:GetID()
 			local chatName = FCF_GetChatWindowInfo(chatFrameId)
 			
-			-- set the size of chat frames
-			frame:Size(T.InfoLeftRightWidth + 1, 150)
-			
-			-- tell wow that we are using new size
-			SetChatWindowSavedDimensions(chatFrameId, T.Scale(T.InfoLeftRightWidth + 1), T.Scale(150))
-			
 			-- move general bottom left or Loot (if found) on right
 			if i == 1 then
 				frame:ClearAllPoints()
-				--frame:Point("TOPLEFT", TukuiTabsLeft, "BOTTOMLEFT", 0, -4)
-				--frame:Point("BOTTOMRIGHT", TukuiInfoLeft, "TOPRIGHT", 0, 4)
 				frame:Point("BOTTOMLEFT", TukuiInfoLeft, "TOPLEFT", 0, 6)
 			elseif i == 4 and chatName == LOOT then
 				frame:ClearAllPoints()
-				--frame:Point("TOPLEFT", TukuiTabsRight, "BOTTOMLEFT", 0, -4)
-				--frame:Point("BOTTOMRIGHT", TukuiInfoRight, "TOPRIGHT", 0, 4)
 				frame:Point("BOTTOMRIGHT", TukuiInfoRight, "TOPRIGHT", 0, 6)
 			end
 					

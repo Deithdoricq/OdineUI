@@ -38,7 +38,7 @@ CombatText:UnregisterAllEvents()
 -- disable rest if addon is loaded
 if IsAddOnLoaded("MikScrollingBattleText") or IsAddOnLoaded("xCT") then return end
 
-local font, fonts, fontf = C["media"].dmgfont, 15, "OUTLINE"
+local font, fonts, fontf = C["media"].dmgfont, 17, "OUTLINE"
 
 -- Set specific threshold for level 85 players
 if T.level == 85 then

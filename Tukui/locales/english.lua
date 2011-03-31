@@ -174,7 +174,7 @@ L.core_autoinv_disable = "Autoinvite OFF"
 L.core_wf_unlock = "WatchFrame unlock"
 L.core_wf_lock = "WatchFrame lock"
 L.core_welcome1 = "Welcome to |cffC495DDTukui|r, version "
-L.core_welcome2 = "Type |cff00FFFF/uihelp|r for more info or visit www.tukui.org"
+L.core_welcome2 = "Type |cff00FFFF/uihelp|r for more info or visit http://www.tukui.org/forums/forum.php?id=50"
 L.core_welcome3 = "Welcome to OdineUI (|cffC495DDTukui V13 Edit|r)"
 L.core_welcomeCF = "Odine's Tukui Config v"..GetAddOnMetadata("Tukui_Config", "Version").." Loaded -- Type |cff00FFFF/odineui|r"
 

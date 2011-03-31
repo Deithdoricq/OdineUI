@@ -17,6 +17,43 @@ end
 T.Scale = function(x) return Scale(x) end
 T.mult = mult
 
+---------------------------------------------------
+-- TEMPLATES
+---------------------------------------------------
+
+local function GetTemplate(t)
+	if t == "Tukui" then
+		borderr, borderg, borderb = .6, .6, .6
+		backdropr, backdropg, backdropb = .1, .1, .1
+	elseif t == "ClassColor" then
+		local c = T.oUF_colors.class[class]
+		borderr, borderg, borderb = c[1], c[2], c[3]
+		backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)
+	elseif t == "Elv" then
+		borderr, borderg, borderb = .3, .3, .3
+		backdropr, backdropg, backdropb = .1, .1, .1	
+	elseif t == "Duffed" then
+		borderr, borderg, borderb = .2, .2, .2
+		backdropr, backdropg, backdropb = .02, .02, .02
+	elseif t == "Dajova" then
+		borderr, borderg, borderb = .05, .05, .05
+		backdropr, backdropg, backdropb = .1, .1, .1
+	elseif t == "Eclipse" then
+		borderr, borderg, borderb = .1, .1, .1
+		backdropr, backdropg, backdropb = 0, 0, 0
+	elseif t == "Hydra" then
+		borderr, borderg, borderb = .2, .2, .2
+		backdropr, backdropg, backdropb = .075, .075, .075
+	else
+		borderr, borderg, borderb = unpack(C["media"].bordercolor)
+		backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)
+	end
+end
+
+---------------------------------------------------
+-- END OF TEMPLATES
+---------------------------------------------------
+
 local function Size(frame, width, height)
 	frame:SetSize(Scale(width), Scale(height or width))
 end
@@ -52,32 +89,20 @@ local function CreateShadow(f, t)
 		backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)
 	end
 	
-	local shadow = CreateFrame("Frame",  f:GetName() and f:GetName() .. "Shadow" or nil, f)
+	local shadow = CreateFrame("Frame", nil, f)
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(f:GetFrameStrata())
-	shadow:Point("TOPLEFT", -3, 3)
-	shadow:Point("BOTTOMLEFT", -3, -3)
-	shadow:Point("TOPRIGHT", 3, 3)
-	shadow:Point("BOTTOMRIGHT", 3, -3)
+	shadow:SetPoint("TOPLEFT", T.Scale(-3), T.Scale(3))
+	shadow:SetPoint("BOTTOMLEFT", T.Scale(-3), T.Scale(-3))
+	shadow:SetPoint("TOPRIGHT", T.Scale(3), T.Scale(3))
+	shadow:SetPoint("BOTTOMRIGHT", T.Scale(3), T.Scale(-3))
 	shadow:SetBackdrop( { 
 		edgeFile = C["media"].glowTex, edgeSize = T.Scale(3),
-		insets = {left = T.Scale(5), right = T.Scale(5), top = T.Scale(5), bottom = T.Scale(5)},
+		insets = { left = mult, right = mult, top = mult, bottom = mult }
 	})
 	shadow:SetBackdropColor(backdropr, backdropg, backdropb, 0)
-	shadow:SetBackdropBorderColor(borderr, borderg, borderb, 0.9)
+	shadow:SetBackdropBorderColor(borderr, borderg, borderb, 1)
 	f.shadow = shadow
-end
-
-local function CreateOverlay(f)
-	if f.overlay then return end
-	
-	local overlay = f:CreateTexture(f:GetName() and f:GetName().."Overlay" or nil, "BORDER", f)
-	overlay:ClearAllPoints()
-	overlay:Point("TOPLEFT", 2, -2)
-	overlay:Point("BOTTOMRIGHT", -2, 2)
-	overlay:SetTexture(C["media"].blank)
-	overlay:SetVertexColor(.05, .05, .05)
-	f.overlay = overlay
 end
 
 local function CreateBorder(f, i, o)
@@ -111,15 +136,26 @@ local function CreateBorder(f, i, o)
 	end
 end
 
-local function GetTemplate(t)
-	if t == "ClassColor" then
-		local c = T.oUF_colors.class[class]
-		borderr, borderg, borderb = c[1], c[2], c[3]
-		backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)
-	else
-		borderr, borderg, borderb = unpack(C["media"].bordercolor)
-		backdropr, backdropg, backdropb = unpack(C["media"].backdropcolor)
+local function SetTemplate(f, t, tex)
+	if tex then texture = C.media.normTex else texture = C.media.blank end
+
+	GetTemplate(t)
+		
+	f:SetBackdrop({
+	  bgFile = texture, 
+	  edgeFile = C["media"].blank, 
+	  tile = false, tileSize = 0, edgeSize = mult, 
+	  insets = { left = -mult, right = -mult, top = -mult, bottom = -mult}
+	})
+	
+	if t == "Transparent" then 
+		backdropa = .7
+	else 
+		backdropr, backdropg, backdropb, backdropa = unpack(C["media"].backdropcolor)
 	end
+	
+	f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
+	f:SetBackdropBorderColor(borderr, borderg, borderb)
 end
 
 local function CreatePanel(f, t, w, h, a1, p, a2, x, y)
@@ -132,8 +168,10 @@ local function CreatePanel(f, t, w, h, a1, p, a2, x, y)
 		backdropa = 1
 	end
 	
-	f:Width(w)
-	f:Height(h)
+	local sh = Scale(h)
+	local sw = Scale(w)
+	f:Width(sw)
+	f:Height(sh)
 	f:SetFrameLevel(1)
 	f:SetFrameStrata("BACKGROUND")
 	f:Point(a1, p, a2, x, y)
@@ -151,30 +189,7 @@ local function CreatePanel(f, t, w, h, a1, p, a2, x, y)
 		f:CreateShadow()
 	else
 		f:CreateShadow()
-		f:CreateOverlay()
 	end
-end
-
-local function SetTemplate(f, t, tex)
-	if tex then texture = C.media.normTex else texture = C.media.blank end
-	
-	GetTemplate(t)
-
-	f:SetBackdrop({
-		bgFile = texture, 
-		edgeFile = C.media.blank, 
-		tile = false, tileSize = 0, edgeSize = mult, 
-		insets = { left = -mult, right = -mult, top = -mult, bottom = -mult}
-	})
-	
-	if t == "Transparent" then
-		backdropa = .7
-	else 
-		backdropa = 1
-	end
-	
-	f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
-	f:SetBackdropBorderColor(borderr, borderg, borderb)
 end
 
 local function Kill(object)
@@ -250,7 +265,6 @@ local function addapi(object)
 	mt.SetTemplate = SetTemplate
 	mt.CreatePanel = CreatePanel
 	mt.CreateShadow = CreateShadow
-	mt.CreateOverlay = CreateOverlay
 	mt.CreateBorder = CreateBorder
 	mt.Kill = Kill
 	mt.StyleButton = StyleButton

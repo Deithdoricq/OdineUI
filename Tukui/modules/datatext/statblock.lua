@@ -9,6 +9,7 @@ local width = (350 / 4) - 3
 for i = 1, 4 do
 	stat[i] = CreateFrame("Frame", "TukuiStat"..i, UIParent)
 	stat[i]:CreatePanel("Default", width, 20, "CENTER")
+	stat[i]:SetTemplate("Default", true)
 	stat[i]:SetFrameLevel(2)
 	stat[i]:EnableMouse(true)
 	

@@ -336,6 +336,11 @@ local ouioptions = {
 							desc = "Allows you to select a custom color for castbars",
 							disabled = function() return (db.unitframes.cbclasscolor or not db.unitframes.unitcastbar) end,
 							hasAlpha = false,
+							get = function() return unpack(db.unitframes.cbcustomcolor) end,
+							set = function(_,r,g,b)
+								db.unitframes.cbcustomcolor = { r, g, b }
+								StaticPopup_Show("RELOAD_UI")
+							end,
 						},
 					},
 				},

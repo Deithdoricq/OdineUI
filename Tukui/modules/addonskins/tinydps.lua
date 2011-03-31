@@ -18,7 +18,7 @@ TinyDPS:SetScript("OnEvent", function(self, event, addon)
 		tdpsPosition = {x = 0, y = -6}
 
 		tdpsFrame:SetHeight(tdps.barHeight + 4)
-		tdpsFrame:SetTemplate("Default")
+		tdpsFrame:SetTemplate("Default", true)
 		tdpsFrame:CreateShadow("Default")
 
 		if tdpsStatusBar then

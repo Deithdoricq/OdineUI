@@ -179,7 +179,7 @@ local function Shared(self, unit)
 		healthB:SetFrameLevel(health:GetFrameLevel() - 1)
 		healthB:Point("TOPLEFT", -2, 2)
 		healthB:Point("BOTTOMRIGHT", 2, -2)
-		healthB:SetTemplate("Default")
+		healthB:SetTemplate("Default", true)
 		healthB:CreateShadow("Default")
 		self.Health.border = healthB
 		
@@ -202,7 +202,7 @@ local function Shared(self, unit)
 		powerB:SetFrameLevel(power:GetFrameLevel() - 1)
 		powerB:SetPoint("TOPLEFT", T.Scale(-2), T.Scale(2))
 		powerB:SetPoint("BOTTOMRIGHT", T.Scale(2), T.Scale(-2))
-		powerB:SetTemplate("Default")
+		powerB:SetTemplate("Default", true)
 		powerB:CreateShadow("Default")
 		self.Power.border = powerB	
 		
@@ -395,7 +395,7 @@ local function Shared(self, unit)
 				self.Swing.bg:SetPoint("BOTTOMRIGHT", T.Scale(2), T.Scale(-2))
 				self.Swing.bg:SetFrameStrata("BACKGROUND")
 				self.Swing.bg:SetFrameLevel(Swing:GetFrameLevel() - 1)
-				self.Swing.bg:SetTemplate("Default")
+				self.Swing.bg:SetTemplate("Default", true)
 				
 				self.Swing.disableMelee = false
 				self.Swing.disableRanged = false
@@ -534,7 +534,6 @@ local function Shared(self, unit)
 						Runes[i]:GetStatusBarTexture():SetHorizTile(false)
 						
 						rB[i]:SetTemplate("Default", true)
-						--rB[i]:CreateShadow("Default")
 					end
 
 					self.Runes = Runes
@@ -923,7 +922,7 @@ local function Shared(self, unit)
 		healthB:SetFrameLevel(health:GetFrameLevel() - 1)
 		healthB:Point("TOPLEFT", -2, 2)
 		healthB:Point("BOTTOMRIGHT", 2, -2)
-		healthB:SetTemplate("Default")
+		healthB:SetTemplate("Default", true)
 		healthB:CreateShadow("Default")
 		self.Health.border = healthB
 
@@ -945,7 +944,7 @@ local function Shared(self, unit)
 		powerB:SetFrameLevel(power:GetFrameLevel() - 1)
 		powerB:SetPoint("TOPLEFT", T.Scale(-2), T.Scale(2))
 		powerB:SetPoint("BOTTOMRIGHT", T.Scale(2), T.Scale(-2))
-		powerB:SetTemplate("Default")
+		powerB:SetTemplate("Default", true)
 		powerB:CreateShadow("Default")
 		self.Power.border = powerB	
 		
@@ -1060,7 +1059,7 @@ local function Shared(self, unit)
 			castbar:SetPoint("CENTER", UIParent, "CENTER", 0, 200)		
 			
 			castbar.bg = CreateFrame("Frame", nil, castbar)
-			castbar.bg:SetTemplate("Default")
+			castbar.bg:SetTemplate("Default", true)
 			castbar.bg:CreateShadow("Default")			
 			castbar.bg:Point("TOPLEFT", -2, 2)
 			castbar.bg:Point("BOTTOMRIGHT", 2, -2)
@@ -1085,7 +1084,7 @@ local function Shared(self, unit)
 				castbar.button:Height((T.buttonsize-4) * 2)
 				castbar.button:Width((T.buttonsize-4) * 2)
 				castbar.button:Point("CENTER", 0, 20 * 2)
-				castbar.button:SetTemplate("Default")
+				castbar.button:SetTemplate("Default", true)
 				castbar.button:CreateShadow("Default")			
 
 				castbar.icon = castbar.button:CreateTexture(nil, "ARTWORK")
@@ -1144,7 +1143,7 @@ local function Shared(self, unit)
 		healthB:SetFrameLevel(health:GetFrameLevel() - 1)
 		healthB:Point("TOPLEFT", -2, 2)
 		healthB:Point("BOTTOMRIGHT", 2, -2)
-		healthB:SetTemplate("Default")
+		healthB:SetTemplate("Default", true)
 		healthB:CreateShadow("Default")
 		self.Health.border = healthB
 		
@@ -1166,21 +1165,24 @@ local function Shared(self, unit)
 		powerB:SetFrameLevel(power:GetFrameLevel() - 1)
 		powerB:SetPoint("TOPLEFT", T.Scale(-2), T.Scale(2))
 		powerB:SetPoint("BOTTOMRIGHT", T.Scale(2), T.Scale(-2))
-		powerB:SetTemplate("Default")
+		powerB:SetTemplate("Default", true)
 		powerB:CreateShadow("Default")
 		self.Power.border = powerB	
 		
 		health.value = T.SetFontString(health, font, fonts, fontf)
 		
-		health.percent = T.SetFontString(health, font, fonts + 6, fontf)
-		health.percent:Point("RIGHT", self.Health, "LEFT", -6, 0)
-		health.percent:SetShadowOffset(-2,-2)
+		if C["unitframes"].percentage == true then
+			health.percent = T.SetFontString(health, font, fonts + 6, fontf)
+			health.percent:Point("RIGHT", self.Health, "LEFT", -6, 0)
+			health.percent:SetShadowOffset(-2,-2)
+			power.percent = T.SetFontString(power, font, fonts + 6, fontf) -- hack fix
+		end
+		
 		health.PostUpdate = T.PostUpdateHealth
 		
 		power.value = T.SetFontString(power, font, fonts, fontf)
 		power.value:Point("RIGHT", self.Health, "RIGHT", -6, 0)
 		
-		power.percent = T.SetFontString(power, font, fonts + 6, fontf)
 		
 		power.PreUpdate = T.PreUpdatePower
 		power.PostUpdate = T.PostUpdatePower
@@ -1192,20 +1194,23 @@ local function Shared(self, unit)
 			health.Smooth = true
 			power.Smooth = true
 		end
-				
+		
 		if C["unitframes"].unicolor == true then
+			health.colorTapping = false
 			health.colorDisconnected = false
 			health.colorClass = false
 			health:SetStatusBarColor(unpack(C["unitframes"].healthColor))
+			health.bg:SetTexture(1, 1, 1)
 			health.bg:SetVertexColor(unpack(C["unitframes"].healthBgColor))
 			
 			power.colorTapping = true
 			power.colorDisconnected = true
 			power.colorClass = true
 			power.colorReaction = true
-			power.bg.multiplier = 0.1				
+			power.bg.multiplier = 0.1
 		else
 			health.colorDisconnected = true
+			health.colorTapping = true	
 			health.colorClass = true
 			health.colorReaction = true			
 			
@@ -1233,8 +1238,8 @@ local function Shared(self, unit)
 
 			AltPowerBar:SetPoint("LEFT")
 			AltPowerBar:SetPoint("RIGHT")
-			AltPowerBar:SetPoint("TOP", self.Health, "TOP", 0, (T.buttonsize-4) + (T.buttonspacing * 2))
-			AltPowerBar:SetTemplate("Default")
+			AltPowerBar:SetPoint("TOP", self.Health, "TOP", 0, T.Scale(11)) -- (T.buttonsize-4) + (T.buttonspacing * 2))
+			AltPowerBar:SetTemplate("Default", true)
 			AltPowerBar:CreateShadow("Default")
 
 			self.AltPowerBar = AltPowerBar
@@ -1246,7 +1251,7 @@ local function Shared(self, unit)
 			buffs.size = (T.buttonsize-4)
 			buffs.spacing = 2
 			buffs.num = 8
-			buffs:SetPoint("BOTTOMLEFT", health, "TOPLEFT", T.Scale(-0.5), T.Scale(5))
+			buffs:SetPoint("BOTTOMLEFT", health, "TOPLEFT", T.Scale(-0.5), T.Scale(13))
 			buffs.initialAnchor = "TOPLEFT"
 			buffs["growth-y"] = "UP"
 			buffs.PostCreateIcon = T.PostCreateAura
@@ -1263,7 +1268,7 @@ local function Shared(self, unit)
 			Trinketbg:SetHeight(20*1.65)
 			Trinketbg:SetWidth(20*1.65)
 			Trinketbg:SetPoint("LEFT", self, "RIGHT", 6, 0)				
-			Trinketbg:SetTemplate("Default")
+			Trinketbg:SetTemplate("Default", true)
 			Trinketbg:CreateShadow("Default")
 			Trinketbg:SetFrameLevel(0)
 			self.Trinketbg = Trinketbg
@@ -1302,7 +1307,7 @@ local function Shared(self, unit)
 		castbar:SetFrameLevel(6)
 		
 		castbar.bg = CreateFrame("Frame", nil, castbar)
-		castbar.bg:SetTemplate("Default")
+		castbar.bg:SetTemplate("Default", true)
 		castbar.bg:CreateShadow("Default")
 		castbar.bg:SetBackdropColor(unpack(C["media"].backdropcolor))
 		castbar.bg:Point("TOPLEFT", -2, 2)
@@ -1327,7 +1332,7 @@ local function Shared(self, unit)
 		castbar.button:Height(castbar:GetHeight()+4)
 		castbar.button:Width(castbar:GetHeight()+4)
 		castbar.button:Point("RIGHT", castbar, "LEFT",-4, 0)
-		castbar.button:SetTemplate("Default")
+		castbar.button:SetTemplate("Default", true)
 		castbar.button:SetBackdropColor(unpack(C["media"].backdropcolor))
 		castbar.icon = castbar.button:CreateTexture(nil, "ARTWORK")
 		castbar.icon:Point("TOPLEFT", castbar.button, T.Scale(2), T.Scale(-2))

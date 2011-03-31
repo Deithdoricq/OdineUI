@@ -24,7 +24,7 @@ DB["unitframes"] = {
 	["cbinside"] = false,								-- castbar inside unit frames, disable for outside of them (will not work if using large player castbar)
 	["large_player"] = true,							-- enable larger player castbar above actionbar
 	["cbclasscolor"] = false,
-		["cbcustomcolor"] = { .15, .15, .15 },
+		["cbcustomcolor"] = { .20, .21, .19 },
 		
 	-- Auras
 	["auratimer"] = true,                               -- enable timers on buffs/debuffs

@@ -85,8 +85,8 @@ local function SetChatStyle(frame)
 	_G[chat]:SetFading(C["chat"].fading)
 	
 	-- set min height/width to original tukui size
-	_G[chat]:SetMinResize(371,111)
-	_G[chat]:SetMinResize(T.InfoLeftRightWidth + 1,111)
+	_G[chat]:SetMinResize(371, 150)
+	_G[chat]:SetMinResize(T.InfoLeftRightWidth + 1,150)
 	
 	-- set font style
 	_G[chat]:SetFont(C["media"].cfont, C["chat"].fsize, "NONE")
@@ -209,13 +209,10 @@ local function SetupChatPosAndFont(self)
 		-- also set original width and height of chatframes 1 and 4 if first time we run tukui.
 		-- doing resize of chat also here for users that hit "cancel" when default installation is show.
 		if i == 1 then
-			chat:ClearAllPoints()
-			chat:SetSize(T.InfoLeftRightWidth + 1, C["chat"].height)
 			chat:Point("TOPLEFT", TukuiTabsLeft, "BOTTOMLEFT", 0, -4)
 			chat:Point("BOTTOMRIGHT", TukuiInfoLeft, "TOPRIGHT", 0, 4)
-			FCF_SavePositionAndDimensions(chat)			
-		elseif i == 4 and (name == "Trade / Loot" or name == LOOT) then
-			chat:SetSize(T.InfoLeftRightWidth + 1, C["chat"].height)
+			FCF_SavePositionAndDimensions(chat)
+		elseif i == 4 and name == LOOT then
 			if not chat.isDocked then
 				chat:ClearAllPoints()
 				chat:Point("TOPLEFT", TukuiTabsRight, "BOTTOMLEFT", 0, -4)

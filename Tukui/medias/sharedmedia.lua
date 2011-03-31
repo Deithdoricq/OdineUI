@@ -11,6 +11,7 @@ LSM:Register("font", "Sugo", [[Interface\AddOns\Tukui\medias\fonts\sugo.ttf]])
 
 -- Textures
 LSM:Register("statusbar", "Tukui Norm", [[Interface\AddOns\Tukui\medias\textures\normTex]])
+LSM:Register("statusbar", "Tukui Ruben", [[Interface\AddOns\Tukui\medias\textures\Ruben]])
 
 -- Borders
 LSM:Register("border", "Tukui Glow", [[Interface\AddOns\Tukui\medias\textures\glowTex]])

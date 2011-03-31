@@ -179,16 +179,6 @@ local function DisableTukui()
 	ReloadUI()
 end
 
-local function ResetOUI()
-	local OUI = LibStub("AceAddon-3.0"):GetAddon("OUI")
-
-	if IsAddOnLoaded("Tukui_Config") and OUI then
-		OUI.db:ResetProfile()
-	end
-
-	install()
-end
-
 ------------------------------------------------------------------------
 --	Popups
 ------------------------------------------------------------------------
@@ -216,7 +206,7 @@ StaticPopupDialogs["TUKUIRESET_UI"] = {
 	text = L.popup_reset,
 	button1 = ACCEPT,
 	button2 = CANCEL,
-    OnAccept = ResetOUI,
+    OnAccept = install,
 	OnCancel = function() TukuiDataPerChar.install = true end,
     timeout = 0,
     whileDead = 1,
@@ -324,3 +314,4 @@ SlashCmdList["UIHELP"] = UIHelp
 
 SLASH_CONFIGURE1 = "/resetui"
 SlashCmdList.CONFIGURE = function() StaticPopup_Show("TUKUIRESET_UI") end
+

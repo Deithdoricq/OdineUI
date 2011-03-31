@@ -1,3 +1,8 @@
+V5.7 - [03/31/2011]
+* hopefully fixed problem with chat anchors getting messed up when switching to windows mode
+* /resetui no longer resets OdineUI ingame config settings (do this in the profile section of /odineui from now on)
+
+
 V5.6 - [03/29/2011]
 
 * PLEASE TAKE NOTE DPS/HEAL LAYOUT FOLDERS WERE RENAMED, DELETE THE OLD NAMES FROM YOUR ADDONS FOLDER WHEN INSTALLING!!!!

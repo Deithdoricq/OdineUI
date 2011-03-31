@@ -108,7 +108,7 @@ L.Slots = {
 
 L.popup_disableui = "Tukui doesn't work for this resolution, do you want to disable Tukui? (Cancel if you want to try another resolution)"
 L.popup_install = "First time running Tukui V13 with this Character. You must reload your UI to set Action Bars, Variables and Chat Frames."
-L.popup_reset = "Warning! This will reset everything to Tukui default (INCLUDING CONFIG SETTINGS). Do you want to proceed?"
+L.popup_reset = "Warning! This will reset everything to Tukui default. Do you want to proceed?"
 L.popup_2raidactive = "2 raid layouts are active, please select a layout."
 L.popup_install_yes = "Yeah! (recommended!)"
 L.popup_install_no = "No, it sux so hard"

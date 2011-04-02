@@ -10,6 +10,7 @@ if not C["unitframes"].enable == true then return end
 
 local font, fonts, fontf = C["media"].uffont, 14, "OUTLINE"
 local normTex = C["media"].normTex
+local powTex = [[Interface\AddOns\Tukui\medias\textures\Ruben]]
 
 local function Shared(self, unit)
 	self.colors = T.oUF_colors
@@ -49,7 +50,7 @@ local function Shared(self, unit)
 	else
 		power:Height(4)
 	end
-	power:SetStatusBarTexture(normTex)
+	power:SetStatusBarTexture(powTex)
 	self.Power = power
 
 	local powerBG = power:CreateTexture(nil, 'BORDER')

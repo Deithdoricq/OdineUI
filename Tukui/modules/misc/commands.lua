@@ -18,7 +18,7 @@ end
 SLASH_TUKUIDPS1 = "/dps"
 SlashCmdList.TUKUIDPS = function()
 	DisableAddOn("Tukui_Heal")
-	EnableAddOn("Tukui_Dps")
+	EnableAddOn("Tukui_DPS")
 	ReloadUI()
 end
 

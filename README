@@ -1,3 +1,7 @@
+V5.9 - [03/22/2011]
+* fixed errors caused when pet buffs were enabled
+* some appearance changes mainly with powerbars, and some less borders here and there
+
 V5.8 - [03/21/2011]
 * more changes to hopefully fix chat windows in windowed mode if resized
 

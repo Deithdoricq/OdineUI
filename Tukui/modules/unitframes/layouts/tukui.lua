@@ -9,7 +9,6 @@ local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, vari
 
 if not C["unitframes"].enable == true then return end
 
---T.InfoLeftRightWidth = 401
 local tempo = (T.InfoLeftRightWidth / 2) + T.buttonsize
 
 if T.lowversion then
@@ -26,6 +25,7 @@ local font, fonts, fontf = C["media"].uffont, 14, "OUTLINE"
 
 local normTex = C["media"].normTex
 local glowTex = C["media"].glowTex
+local powTex = [[Interface\AddOns\Tukui\medias\textures\Ruben]]
 
 ------------------------------------------------------------------------
 --	Layout
@@ -60,100 +60,6 @@ local function Shared(self, unit)
 	RaidIcon:SetWidth(20)
 	RaidIcon:SetPoint("TOP", 0, 11)
 	self.RaidIcon = RaidIcon
-	
-	
-	-- health
-	local health = CreateFrame('StatusBar', nil, self)
-	health:SetPoint("TOPLEFT")
-	health:SetPoint("TOPRIGHT")
-	health:SetStatusBarTexture(normTex)
-	health:SetFrameLevel(2)
-	health:SetFrameStrata("LOW")
-	self.Health = health
-
-	local healthBG = health:CreateTexture(nil, 'BORDER')
-	healthBG:SetAllPoints()
-	self.Health.bg = healthBG
-
-	health:CreateBorder(false, true)
-	
-	-- power
-	local power = CreateFrame('StatusBar', nil, self)
-	power:Point("TOPLEFT", health, "BOTTOMLEFT", 0, -3)
-	power:Point("TOPRIGHT", health, "BOTTOMRIGHT", 0, -3)
-	power:SetStatusBarTexture(normTex)
-	self.Power = power
-
-	local powerBG = power:CreateTexture(nil, 'BORDER')
-	powerBG:SetAllPoints(power)
-	powerBG:SetTexture(normTex)
-	powerBG.multiplier = 0.3
-	self.Power.bg = powerBG
-	
-	power:CreateBorder(false, true)
-
-	-- colors
-	health.frequentUpdates = true
-	power.frequentUpdates = true
-	power.colorDisconnected = true
-
-	if C["unitframes"].showsmooth == true then
-		health.Smooth = true
-		power.Smooth = true
-	end
-	
-	if C["unitframes"].unicolor == true then
-		health.colorTapping = false
-		health.colorDisconnected = false
-		health.colorClass = false
-		health:SetStatusBarColor(unpack(C["unitframes"].healthColor))
-		healthBG:SetTexture(1, 1, 1)
-		healthBG:SetVertexColor(unpack(C["unitframes"].healthBgColor))	
-		
-		power.colorTapping = true
-		power.colorDisconnected = true
-		power.colorClass = true
-		power.colorReaction = true
-	else
-		healthBG:SetTexture(.1, .1, .1)
-
-		health.colorTapping = true
-		health.colorDisconnected = true
-		health.colorReaction = true
-		health.colorClass = true
-		if TukuiDB.myclass == "HUNTER" then
-			health.colorHappiness = true
-		end
-	
-		power.colorPower = true
-	end
-
-	-- unitframe bg
-	local ufbg = CreateFrame("Frame", nil, self)
-	ufbg:SetFrameLevel(health:GetFrameLevel() - 1)
-	ufbg:SetFrameStrata(health:GetFrameStrata())
-	ufbg:Point("TOPLEFT", health, -2, 2)
-	ufbg:Point("BOTTOMRIGHT", power, 2, -2)
-	ufbg:SetBackdrop({
-		bgFile = C["media"].blank,
-		insets = { left = -TukuiDB.mult, right = -TukuiDB.mult, top = -TukuiDB.mult, bottom = -TukuiDB.mult }
-	})
-	ufbg:SetBackdropColor(unpack(C["media"].bordercolor))
-	ufbg:CreateBorder(false, true)
-	ufbg:CreateShadow("Default")
-	self.ufbg = ufbg		
-
-	-- create a panel
-	local panel = CreateFrame("Frame", nil, self)
-	if (unit == "player" or unit == "target") or (not T.lowversion and unit == "pet" or not T.lowversion and unit == "targettarget") then
-		panel:CreatePanel("Default", 1, 19, "TOPLEFT", ufbg, "BOTTOMLEFT", 0, -3)
-		if T.lowversion then
-			panel:Height(17)
-		end
-		panel:Point("TOPRIGHT", ufbg, "BOTTOMRIGHT", 0, -3)
-		panel:SetBackdropBorderColor(unpack(C["media"].bordercolor))
-		self.panel = panel
-	end
 
 	------------------------------------------------------------------------
 	--	Player and Target units layout (mostly mirror'd)
@@ -161,6 +67,8 @@ local function Shared(self, unit)
 	
 	if (unit == "player" or unit == "target") then	
 		-- health
+		local LSM = LibStub("LibSharedMedia-3.0")
+		
 		local health = CreateFrame('StatusBar', nil, self)
 		health:SetFrameLevel(5)
 		health:Height(30)
@@ -188,7 +96,7 @@ local function Shared(self, unit)
 		power:Height(10)
 		power:SetPoint("TOPLEFT", healthB, "BOTTOMLEFT", T.Scale(2), -T.buttonspacing*2)
 		power:SetPoint("TOPRIGHT", healthB, "BOTTOMRIGHT", T.Scale(-2), -T.buttonspacing*2)
-		power:SetStatusBarTexture(normTex)
+		power:SetStatusBarTexture(powTex)
 		power:GetStatusBarTexture():SetHorizTile(false)
 		self.Power = power
 		
@@ -243,15 +151,15 @@ local function Shared(self, unit)
 			health.colorTapping = false
 			health.colorDisconnected = false
 			health.colorClass = false
+			health.colorReaction = false
 			health:SetStatusBarColor(unpack(C["unitframes"].healthColor))
-			health.bg:SetTexture(1, 1, 1)
 			health.bg:SetVertexColor(unpack(C["unitframes"].healthBgColor))
 			
+			power.multiplier = 0.5
 			power.colorTapping = true
 			power.colorDisconnected = true
 			power.colorClass = true
 			power.colorReaction = true
-			power.bg.multiplier = 0.1
 		else
 			health.colorDisconnected = true
 			health.colorTapping = true	
@@ -552,7 +460,6 @@ local function Shared(self, unit)
 					end
 					TotemBarBG:SetFrameLevel(panel: GetFrameLevel() + 2)
 					TotemBarBG:SetFrameStrata(panel:GetFrameStrata())
-					--TotemBarBG.shadow:SetFrameStrata("BACKGROUND")
 					
 					for i = 1, 4 do
 						TotemBar[i] = CreateFrame("StatusBar", self:GetName().."_TotemBar"..i, health)
@@ -931,7 +838,7 @@ local function Shared(self, unit)
 		power:Height(20/4)
 		power:SetPoint("TOPLEFT", healthB, "BOTTOMLEFT", T.Scale(2), -T.buttonspacing*2)
 		power:SetPoint("TOPRIGHT", healthB, "BOTTOMRIGHT", T.Scale(-2), -T.buttonspacing*2)
-		power:SetStatusBarTexture(normTex)
+		power:SetStatusBarTexture(powTex)
 		self.Power = power
 		
 		local powerBg = power:CreateTexture(nil, "BORDER")
@@ -1006,7 +913,7 @@ local function Shared(self, unit)
 			local buffs = CreateFrame("Frame", nil, health)
 			buffs:Height(26)
 			buffs:Width(T.Focus)
-			buffs.size = debuffs:GetHeight()
+			buffs.size = (buffs:GetHeight() - 3)
 			buffs.spacing = 2
 			buffs.num = 4
 			buffs:Point("BOTTOMLEFT", health, "TOPLEFT", -1, 1)
@@ -1152,7 +1059,7 @@ local function Shared(self, unit)
 		power:Height(20/2)
 		power:SetPoint("TOPLEFT", healthB, "BOTTOMLEFT", T.Scale(2), -T.buttonspacing * 2)
 		power:SetPoint("TOPRIGHT", healthB, "BOTTOMRIGHT", T.Scale(-2), -T.buttonspacing * 2)
-		power:SetStatusBarTexture(normTex)
+		power:SetStatusBarTexture(powTex)
 		self.Power = power
 		
 		local powerBg = power:CreateTexture(nil, "BORDER")
@@ -1418,15 +1325,15 @@ local pet = oUF:Spawn('pet', "TukuiPet")
 local focus = oUF:Spawn('focus', "TukuiFocus")
 
 -- sizes
-player:Size(T.Player, player.Health:GetHeight() + player.Power:GetHeight() + player.panel:GetHeight() + 6)
-target:Size(T.Target, target.Health:GetHeight() + target.Power:GetHeight() + target.panel:GetHeight() + 6)
+player:Size(T.Player, player.Health:GetHeight() + player.Power:GetHeight() + 25)
+target:Size(T.Target, target.Health:GetHeight() + target.Power:GetHeight() + 25)
 
 if T.lowversion then
-	tot:Size(T.ToT, tot.Health:GetHeight() + tot.Power:GetHeight() + 3)
-	pet:Size(T.Pet, pet.Health:GetHeight() + pet.Power:GetHeight() + 3)
+	tot:Size(T.ToT, tot.Health:GetHeight() + 20)
+	pet:Size(T.Pet, pet.Health:GetHeight() + 20)
 else
-	tot:SetSize(T.ToT, tot.Health:GetHeight() + tot.Power:GetHeight() + tot.panel:GetHeight() + 6)
-	pet:SetSize(T.Pet, pet.Health:GetHeight() + pet.Power:GetHeight() + pet.panel:GetHeight() + 6)	
+	tot:SetSize(T.ToT, tot.Health:GetHeight() + tot.Power:GetHeight() + 25)
+	pet:SetSize(T.Pet, pet.Health:GetHeight() + pet.Power:GetHeight() + 25)	
 end
 
 focus:SetSize(T.Focus, focus.Health:GetHeight() + focus.Power:GetHeight() + 3)

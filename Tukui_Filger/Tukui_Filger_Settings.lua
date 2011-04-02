@@ -733,6 +733,8 @@ ns.Filger_Spells = {
 			{ spellID = 49222, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Anti-Magic Shield
 			{ spellID = 48707, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
+			-- Horn of Winter
+			--{ spellID = 57330, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
 		},
 		{
 			Name = "P_PROC_ICON",

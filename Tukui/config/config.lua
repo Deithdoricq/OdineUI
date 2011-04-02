@@ -14,7 +14,7 @@ DB["unitframes"] = {
 	-- Colors
 	["enemyhcolor"] = false,                            -- enemy target (players) color by hostility, very useful for healer.
 	["unicolor"] = true,                               -- enable unicolor theme
-		["healthColor"] = { .12, .12, .12 },
+		["healthColor"] = { .1, .1, .1 },
 		["healthBgColor"] = { .7, .1, .1 },
 	
 	-- Castbar
@@ -219,7 +219,7 @@ DB["addonskins"] = {
 	["tinydps"] = true,									-- skins TinyDPS
 	["dbm"] = true,										-- skins DBM
 	["recount"] = true,									-- skins Recount 
-	["omen"] = true,									-- skins Omen
+	["omen"] = false,									-- skins Omen
 }
 
 DB["media"] = {

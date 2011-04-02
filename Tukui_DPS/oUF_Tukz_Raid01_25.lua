@@ -11,6 +11,8 @@ if not C["unitframes"].enable == true then return end
 local font1 = C["media"].pixel_font
 local font2 = C["media"].font
 
+local powTex = [[Interface\AddOns\Tukui\medias\textures\Ruben]]
+
 local function Shared(self, unit)
 	self.colors = T.oUF_colors
 	self:RegisterForClicks("AnyUp")
@@ -71,7 +73,7 @@ local function Shared(self, unit)
 		power:Height(3)
 		power:Point("TOPLEFT", tt, "TOPLEFT", 2, -2)
 		power:Point("BOTTOMRIGHT", tt, "BOTTOMRIGHT", -2, 2)
-		power:SetStatusBarTexture(C["media"].normTex)
+		power:SetStatusBarTexture(powTex)
 		self.Power = power
 		
 		local powerBG = power:CreateTexture(nil, "BORDER")

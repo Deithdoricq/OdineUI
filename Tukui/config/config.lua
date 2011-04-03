@@ -98,10 +98,11 @@ DB["actionbar"] = {
 	["hotkey"] = true,                                 -- enable hotkey display because it was a lot requested
 	["hideshapeshift"] = false,                         -- hide shapeshift or totembar because it was a lot requested.
 	["showgrid"] = true,                                -- show grid on empty button
-	["buttonsize"] = 30,                                -- normal buttons size 27
-	["petbuttonsize"] = 30,                             -- pet & stance buttons size
-	["stancebuttonsize"] = 30,                             -- pet & stance buttons size
-	["buttonspacing"] = 3,                              -- buttons spacing 4 
+	["buttonsize"] = 29,                                -- normal buttons size 27
+	["petbuttonsize"] = 29,                             -- pet & stance buttons size
+	["stancebuttonsize"] = 29,                             -- pet & stance buttons size
+	["buttonspacing"] = 2,                              -- buttons spacing 4
+	["vertical_rightbars"] = false,						-- enables vertical rightbars
 }
 
 DB["bags"] = {
@@ -143,11 +144,13 @@ DB["datatext"] = {
 	["power"] = 7,                                      -- show your attackpower/spellpower/healpower/rangedattackpower whatever stat is higher gets displayed
 
 	["battleground"] = true,                            -- enable 3 stats in battleground only that replace stat1,stat2,stat3.
+	["statblock"] = true,								-- enables stat block at top left
+	["location"] = true,								-- enables location panel at top middle
 	["time24"] = false,                                  -- set time to 24h format.
 	["localtime"] = true,                              -- set time to local time instead of server time.
 	["bars"] = true,									-- enable rep/exp bars under minimap
 		["bar_text"] = false,							-- display text in rep/exp bars
-	["fsize"] = 12,										-- default font size
+	["fsize"] = 14,										-- default font size
 	
 	["classcolor"] = true,
 		["color"] = { .4, .4, .4 },
@@ -229,7 +232,7 @@ DB["media"] = {
 	["uffont"] = "Tukui UF",
 	["dmgfont"] = "Tukui Combat",
 	["cfont"] = "Tukui Font",
-	["dfont"] = "Tukui Font",
+	["dfont"] = "Tukui UF",
 	
 	-- textures
 	["normTex"] = "Tukui Norm",

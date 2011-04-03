@@ -1,3 +1,13 @@
+V5.9b - [04/03/2011]
+* decided to switch back to XCT for scrolling text, functions much better! removed other sct mod from ingame. optional addon folder just like tinydps
+* modified raidutility and markbar panels to match my edit much better, and merged them into one panel/bar
+* added option to disable top left stat block and location block at top
+* chat tabs were using incorrect font
+* adjusted width of chat frames to account for resolutions that were not fitting properly in healer layout
+* added option to set rightbars to vertical
+* changed default font/size for datatext panels (old font still avail in /odineui media section)
+* few other bug fixes
+
 V5.9 - [03/22/2011]
 * fixed errors caused when pet buffs were enabled
 * some appearance changes mainly with powerbars, and some less borders here and there

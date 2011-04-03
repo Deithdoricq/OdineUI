@@ -8,8 +8,8 @@ PlayerPowerBarAlt:UnregisterEvent("UNIT_POWER_BAR_HIDE")
 PlayerPowerBarAlt:UnregisterEvent("PLAYER_ENTERING_WORLD")
 	
 --Create the new bar
-local AltPowerBar = CreateFrame("Frame", "TukuiAltPowerBar", TukuiLocation)
-AltPowerBar:CreatePanel("Default", 250, TukuiInfoLeft:GetHeight(), "TOP", UIParent, "TOP", 0, -7)
+local AltPowerBar = CreateFrame("Frame", "TukuiAltPowerBar", UIParent)
+AltPowerBar:CreatePanel("Default", 250, TukuiInfoLeft:GetHeight(), "TOP", UIParent, "TOP", 0, -75)
 AltPowerBar:SetFrameStrata("LOW")
 AltPowerBar:SetFrameLevel(0)
 AltPowerBar:EnableMouse(true)

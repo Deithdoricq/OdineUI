@@ -8,10 +8,10 @@ local panel_height = ((T.Scale(5)*4) + (T.Scale(20)*4))
 
 --Create main frame
 local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", UIParent)
-RaidUtilityPanel:CreatePanel("Default", T.Scale(170), panel_height, "TOP", UIParent, "TOP", -300, panel_height + 15)
+--RaidUtilityPanel:CreatePanel("Default", T.Scale(170), panel_height, "TOP", UIParent, "TOP", -300, panel_height + 15)
+RaidUtilityPanel:CreatePanel("Default", T.InfoLeftRightWidth / 2, panel_height, "TOP", UIParent, "TOP", 0, panel_height + T.buttonsize)
 local r,g,b,_ = C["media"].backdropcolor
 RaidUtilityPanel:SetBackdropColor(r,g,b,0.6)
-RaidUtilityPanel:CreateShadow("Default")
 
 --Check if We are Raid Leader or Raid Officer
 local function CheckRaidStatus()
@@ -46,7 +46,7 @@ local function CreateButton(name, parent, template, width, height, point, relati
 	b:SetTemplate("Default")
 	if text then
 		local t = b:CreateFontString(nil,"OVERLAY",b)
-		t:SetFont(C["media"].font, 12,"OUTLINE")
+		t:SetFont(C["media"].uffont, 14,"OUTLINE")
 		t:SetPoint("CENTER")
 		t:SetJustifyH("CENTER")
 		t:SetText(text)

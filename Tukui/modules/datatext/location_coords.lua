@@ -1,5 +1,5 @@
 local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
---if not C["datatext"].location then return end
+if C["datatext"].location ~= true then return end
 
 ----- [[    Location    ]] -----
 

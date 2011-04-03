@@ -60,7 +60,7 @@ rightsd:SetTemplate("Default", true)
 -- Action Bars
 if C["actionbar"].enable then
 	local TukuiBar1 = CreateFrame("Frame", "TukuiBar1", UIParent, "SecureHandlerStateTemplate")
-	TukuiBar1:CreatePanel("Default", (T.buttonsize * 12) + (T.buttonspacing * 13) + 2, (T.buttonsize * 2) + (T.buttonspacing * 3) + 2, "BOTTOM", UIParent, "BOTTOM", 0, 8)
+	TukuiBar1:CreatePanel("Transparent", (T.buttonsize * 12) + (T.buttonspacing * 13) + 2, (T.buttonsize * 2) + (T.buttonspacing * 3) + 2, "BOTTOM", UIParent, "BOTTOM", 0, 8)
 	TukuiBar1:SetPoint("BOTTOM", TukuiDataBottom, "TOP", 0, T.Scale(3))
 
 	local TukuiBar2 = CreateFrame("Frame", "TukuiBar2", UIParent)
@@ -73,22 +73,27 @@ if C["actionbar"].enable then
 	TukuiBar2:SetAllPoints(TukuiBar1)--Point("BOTTOM")
 
 	local TukuiSplitBarLeft = CreateFrame("Frame", "TukuiSplitBarLeft", UIParent)
-	TukuiSplitBarLeft:CreatePanel("Default", (T.buttonsize * 3) + (T.buttonspacing * 4) + 2, TukuiBar1:GetHeight(), "BOTTOMRIGHT", TukuiBar1, "BOTTOMLEFT", -6, 0)
+	TukuiSplitBarLeft:CreatePanel("Transparent", (T.buttonsize * 3) + (T.buttonspacing * 4) + 2, TukuiBar1:GetHeight(), "BOTTOMRIGHT", TukuiBar1, "BOTTOMLEFT", -6, 0)
 
 	local TukuiSplitBarRight = CreateFrame("Frame", "TukuiSplitBarRight", UIParent)
-	TukuiSplitBarRight:CreatePanel("Default", (T.buttonsize * 3) + (T.buttonspacing * 4) + 2, TukuiBar1:GetHeight(), "BOTTOMLEFT", TukuiBar1, "BOTTOMRIGHT", 6, 0)
+	TukuiSplitBarRight:CreatePanel("Transparent", (T.buttonsize * 3) + (T.buttonspacing * 4) + 2, TukuiBar1:GetHeight(), "BOTTOMLEFT", TukuiBar1, "BOTTOMRIGHT", 6, 0)
 
 	local TukuiRightBar = CreateFrame("Frame", "TukuiRightBar", UIParent)
-	TukuiRightBar:CreatePanel("Default", (T.buttonsize * 12 + T.buttonspacing * 13) + 2,  (T.buttonsize * 12 + T.buttonspacing * 13) + 2, "BOTTOMRIGHT", TukuiChatRight, "TOPRIGHT", 0, 3)
+	TukuiRightBar:CreatePanel("Transparent", (T.buttonsize * 12 + T.buttonspacing * 13) + 2,  (T.buttonsize * 12 + T.buttonspacing * 13) + 2, "BOTTOMRIGHT", TukuiChatRight, "TOPRIGHT", 0, 3)
 	if not C["chat"].background then
 		TukuiRightBar:ClearAllPoints()
 		TukuiRightBar:Point("RIGHT", UIParent, "RIGHT", -8, -250)
 	end
 
 	local TukuiPetBar = CreateFrame("Frame", "TukuiPetBar", UIParent)
-	TukuiPetBar:CreatePanel("Transparent", 1, 1, "BOTTOMRIGHT", TukuiRightBar, "TOPRIGHT", 0, 3)
-	TukuiPetBar:Width((T.petbuttonsize * NUM_PET_ACTION_SLOTS + T.buttonspacing * 11) + 2)
-	TukuiPetBar:Height((T.petbuttonsize + T.buttonspacing * 2) + 2)
+	TukuiPetBar:CreatePanel("Default", 1, 1, "BOTTOMRIGHT", TukuiRightBar, "TOPRIGHT", 0, 3)
+	if C["actionbar"].vertical_rightbars == true then
+		TukuiPetBar:Width((T.petbuttonsize + T.buttonspacing * 2) + 2)
+		TukuiPetBar:Height((T.petbuttonsize * NUM_PET_ACTION_SLOTS + T.buttonspacing * 11) + 2)
+	else
+		TukuiPetBar:Width((T.petbuttonsize * NUM_PET_ACTION_SLOTS + T.buttonspacing * 11) + 2)
+		TukuiPetBar:Height((T.petbuttonsize + T.buttonspacing * 2) + 2)
+	end
 end
 
 --BATTLEGROUND STATS FRAME

@@ -24,17 +24,19 @@ local function MostValueable()
 end
 
 f:SetScript("OnEvent", function(self, event, ...)
-    if (event == "QUEST_DETAIL") then
-		AcceptQuest()
-		CompleteQuest()
-	elseif (event == "QUEST_COMPLETE") then
-		if (GetNumQuestChoices() and GetNumQuestChoices() < 1) then
-			GetQuestReward()
-		else
-			MostValueable()
+	if not IsShiftKeyDown() then
+		if (event == "QUEST_DETAIL") then
+			AcceptQuest()
+			CompleteQuest()
+		elseif (event == "QUEST_COMPLETE") then
+			if (GetNumQuestChoices() and GetNumQuestChoices() < 1) then
+				GetQuestReward()
+			else
+				MostValueable()
+			end
+		elseif (event == "QUEST_ACCEPT_CONFIRM") then
+			ConfirmAcceptQuest()
 		end
-    elseif (event == "QUEST_ACCEPT_CONFIRM") then
-		ConfirmAcceptQuest()
 	end
 end)
 f:RegisterEvent("QUEST_ACCEPT_CONFIRM")    

@@ -1,4 +1,4 @@
-local T, C, L, DB = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
+local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
 if not C["actionbar"].enable == true then return end
 
 ---------------------------------------------------------------------------
@@ -34,7 +34,11 @@ bar:SetScript("OnEvent", function(self, event, arg1)
 			if i == 1 then
 				button:SetPoint("TOPLEFT", 5, -5)
 			else
-				button:SetPoint("LEFT", _G["PetActionButton"..(i - 1)], "RIGHT", T.buttonspacing, 0)
+				if C["actionbar"].vertical_rightbars == true then
+					button:SetPoint("TOP", _G["PetActionButton"..(i - 1)], "BOTTOM", 0, -T.buttonspacing)
+				else
+					button:SetPoint("LEFT", _G["PetActionButton"..(i - 1)], "RIGHT", T.buttonspacing, 0)
+				end
 			end
 			button:Show()
 			self:SetAttribute("addchild", button)

@@ -61,10 +61,10 @@ local function SetChatStyle(frame)
 	
 	local color = RAID_CLASS_COLORS[T.myclass]
 	_G[chat.."TabText"]:SetTextColor(color.r,color.g,color.b)
-	_G[chat.."TabText"]:SetFont(C["media"].cfont, C["datatext"].fsize, "OUTLINE")
+	_G[chat.."TabText"]:SetFont(C["media"].dfont, C["datatext"].fsize, "OUTLINE")
 	_G[chat.."TabText"].SetTextColor = T.dummy
 	local originalpoint = select(2, _G[chat.."TabText"]:GetPoint())
-	_G[chat.."TabText"]:SetPoint("LEFT", originalpoint, "RIGHT", -3, -T.mult*2)
+	_G[chat.."TabText"]:SetPoint("LEFT", originalpoint, "RIGHT", -5, (-T.mult*2) - 1)
 	
 	if not C.chat.background then
 		-- hide text when setting chat

@@ -1,5 +1,7 @@
 local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
 
+if C["datatext"].statblock ~= true then return end
+
 ----- [[     Panels     ]] -----
 
 local stat = CreateFrame("Frame")

@@ -74,7 +74,15 @@ end
 local RightBars = function()
 	if TukuiSaved.rightbars >= 1 then
 		TukuiPetBar:ClearAllPoints()
-		TukuiPetBar:Point("BOTTOMRIGHT", TukuiRightBar, "TOPRIGHT", 0, 3)
+		if C["actionbar"].vertical_rightbars == true then
+			if not C["chat"].background then
+				TukuiPetBar:Point("RIGHT", TukuiRightBar, "LEFT", -3, 0)
+			else
+				TukuiPetBar:Point("BOTTOMRIGHT", TukuiRightBar, "BOTTOMLEFT", -3, 0)
+			end
+		else
+			TukuiPetBar:Point("BOTTOMRIGHT", TukuiRightBar, "TOPRIGHT", 0, 3)
+		end
 	else
 		TukuiPetBar:ClearAllPoints()
 		if not C["chat"].background then
@@ -88,7 +96,11 @@ local RightBars = function()
 		TukuiRightBar:Show()
 		TukuiBar4:Hide()
 
-		TukuiRightBar:Height((T.buttonsize + T.buttonspacing * 2) + 2)
+		if C["actionbar"].vertical_rightbars == true then
+			TukuiRightBar:Width((T.buttonsize + T.buttonspacing * 2) + 2)
+		else
+			TukuiRightBar:Height((T.buttonsize + T.buttonspacing * 2) + 2)
+		end
 		
 		if TukuiSaved.splitbars ~= true and TukuiBar3:IsShown() then
 			MultiBarLeft:SetParent(TukuiBar3)
@@ -98,7 +110,11 @@ local RightBars = function()
 		TukuiRightBar:Show()
 		TukuiBar4:Show()
 
-		TukuiRightBar:Height((T.buttonsize * 2 + T.buttonspacing * 3) + 2)
+		if C["actionbar"].vertical_rightbars == true then
+			TukuiRightBar:Width((T.buttonsize * 2 + T.buttonspacing * 3) + 2)
+		else
+			TukuiRightBar:Height((T.buttonsize * 2 + T.buttonspacing * 3) + 2)
+		end
 		
 		if TukuiSaved.splitbars ~= true and TukuiBar3:IsShown() then
 			MultiBarLeft:SetParent(TukuiBar3)
@@ -108,7 +124,11 @@ local RightBars = function()
 		TukuiRightBar:Show()
 		TukuiBar4:Show()
 
-		TukuiRightBar:Height((T.buttonsize * 3 + T.buttonspacing * 4) + 2)
+		if C["actionbar"].vertical_rightbars == true then
+			TukuiRightBar:Width((T.buttonsize * 3 + T.buttonspacing * 4) + 2)
+		else
+			TukuiRightBar:Height((T.buttonsize * 3 + T.buttonspacing * 4) + 2)
+		end
 		
 		if TukuiSaved.splitbars ~= true then
 			MultiBarLeft:SetParent(TukuiBar3)
@@ -122,7 +142,11 @@ local RightBars = function()
 				if i == 1 then
 					b:Point("TOPLEFT", TukuiRightBar, 5, -5)
 				else
-					b:Point("LEFT", b2, "RIGHT", T.buttonspacing, 0)
+					if not TukuiSaved.splitbars and C["actionbar"].vertical_rightbars == true then
+						b:Point("TOP", b2, "BOTTOM", 0, -T.buttonspacing)
+					else
+						b:Point("LEFT", b2, "RIGHT", T.buttonspacing, 0)
+					end
 				end
 			end
 		end
@@ -162,7 +186,11 @@ local SplitBars = function()
 		
 		if TukuiSaved.rightbars == 3 then
 			TukuiRightBar:Show()
-			TukuiRightBar:Height((T.buttonsize * 2 + T.buttonspacing * 3) + 2)
+			if C["actionbar"].vertical_rightbars == true then
+				TukuiRightBar:Width((T.buttonsize * 2 + T.buttonspacing * 3) + 2)
+			else
+				TukuiRightBar:Height((T.buttonsize * 2 + T.buttonspacing * 3) + 2)
+			end
 		end
 
 		for i = 7, 12 do
@@ -257,7 +285,11 @@ for i = 1, 6 do
 		Toggle[i]:CreatePanel("Default", T.buttonsize, TukuiTabsRight:GetHeight() - 6, "RIGHT", TukuiTabsRight, "RIGHT", -3, 0)
 		Toggle[i]:SetFrameLevel(TukuiTabsRight:GetFrameLevel() + 1)
 		
-		ToggleText(i, "-", false, true)
+		if C["actionbar"].vertical_rightbars then
+			ToggleText(i, ">", false, true)
+		else
+			ToggleText(i, "-", false, true)
+		end
 
 		Toggle[i]:SetScript("OnMouseDown", function()
 			if InCombatLockdown() then return end
@@ -280,7 +312,11 @@ for i = 1, 6 do
 		Toggle[i]:CreatePanel("Default", Toggle[i-1]:GetWidth(), Toggle[i-1]:GetHeight(), "TOPRIGHT", Toggle[i-1], "TOPLEFT", -3, 0)
 		Toggle[i]:SetFrameLevel(Toggle[i-1]:GetFrameLevel())
 		
-		ToggleText(i, "+", true, false)
+		if C["actionbar"].vertical_rightbars then
+			ToggleText(i, "<", true, false)
+		else
+			ToggleText(i, "+", true, false)
+		end
 
 		Toggle[i]:SetScript("OnMouseDown", function()
 			if InCombatLockdown() then return end
@@ -341,11 +377,11 @@ for i = 1, 6 do
 	
 	Toggle[i]:SetScript("OnEnter", function()
 		if InCombatLockdown() then return end
-		Toggle[i]:SetAlpha(1)
+		Toggle[i]:SetAlpha(1) -- careful odine
 	end)
 
 	Toggle[i]:SetScript("OnLeave", function()
-		Toggle[i]:SetAlpha(0)
+		Toggle[i]:SetAlpha(0) -- careful odine
 	end)
 	
 	Toggle[i]:SetScript("OnUpdate", function() 

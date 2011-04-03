@@ -1,16 +1,17 @@
 -- Mark Bar created by Smelly
+-- modified by odine
 local T, C, L = unpack(select(2, ...))
 
 local Options = {
-	font = C.media.font,
-	fontsize = 12,
-	buttonwidth = T.Scale(30),    		
-	buttonheight = T.Scale(30),
+	font = C["media"].dfont,
+	fontsize = C["datatext"].fsize,
+	buttonwidth = T.Scale(T.buttonsize),    		
+	buttonheight = T.Scale(T.buttonsize),
 }
 
 -- Default position of toggle button and background
 local anchor = {}
-anchor = {"TOPLEFT", TukuiLocation, "TOP", -60, -27}
+anchor = {"TOPLEFT", UIParent, "TOP", -60, -27}
 
 local function ButtonEnter(self)
 	local color = RAID_CLASS_COLORS[T.myclass]

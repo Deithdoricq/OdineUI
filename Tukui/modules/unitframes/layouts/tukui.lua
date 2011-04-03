@@ -12,7 +12,7 @@ if not C["unitframes"].enable == true then return end
 local tempo = (T.InfoLeftRightWidth / 2) + T.buttonsize
 
 if T.lowversion then
-	T.Player, T.Target, T.ToT, T.Pet, T.Focus, T.Boss = 182, 182, 182, 182, 130, 200
+	T.Player, T.Target, T.ToT, T.Pet, T.Focus, T.Boss = 180, 180, 180, 180, 130, 200
 else
 	T.Player, T.Target, T.ToT, T.Pet, T.Focus, T.Boss = tempo, tempo, 130, 130, 150, 200
 end
@@ -214,18 +214,20 @@ local function Shared(self, unit)
 		end
 					
 		if (unit == "player") then
+			local iHt = 20
+		
 			-- combat icon
 			local Combat = health:CreateTexture(nil, "OVERLAY")
-			Combat:Height((T.buttonsize-4)/1.5)
-			Combat:Width((T.buttonsize-4)/1.5)
+			Combat:Height(iHt/1.25)
+			Combat:Width(iHt/1.25)
 			Combat:SetPoint("TOPRIGHT", 2, 8)
 			Combat:SetVertexColor(0.69, 0.31, 0.31)
 			self.Combat = Combat
 			
 			-- resting icon
 			local Resting = health:CreateTexture(nil, "OVERLAY")
-			Resting:SetHeight((T.buttonsize-4)/1.5)
-			Resting:SetWidth((T.buttonsize-4)/1.5)
+			Resting:SetHeight(iHt/1.5)
+			Resting:SetWidth(iHt/1.5)
 			Resting:SetPoint("TOPRIGHT", 2, 8)
 			Resting:SetTexture([=[Interface\CharacterFrame\UI-StateIcon]=])
 			Resting:SetTexCoord(0, 0.5, 0, 0.421875)
@@ -249,15 +251,15 @@ local function Shared(self, unit)
 			
 			-- leader icon
 			local Leader = InvFrame:CreateTexture(nil, "OVERLAY")
-			Leader:Height((T.buttonsize-4)-4)
-			Leader:Width((T.buttonsize-4)-4)
+			Leader:Height(iHt/2)
+			Leader:Width(iHt/2)
 			Leader:Point("TOPLEFT", 2, 8)
 			self.Leader = Leader
 			
 			-- master looter
 			local MasterLooter = InvFrame:CreateTexture(nil, "OVERLAY")
-			MasterLooter:Height((T.buttonsize)-4)
-			MasterLooter:Width((T.buttonsize)-4)
+			MasterLooter:Height(iHt/2)
+			MasterLooter:Width(iHt/2)
 			self.MasterLooter = MasterLooter
 			self:RegisterEvent("PARTY_LEADER_CHANGED", T.MLAnchorUpdate)
 			self:RegisterEvent("PARTY_MEMBERS_CHANGED", T.MLAnchorUpdate)
@@ -270,7 +272,8 @@ local function Shared(self, unit)
 				Vengeance:SetFrameLevel(TukuiDataBottom:GetFrameLevel() + 2)
 				Vengeance:SetPoint("TOPLEFT", TukuiDataBottom, T.Scale(2), T.Scale(-2))
 				Vengeance:SetPoint("BOTTOMRIGHT", TukuiDataBottom, T.Scale(-2), T.Scale(2))
-				Vengeance:SetStatusBarTexture(C["media"].normTex)
+				--Vengeance:SetStatusBarTexture(C["media"].normTex)
+				Vengeance:SetStatusBarTexture(powTex)
 				Vengeance:GetStatusBarTexture():SetHorizTile(false)
 				Vengeance:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthBgColor))
 				Vengeance:SetBackdrop(backdrop)

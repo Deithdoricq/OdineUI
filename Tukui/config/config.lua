@@ -146,7 +146,8 @@ DB["datatext"] = {
 	["time24"] = false,                                  -- set time to 24h format.
 	["localtime"] = true,                              -- set time to local time instead of server time.
 	["bars"] = true,									-- enable rep/exp bars under minimap
-	["fsize"] = 13,										-- default font size
+		["bar_text"] = false,							-- display text in rep/exp bars
+	["fsize"] = 12,										-- default font size
 	
 	["classcolor"] = true,
 		["color"] = { .4, .4, .4 },
@@ -219,7 +220,7 @@ DB["addonskins"] = {
 	["tinydps"] = true,									-- skins TinyDPS
 	["dbm"] = true,										-- skins DBM
 	["recount"] = true,									-- skins Recount 
-	["omen"] = false,									-- skins Omen
+	["omen"] = true,									-- skins Omen
 }
 
 DB["media"] = {

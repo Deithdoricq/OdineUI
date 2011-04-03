@@ -147,19 +147,19 @@ local function Shared(self, unit)
 			power.Smooth = true
 		end
 		
-		if C["unitframes"].unicolor == true then
+		if C["unitframes"].unicolor == true then			
 			health.colorTapping = false
 			health.colorDisconnected = false
 			health.colorClass = false
-			health.colorReaction = false
 			health:SetStatusBarColor(unpack(C["unitframes"].healthColor))
+			health.bg:SetTexture(1, 1, 1)
 			health.bg:SetVertexColor(unpack(C["unitframes"].healthBgColor))
 			
-			power.multiplier = 0.5
 			power.colorTapping = true
 			power.colorDisconnected = true
 			power.colorClass = true
 			power.colorReaction = true
+			power.bg.multiplier = 0.1
 		else
 			health.colorDisconnected = true
 			health.colorTapping = true	

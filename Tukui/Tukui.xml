@@ -121,7 +121,6 @@
 	<Script file="modules\misc\combo.lua"/>
 	<Script file="modules\misc\announceint.lua"/>
 	<Script file="modules\misc\viewport.lua"/>
-	<Script file="modules\misc\sct.lua"/>
 	<Script file="modules\misc\autoquest.lua"/>
 	
 	<Script file="developer\test.lua"/>

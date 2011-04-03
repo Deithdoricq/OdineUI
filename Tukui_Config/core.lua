@@ -898,12 +898,6 @@ local ouioptions = {
 							name = "Viewport",
 							desc = "Toggles whether you want to use a viewport.",
 						},
-						sct = {
-							type = "toggle",
-							order = 7,
-							name = "Combat Text",
-							desc = "Toggle whether you want to use Monolit's lightweight SCT mod.",
-						},
 					},
 				},
 				Errors = {

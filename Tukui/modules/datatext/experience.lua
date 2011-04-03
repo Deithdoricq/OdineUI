@@ -3,7 +3,7 @@ if T.level == 85 then return end
 
 local space = 0
 local font, fonts, fontf = C["media"].dfont, C["datatext"].fsize - 2, "OUTLINE"
-local dtext = false
+local dtext = C["datatext"].bar_text
 
 if not dtext then
 	height = T.buttonsize - 20

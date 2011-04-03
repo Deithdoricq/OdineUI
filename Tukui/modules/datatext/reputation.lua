@@ -2,7 +2,7 @@ local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, vari
 
 local font, fonts, fontf = C["media"].dfont, C["datatext"].fsize - 2, "OUTLINE"
 local space = 0
-local dtext = false
+local dtext = C["datatext"].bar_text
 
 if not dtext then
 	height = T.buttonsize - 20

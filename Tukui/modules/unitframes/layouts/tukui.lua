@@ -94,8 +94,8 @@ local function Shared(self, unit)
 		-- power
 		local power = CreateFrame('StatusBar', nil, self)
 		power:Height(10)
-		power:SetPoint("TOPLEFT", healthB, "BOTTOMLEFT", T.Scale(2), -T.buttonspacing*2)
-		power:SetPoint("TOPRIGHT", healthB, "BOTTOMRIGHT", T.Scale(-2), -T.buttonspacing*2)
+		power:SetPoint("TOPLEFT", healthB, "BOTTOMLEFT", T.Scale(2), -T.Scale(7))
+		power:SetPoint("TOPRIGHT", healthB, "BOTTOMRIGHT", T.Scale(-2), -T.Scale(7))
 		power:SetStatusBarTexture(powTex)
 		power:GetStatusBarTexture():SetHorizTile(false)
 		self.Power = power
@@ -119,8 +119,8 @@ local function Shared(self, unit)
 		panel:CreatePanel("Default", 1, 20, "BOTTOM", self, "BOTTOM", 0, 0)
 		panel:SetFrameLevel(self.Health:GetFrameLevel())
 		panel:ClearAllPoints()
-		panel:SetPoint("BOTTOMLEFT", healthB, "TOPLEFT", 0, T.buttonspacing)
-		panel:SetPoint("BOTTOMRIGHT", healthB, "TOPRIGHT", 0, T.buttonspacing)
+		panel:SetPoint("BOTTOMLEFT", healthB, "TOPLEFT", 0, T.Scale(3))
+		panel:SetPoint("BOTTOMRIGHT", healthB, "TOPRIGHT", 0, T.Scale(3))
 		self.panel = panel
 
 		-- portraits
@@ -848,8 +848,8 @@ local function Shared(self, unit)
 		-- power
 		local power = CreateFrame('StatusBar', nil, self)
 		power:Height(20/4)
-		power:SetPoint("TOPLEFT", healthB, "BOTTOMLEFT", T.Scale(2), -T.buttonspacing*2)
-		power:SetPoint("TOPRIGHT", healthB, "BOTTOMRIGHT", T.Scale(-2), -T.buttonspacing*2)
+		power:SetPoint("TOPLEFT", healthB, "BOTTOMLEFT", T.Scale(2), -T.Scale(7))
+		power:SetPoint("TOPRIGHT", healthB, "BOTTOMRIGHT", T.Scale(-2), -T.Scale(7))
 		power:SetStatusBarTexture(powTex)
 		self.Power = power
 		

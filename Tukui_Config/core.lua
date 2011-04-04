@@ -716,7 +716,7 @@ local ouioptions = {
 					name = "Button Size",
 					desc = "Controls the size of actionbar buttons.",
 					type = "range",
-					min = 20, max = 40, step = 1,									
+					min = 22, max = 32, step = 1,									
 				},
 				petbuttonsize = {
 					type = "range",
@@ -724,7 +724,7 @@ local ouioptions = {
 					name = "Pet Button Size",
 					desc = "Controls the size of your pets actionbar buttons.",
 					type = "range",
-					min = 20, max = 40, step = 1,									
+					min = 22, max = 32, step = 1,									
 				},
 				stancebuttonsize = {
 					type = "range",
@@ -732,7 +732,7 @@ local ouioptions = {
 					name = "Stance Button Size",
 					desc = "Controls the size of your stance actionbar buttons.",
 					type = "range",
-					min = 20, max = 40, step = 1,									
+					min = 22, max = 32, step = 1,									
 				},
 				buttonspacing = {
 					type = "range",
@@ -740,7 +740,7 @@ local ouioptions = {
 					name = "Button Spacing",
 					desc = "Controls the spacing between buttons.",
 					type = "range",
-					min = 1, max = 8, step = 1,									
+					min = 1, max = 7, step = 1,									
 				},
 			},
 		},

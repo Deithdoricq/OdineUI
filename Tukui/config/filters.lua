@@ -1,6 +1,6 @@
 local T, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-if C["nameplate"].enable ~= true then return end
+--if C["nameplate"].enable ~= true then return end
 
 local function SpellName(id)
 	local name, _, _, _, _, _, _, _, _ = GetSpellInfo(id) 	

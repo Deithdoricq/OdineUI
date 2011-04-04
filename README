@@ -4,8 +4,7 @@ V5.9c - [04/03/2011]
 * certain resolutions were overlapping frames, should be 100% fixed now (cannot verify low res versions though)
 * fixed bug with loot roll frame click through
 * adjusted font size of percentage fonts for health
-* added option to disable/enable debuff highlighting based on whether you can dispel it or not
-* added option to enable or disable shadows
+* added option to disable/enable debuff highlighting based on whether you can dispel it or not (NEEDS TESTING)
 * if autoquest option is enabled holding down shift will temporarirly disable auto-accepting/turning in quests
 
 V5.9b - [04/03/2011]

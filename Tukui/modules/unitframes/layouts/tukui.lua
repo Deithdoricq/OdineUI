@@ -94,8 +94,8 @@ local function Shared(self, unit)
 		-- power
 		local power = CreateFrame('StatusBar', nil, self)
 		power:Height(10)
-		power:SetPoint("TOPLEFT", healthB, "BOTTOMLEFT", T.Scale(2), -T.Scale(7))
-		power:SetPoint("TOPRIGHT", healthB, "BOTTOMRIGHT", T.Scale(-2), -T.Scale(7))
+		power:SetPoint("TOPLEFT", healthB, "BOTTOMLEFT", T.Scale(2), -T.Scale(6))
+		power:SetPoint("TOPRIGHT", healthB, "BOTTOMRIGHT", T.Scale(-2), -T.Scale(6))
 		power:SetStatusBarTexture(powTex)
 		power:GetStatusBarTexture():SetHorizTile(false)
 		self.Power = power
@@ -659,7 +659,7 @@ local function Shared(self, unit)
 					if C["unitframes"].large_player == true then
 						castbar:SetHeight(T.buttonsize - 4)
 						if C["unitframes"].cbicons == true then
-							castbar:SetWidth(360)
+							castbar:SetWidth(TukuiBar1:GetWidth() - T.buttonsize - (T.buttonspacing + 5) )
 							castbar:SetPoint("BOTTOMLEFT", TukuiBar1, "TOPLEFT", T.buttonsize + 5, 5)
 							--castbar:SetWidth(583)
 							--castbar:SetPoint("BOTTOMLEFT", TukuiSplitBarLeft, "TOPLEFT", T.buttonsize + 5, 5)
@@ -848,8 +848,8 @@ local function Shared(self, unit)
 		-- power
 		local power = CreateFrame('StatusBar', nil, self)
 		power:Height(20/4)
-		power:SetPoint("TOPLEFT", healthB, "BOTTOMLEFT", T.Scale(2), -T.Scale(7))
-		power:SetPoint("TOPRIGHT", healthB, "BOTTOMRIGHT", T.Scale(-2), -T.Scale(7))
+		power:SetPoint("TOPLEFT", healthB, "BOTTOMLEFT", T.Scale(2), -T.Scale(6))
+		power:SetPoint("TOPRIGHT", healthB, "BOTTOMRIGHT", T.Scale(-2), -T.Scale(6))
 		power:SetStatusBarTexture(powTex)
 		self.Power = power
 		
@@ -1091,7 +1091,7 @@ local function Shared(self, unit)
 		health.value = T.SetFontString(health, font, fonts, fontf)
 		
 		if C["unitframes"].percentage == true then
-			health.percent = T.SetFontString(health, (health:GetHeight() / 1.2), 25, fontf)
+			health.percent = T.SetFontString(health, font, (health:GetHeight() / 1.2), fontf)
 			health.percent:Point("RIGHT", self.Health, "LEFT", -6, 0)
 			health.percent:SetShadowOffset(-2,-2)
 			power.percent = T.SetFontString(power, font, (health:GetHeight() / 1.5), fontf) -- hack fix

@@ -19,7 +19,7 @@ TukuiWorldStateAnchor.text:SetPoint("CENTER")
 TukuiWorldStateAnchor.text:SetText("WorldStateFrame")
 TukuiWorldStateAnchor.text:Hide()
 
-TukuiWorldStateAnchor:SetPoint("TOPLEFT", UIParent, "TOPLEFT", T.Scale(11), T.Scale(-35))
+TukuiWorldStateAnchor:SetPoint("TOPLEFT", UIParent, "TOPLEFT", T.Scale(11), T.Scale(-90))
 
 TukuiWorldState:ClearAllPoints()
 TukuiWorldState:SetParent(TukuiWorldStateAnchor)

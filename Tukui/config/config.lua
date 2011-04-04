@@ -5,7 +5,6 @@ DB["general"] = {
 	["uiscale"] = 0.71,                                 -- set your value (between 0.64 and 1) of your uiscale if autoscale is off
 	["overridelowtohigh"] = false,                      -- EXPERIMENTAL ONLY! override lower version to higher version on a lower reso.
 	["multisampleprotect"] = true,                      -- i don't recommend this because of shitty border but, voila!
-	["perchar"] = true,									-- enable configuration Per Character instead of global default profile!
 }
 
 DB["unitframes"] = {
@@ -66,7 +65,7 @@ DB["unitframes"] = {
 		["healcomm"] = true,                               -- enable healprediction support.
 		["debuffHighlightFilter"] = false,					-- filter debuff border coloring
 			-- enable player / target debuff highlight
-			["playerHighlight"] = true,
+			["playerHighlight"] = false,
 
 		-- Heal
 		["healthvertical"] = false,

@@ -1,3 +1,8 @@
+V5.9d - [04/04/2011]
+* worldframe is movable with /moveui again
+* fixed typo/bug with boss percentage (could be source of random crashes?)
+* playerhighlight is disabled by default now
+
 V5.9c - [04/03/2011]
 * added option to move worldframe with /moveui
 * added gridonly option, tweaked large scale of healer layout frames when in big bg areas

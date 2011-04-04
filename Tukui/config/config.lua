@@ -5,6 +5,7 @@ DB["general"] = {
 	["uiscale"] = 0.71,                                 -- set your value (between 0.64 and 1) of your uiscale if autoscale is off
 	["overridelowtohigh"] = false,                      -- EXPERIMENTAL ONLY! override lower version to higher version on a lower reso.
 	["multisampleprotect"] = true,                      -- i don't recommend this because of shitty border but, voila!
+	["perchar"] = true,									-- enable configuration Per Character instead of global default profile!
 }
 
 DB["unitframes"] = {
@@ -52,18 +53,20 @@ DB["unitframes"] = {
 	-- misc
 	["vengeance"] = true,								-- vengeance bar for tanks
 	["swingbar"] = false,								-- swing bar
-	["percentage"] = true,            					-- shows a hp/pp percent number next to a unitframe on selected frames
-	
+	["percentage"] = true,            					-- shows a hp/pp percent number next to a unitframe on selected frames	
 
 	-- Party / Raid
 		-- Gen.
 		["showrange"] = true,                               -- show range opacity on raidframes
-		["raidalphaoor"] = 0.5,                             -- alpha of unitframes when unit is out of range
+		["raidalphaoor"] = 0.7,                             -- alpha of unitframes when unit is out of range
 		["showplayerinparty"] = true,                      -- show my player frame in party
 		["showsymbols"] = true,	                            -- show symbol.
 		["aggro"] = true,                                   -- show aggro on all raids layouts
 		["raidunitdebuffwatch"] = true,                     -- track important spell to watch in pve for grid mode.
 		["healcomm"] = true,                               -- enable healprediction support.
+		["debuffHighlightFilter"] = false,					-- filter debuff border coloring
+			-- enable player / target debuff highlight
+			["playerHighlight"] = true,
 
 		-- Heal
 		["healthvertical"] = false,

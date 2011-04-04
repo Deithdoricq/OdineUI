@@ -7,7 +7,6 @@ local defaults
 
 function OUI:LoadDefaults()
 	local _, _, _, DB = unpack(Tukui)
-
 	defaults = {
 		profile = {
 			general = DB["general"],
@@ -119,6 +118,14 @@ local ouioptions = {
 					desc = "This is EXPERIMENTAL! Override lower version to higher version on a lower reso setup!",
 					type = "toggle",
 				},
+				--[[perchar = {
+					order = 6,
+					name = "PerChar Profiles",
+					desc = "This is EXPERIMENTAL! When enabled all characters will have their own profile settings!",
+					type = "toggle",
+					get = function() return defaults.profile.general.perchar end,
+					set = function(info, value) defaults.profile.general.perchar = value; StaticPopup_Show("RELOAD_UI") end,
+				},--]]
 			},
 		},
 		unitframes = {

@@ -11,7 +11,7 @@ local Options = {
 
 -- Default position of toggle button and background
 local anchor = {}
-anchor = {"TOPLEFT", UIParent, "TOP", -60, -27}
+anchor = {"TOPLEFT", UIParent, "TOP", -60, -30}
 
 local function ButtonEnter(self)
 	local color = RAID_CLASS_COLORS[T.myclass]

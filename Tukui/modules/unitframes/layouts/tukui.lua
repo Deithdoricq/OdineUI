@@ -173,7 +173,7 @@ local function Shared(self, unit)
 		health.value:Point("RIGHT", panel, "RIGHT", -4, 0)
     
 		if C["unitframes"].percentage == true then
-			health.percent = T.SetFontString(health, font, fonts + 6, fontf)
+			health.percent = T.SetFontString(health, font, (health:GetHeight() / 1.2), fontf)
 			if unit == "player" then
 				health.percent:Point("RIGHT", health, "LEFT", -6, 0)
 				health.percent:SetShadowOffset(2, -2)
@@ -189,7 +189,7 @@ local function Shared(self, unit)
 		power.value:Point("LEFT", self.panel, "LEFT", 4, 0)
 
 		if C["unitframes"].percentage == true then
-			power.percent = T.SetFontString(panel, font, fonts + 6, fontf)
+			power.percent = T.SetFontString(panel, font, (health:GetHeight() / 1.5), fontf)
 			if unit == "player" then
 				power.percent:Point("RIGHT", power, "LEFT", -6, 0)
 				power.percent:SetShadowOffset(1, -1)
@@ -213,21 +213,19 @@ local function Shared(self, unit)
 			self.WeakenedSoul = ws
 		end
 					
-		if (unit == "player") then
-			local iHt = 20
-		
+		if (unit == "player") then		
 			-- combat icon
 			local Combat = health:CreateTexture(nil, "OVERLAY")
-			Combat:Height(iHt/1.25)
-			Combat:Width(iHt/1.25)
+			Combat:Height(25/1.25)
+			Combat:Width(25/1.25)
 			Combat:SetPoint("TOPRIGHT", 2, 8)
 			Combat:SetVertexColor(0.69, 0.31, 0.31)
 			self.Combat = Combat
 			
 			-- resting icon
 			local Resting = health:CreateTexture(nil, "OVERLAY")
-			Resting:SetHeight(iHt/1.5)
-			Resting:SetWidth(iHt/1.5)
+			Resting:SetHeight(25/1.5)
+			Resting:SetWidth(25/1.5)
 			Resting:SetPoint("TOPRIGHT", 2, 8)
 			Resting:SetTexture([=[Interface\CharacterFrame\UI-StateIcon]=])
 			Resting:SetTexCoord(0, 0.5, 0, 0.421875)
@@ -251,15 +249,15 @@ local function Shared(self, unit)
 			
 			-- leader icon
 			local Leader = InvFrame:CreateTexture(nil, "OVERLAY")
-			Leader:Height(iHt/2)
-			Leader:Width(iHt/2)
+			Leader:Height(25/2)
+			Leader:Width(25/2)
 			Leader:Point("TOPLEFT", 2, 8)
 			self.Leader = Leader
 			
 			-- master looter
 			local MasterLooter = InvFrame:CreateTexture(nil, "OVERLAY")
-			MasterLooter:Height(iHt/2)
-			MasterLooter:Width(iHt/2)
+			MasterLooter:Height(25/2)
+			MasterLooter:Width(25/2)
 			self.MasterLooter = MasterLooter
 			self:RegisterEvent("PARTY_LEADER_CHANGED", T.MLAnchorUpdate)
 			self:RegisterEvent("PARTY_MEMBERS_CHANGED", T.MLAnchorUpdate)
@@ -272,7 +270,6 @@ local function Shared(self, unit)
 				Vengeance:SetFrameLevel(TukuiDataBottom:GetFrameLevel() + 2)
 				Vengeance:SetPoint("TOPLEFT", TukuiDataBottom, T.Scale(2), T.Scale(-2))
 				Vengeance:SetPoint("BOTTOMRIGHT", TukuiDataBottom, T.Scale(-2), T.Scale(2))
-				--Vengeance:SetStatusBarTexture(C["media"].normTex)
 				Vengeance:SetStatusBarTexture(powTex)
 				Vengeance:GetStatusBarTexture():SetHorizTile(false)
 				Vengeance:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthBgColor))
@@ -629,12 +626,12 @@ local function Shared(self, unit)
 				castbar.PostCastStart = T.CheckCast
 				castbar.PostChannelStart = T.CheckChannel
 
-				castbar.time = T.SetFontString(castbar, font, fonts, fontf)
+				castbar.time = T.SetFontString(castbar, font, fonts - 1, fontf)
 				castbar.time:Point("RIGHT", panel, "RIGHT", -4, 0)
 				castbar.time:SetTextColor(0.84, 0.75, 0.65)
 				castbar.time:SetJustifyH("RIGHT")
 
-				castbar.Text = T.SetFontString(castbar, font, fonts, fontf)
+				castbar.Text = T.SetFontString(castbar, font, fonts - 1, fontf)
 				castbar.Text:Point("LEFT", panel, "LEFT", 4, 0)
 				castbar.Text:SetWidth(150)
 				castbar.Text:SetTextColor(0.84, 0.75, 0.65)
@@ -806,6 +803,18 @@ local function Shared(self, unit)
 			self:RegisterEvent('PLAYER_TARGET_CHANGED', T.UpdateThreat)
 			self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', T.UpdateThreat)
 			self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', T.UpdateThreat)
+		end
+		
+		-- player/target debuff hightlight
+		if C["unitframes"].playerHighlight then
+			local debuffHighlight = healthB:CreateTexture(nil, "OVERLAY")
+			debuffHighlight:SetAllPoints()
+			debuffHighlight:SetTexture(C["media"].blank)
+			debuffHighlight:SetBlendMode("DISABLE")
+			debuffHighlight:SetVertexColor(0, 0, 0, 0)
+			self.DebuffHighlight = debuffHighlight
+			self.DebuffHighlightAlpha = 1
+			self.DebuffHighlightFilter = C["unitframes"].debuffHighlightFilter
 		end
 	end
 	
@@ -1082,10 +1091,10 @@ local function Shared(self, unit)
 		health.value = T.SetFontString(health, font, fonts, fontf)
 		
 		if C["unitframes"].percentage == true then
-			health.percent = T.SetFontString(health, font, fonts + 6, fontf)
+			health.percent = T.SetFontString(health, (health:GetHeight() / 1.2), 25, fontf)
 			health.percent:Point("RIGHT", self.Health, "LEFT", -6, 0)
 			health.percent:SetShadowOffset(-2,-2)
-			power.percent = T.SetFontString(power, font, fonts + 6, fontf) -- hack fix
+			power.percent = T.SetFontString(power, font, (health:GetHeight() / 1.5), fontf) -- hack fix
 		end
 		
 		health.PostUpdate = T.PostUpdateHealth

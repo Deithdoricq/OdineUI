@@ -178,8 +178,7 @@ local function CreatePanel(f, t, w, h, a1, p, a2, x, y)
 	})
 	
 	f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
-	f:SetBackdropBorderColor(borderr, borderg, borderb)
-	
+	f:SetBackdropBorderColor(borderr, borderg, borderb)	
 	f:CreateShadow("Default")
 end
 

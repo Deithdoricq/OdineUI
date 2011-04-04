@@ -9,6 +9,7 @@ local T, C, L = unpack(Tukui) -- Import: T - functions, constants, variables; C 
 if not C["unitframes"].enable == true or C["unitframes"].gridonly == true then return end
 
 local font, fonts, fontf = C["media"].uffont, 14, "OUTLINE"
+
 local normTex = C["media"].normTex
 local powTex = [[Interface\AddOns\Tukui\medias\textures\Ruben]]
 
@@ -121,10 +122,18 @@ local function Shared(self, unit)
 		name:SetPoint("CENTER", health, "CENTER", 0, 6)
 	end
 	name:SetFont(font, fonts, fontf)
-	if C["unitframes"].unicolor then
-		self:Tag(name, "[Tukui:getnamecolor][Tukui:name_short] [Tukui:dead][Tukui:afk]")
+	if C["unitframes"].healthdeficit then
+		if C["unitframes"].unicolor then
+			self:Tag(name, "[Tukui:leader][Tukui:getnamecolor][Tukui:nameshort][Tukui:masterlooter]")
+		else
+			self:Tag(name, "[Tukui:leader][Tukui:nameshort][Tukui:masterlooter]")
+		end
 	else
-		self:Tag(name, "[Tukui:name_short] [Tukui:dead][Tukui:afk]")
+		if C["unitframes"].unicolor then
+			self:Tag(name, "[Tukui:leader][Tukui:getnamecolor][Tukui:name_short][Tukui:masterlooter][Tukui:dead][Tukui:afk]")
+		else
+			self:Tag(name, "[Tukui:leader][Tukui:name_short][Tukui:masterlooter][Tukui:dead][Tukui:afk]")
+		end
 	end
 	self.Name = name
 	
@@ -164,7 +173,7 @@ local function Shared(self, unit)
 	debuffHighlight:SetVertexColor(0, 0, 0, 0)
 	self.DebuffHighlight = debuffHighlight
 	self.DebuffHighlightAlpha = 1
-	self.DebuffHighlightFilter = false
+	self.DebuffHighlightFilter = C["unitframes"].debuffHighlightFilter
 	
 	--local picon = self.Health:CreateTexture(nil, 'OVERLAY')
 	--picon:SetPoint('CENTER', self.Health)

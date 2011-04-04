@@ -40,6 +40,7 @@
 	<Script file="core\launch.lua"/>
 	<Script file="core\disable.lua"/>
 	<Script file="modules\blizzard\watchframe.lua"/>
+	<Script file="modules\blizzard\worldframe.lua"/>
 	<Script file="modules\blizzard\durability.lua"/>
 	<Script file="modules\blizzard\vehicle.lua"/>
 	<Script file="modules\blizzard\capturebar.lua"/>

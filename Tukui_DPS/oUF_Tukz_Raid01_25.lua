@@ -99,7 +99,7 @@ local function Shared(self, unit)
 	local name = health:CreateFontString(nil, 'OVERLAY')
 	name:SetFont(C["media"].uffont, 14, "OUTLINE")
 	name:Point("LEFT", t, "RIGHT", 4, 1)
-	self:Tag(name, '[Tukui:getnamecolor][Tukui:namemedium] [Tukui:dead][Tukui:afk]')
+	self:Tag(name, '[Tukui:leader][Tukui:getnamecolor][Tukui:namemedium] [Tukui:dead][Tukui:afk]')
 	self.Name = name
 	
 	if C["unitframes"].showsymbols == true then

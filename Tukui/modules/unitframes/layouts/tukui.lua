@@ -25,7 +25,6 @@ local font, fonts, fontf = C["media"].uffont, 14, "OUTLINE"
 
 local normTex = C["media"].normTex
 local glowTex = C["media"].glowTex
-local powTex = [[Interface\AddOns\Tukui\medias\textures\Ruben]]
 
 ------------------------------------------------------------------------
 --	Layout
@@ -74,7 +73,6 @@ local function Shared(self, unit)
 		health:Height(30)
 		health:SetPoint("TOPLEFT", T.mult, -T.mult)
 		health:SetPoint("TOPRIGHT", -T.mult, T.mult)
-		--health:SetStatusBarTexture(normTex)
 		health:SetStatusBarTexture(C["media"].hTex)
 		health:GetStatusBarTexture():SetHorizTile(false)
 		self.Health = health
@@ -97,7 +95,7 @@ local function Shared(self, unit)
 		power:Height(10)
 		power:SetPoint("TOPLEFT", healthB, "BOTTOMLEFT", T.Scale(2), -T.Scale(6))
 		power:SetPoint("TOPRIGHT", healthB, "BOTTOMRIGHT", T.Scale(-2), -T.Scale(6))
-		power:SetStatusBarTexture(powTex)
+		power:SetStatusBarTexture(normTex)
 		power:GetStatusBarTexture():SetHorizTile(false)
 		self.Power = power
 		
@@ -111,7 +109,7 @@ local function Shared(self, unit)
 		powerB:SetFrameLevel(power:GetFrameLevel() - 1)
 		powerB:SetPoint("TOPLEFT", T.Scale(-2), T.Scale(2))
 		powerB:SetPoint("BOTTOMRIGHT", T.Scale(2), T.Scale(-2))
-		powerB:SetTemplate("Default", true)
+		powerB:SetTemplate("Default")
 		powerB:CreateShadow("Default")
 		self.Power.border = powerB	
 		
@@ -271,7 +269,7 @@ local function Shared(self, unit)
 				Vengeance:SetFrameLevel(TukuiDataBottom:GetFrameLevel() + 2)
 				Vengeance:SetPoint("TOPLEFT", TukuiDataBottom, T.Scale(2), T.Scale(-2))
 				Vengeance:SetPoint("BOTTOMRIGHT", TukuiDataBottom, T.Scale(-2), T.Scale(2))
-				Vengeance:SetStatusBarTexture(powTex)
+				Vengeance:SetStatusBarTexture(normTex)
 				Vengeance:GetStatusBarTexture():SetHorizTile(false)
 				Vengeance:SetStatusBarColor(unpack(TukuiCF["unitframes"].healthBgColor))
 				Vengeance:SetBackdrop(backdrop)
@@ -830,7 +828,6 @@ local function Shared(self, unit)
 		health:Height(20)
 		health:SetPoint("TOPLEFT", T.mult, -T.mult)
 		health:SetPoint("TOPRIGHT", -T.mult, T.mult)
-		--health:SetStatusBarTexture(normTex)
 		health:SetStatusBarTexture(C["media"].hTex)
 		self.Health = health
 		
@@ -852,7 +849,7 @@ local function Shared(self, unit)
 		power:Height(20/4)
 		power:SetPoint("TOPLEFT", healthB, "BOTTOMLEFT", T.Scale(2), -T.Scale(6))
 		power:SetPoint("TOPRIGHT", healthB, "BOTTOMRIGHT", T.Scale(-2), -T.Scale(6))
-		power:SetStatusBarTexture(powTex)
+		power:SetStatusBarTexture(normTex)
 		self.Power = power
 		
 		local powerBg = power:CreateTexture(nil, "BORDER")
@@ -865,7 +862,7 @@ local function Shared(self, unit)
 		powerB:SetFrameLevel(power:GetFrameLevel() - 1)
 		powerB:SetPoint("TOPLEFT", T.Scale(-2), T.Scale(2))
 		powerB:SetPoint("BOTTOMRIGHT", T.Scale(2), T.Scale(-2))
-		powerB:SetTemplate("Default", true)
+		powerB:SetTemplate("Default")
 		powerB:CreateShadow("Default")
 		self.Power.border = powerB	
 		
@@ -1052,7 +1049,6 @@ local function Shared(self, unit)
 		health:Height(20*1.5)
 		health:SetPoint("TOPLEFT")
 		health:SetPoint("TOPRIGHT")
-		--health:SetStatusBarTexture(normTex)
 		health:SetStatusBarTexture(C["media"].hTex)
 		self.Health = health
 		
@@ -1074,7 +1070,7 @@ local function Shared(self, unit)
 		power:Height(20/2)
 		power:SetPoint("TOPLEFT", healthB, "BOTTOMLEFT", T.Scale(2), -T.buttonspacing * 2)
 		power:SetPoint("TOPRIGHT", healthB, "BOTTOMRIGHT", T.Scale(-2), -T.buttonspacing * 2)
-		power:SetStatusBarTexture(powTex)
+		power:SetStatusBarTexture(normTex)
 		self.Power = power
 		
 		local powerBg = power:CreateTexture(nil, "BORDER")

@@ -92,16 +92,16 @@ local function CreateShadow(f, t)
 	local shadow = CreateFrame("Frame", nil, f)
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(f:GetFrameStrata())
-	shadow:Point("TOPLEFT", -3, 3)
-	shadow:Point("BOTTOMLEFT", -3, -3)
-	shadow:Point("TOPRIGHT", 3, 3)
-	shadow:Point("BOTTOMRIGHT", 3, -3)
+	shadow:SetPoint("TOPLEFT", T.Scale(-3), T.Scale(3))
+	shadow:SetPoint("BOTTOMLEFT", T.Scale(-3), T.Scale(-3))
+	shadow:SetPoint("TOPRIGHT", T.Scale(3), T.Scale(3))
+	shadow:SetPoint("BOTTOMRIGHT", T.Scale(3), T.Scale(-3))
 	shadow:SetBackdrop( { 
 		edgeFile = C["media"].glowTex, edgeSize = T.Scale(3),
-		insets = {left = T.Scale(5), right = T.Scale(5), top = T.Scale(5), bottom = T.Scale(5)},
+		insets = { left = mult, right = mult, top = mult, bottom = mult }
 	})
 	shadow:SetBackdropColor(backdropr, backdropg, backdropb, 0)
-	shadow:SetBackdropBorderColor(borderr, borderg, borderb, 0.8)
+	shadow:SetBackdropBorderColor(borderr, borderg, borderb, 1)
 	f.shadow = shadow
 end
 
@@ -137,7 +137,7 @@ local function CreateBorder(f, i, o)
 end
 
 local function SetTemplate(f, t, tex)
-	if tex then texture = C.media.normTex else texture = C.media.blank end
+	if tex then texture = C.media.panTex else texture = C.media.blank end
 
 	GetTemplate(t)
 		
@@ -149,9 +149,11 @@ local function SetTemplate(f, t, tex)
 	})
 	
 	if t == "Transparent" then 
-		backdropa = .7
+		backdropr, backdropg, backdropb, backdropa = unpack(C["media"].backdropfadecolor)
+		tex = false
 	else 
 		backdropr, backdropg, backdropb, backdropa = unpack(C["media"].backdropcolor)
+		tex = true
 	end
 	
 	f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
@@ -161,7 +163,14 @@ end
 local function CreatePanel(f, t, w, h, a1, p, a2, x, y)
 	GetTemplate(t)
 	
-	if t == "Transparent" then backdropa = 0.8 else backdropa = 1 end
+	if t == "Transparent" then 
+		backdropr, backdropg, backdropb, backdropa = unpack(C["media"].backdropfadecolor)
+		tex = false
+	else 
+		backdropr, backdropg, backdropb, backdropa = unpack(C["media"].backdropcolor)
+		tex = true
+	end
+	if tex then texture = C.media.panTex else texture = C.media.blank end
 	
 	local sh = Scale(h)
 	local sw = Scale(w)
@@ -171,7 +180,7 @@ local function CreatePanel(f, t, w, h, a1, p, a2, x, y)
 	f:SetFrameStrata("BACKGROUND")
 	f:Point(a1, p, a2, x, y)
 	f:SetBackdrop({
-		bgFile = C["media"].blank, 
+		bgFile = texture, 
 		edgeFile = C["media"].blank, 
 		tile = false, tileSize = 0, edgeSize = mult, 
 		insets = { left = -mult, right = -mult, top = -mult, bottom = -mult}

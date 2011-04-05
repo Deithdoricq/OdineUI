@@ -6,7 +6,7 @@ if C["datatext"].location ~= true then return end
 local location = CreateFrame("Frame", "TukuiLocation", UIParent)
 location:CreatePanel("Default", 60, 20, "TOP", UIParent, "TOP", 0, -7)
 location:SetFrameLevel(2)
-location:SetTemplate("Default", true)
+--location:SetTemplate("Default", true)
 
 local locationtext  = location:CreateFontString(nil, "LOW")
 locationtext:SetFont(C["media"].dfont, C["datatext"].fsize, "OUTLINE")
@@ -44,12 +44,10 @@ location:HookScript("OnEvent", OnEvent)
 local xcoords = CreateFrame("Frame", "TukuiXCoordsPanel", UIParent)
 xcoords:CreatePanel("Default", 35, 20, "RIGHT", location, "LEFT", -5, 0)
 xcoords:SetFrameLevel(2)
-xcoords:SetTemplate("Default", true)
 
 local ycoords = CreateFrame("Frame", "TukuiYCoordsPanel", UIParent)
 ycoords:CreatePanel("Default", 35, 20, "LEFT", location, "RIGHT", 5, 0)
 ycoords:SetFrameLevel(2)
-ycoords:SetTemplate("Default", true)
 
 local xcoordstext = xcoords:CreateFontString(nil, "OVERLAY")
 xcoordstext:SetFont(C["media"].dfont, C["datatext"].fsize, "OUTLINE")

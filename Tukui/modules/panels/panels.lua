@@ -12,13 +12,11 @@ local TukuiTabsLeft = CreateFrame("Frame", "TukuiTabsLeft", UIParent)
 TukuiTabsLeft:CreatePanel("Default", 1, 23, "TOPLEFT", TukuiChatLeft, "TOPLEFT", 5, -5)
 TukuiTabsLeft:Point("TOPRIGHT", TukuiChatLeft, "TOPRIGHT", -5, -5)
 TukuiTabsLeft:SetFrameLevel(TukuiChatLeft:GetFrameLevel() + 1)
-TukuiTabsLeft:SetTemplate("Default", true)
 
 local TukuiTabsRight = CreateFrame("Frame", "TukuiTabsRight", UIParent)
 TukuiTabsRight:CreatePanel("Default", 1, 23, "TOPLEFT", TukuiChatRight, "TOPLEFT", 5, -5)
 TukuiTabsRight:Point("TOPRIGHT", TukuiChatRight, "TOPRIGHT", -5, -5)
 TukuiTabsRight:SetFrameLevel(TukuiChatRight:GetFrameLevel() + 1)
-TukuiTabsRight:SetTemplate("Default", true)
 
 if not C["chat"].background then
 	TukuiChatLeft:SetAlpha(0)
@@ -32,30 +30,25 @@ local TukuiInfoLeft = CreateFrame("Frame", "TukuiInfoLeft", UIParent)
 TukuiInfoLeft:CreatePanel("Default", 1, 23, "BOTTOMLEFT", TukuiChatLeft, "BOTTOMLEFT", 5, 5)
 TukuiInfoLeft:Point("BOTTOMRIGHT", TukuiChatLeft, "BOTTOMRIGHT", -5, 5)
 TukuiInfoLeft:SetFrameLevel(TukuiChatLeft:GetFrameLevel() + 1)
-TukuiInfoLeft:SetTemplate("Default", true)
 
 local TukuiInfoRight = CreateFrame("Frame", "TukuiInfoRight", UIParent)
 TukuiInfoRight:CreatePanel("Default", 1, 23, "BOTTOMLEFT", TukuiChatRight, "BOTTOMLEFT", 5, 5)
 TukuiInfoRight:Point("BOTTOMRIGHT", TukuiChatRight, "BOTTOMRIGHT", -5, 5)
 TukuiInfoRight:SetFrameLevel(TukuiChatRight:GetFrameLevel() + 1)
-TukuiInfoRight:SetTemplate("Default", true)
 
 -- Bottom Data Panels
 
 local dbottom = CreateFrame("Frame", "TukuiDataBottom", UIParent)
-dbottom:CreatePanel("Default", (T.buttonsize * 12 + T.buttonspacing * 13) + 2, 20, "BOTTOM", UIParent, "BOTTOM", 0, T.Scale(7))
+dbottom:CreatePanel("Default", (T.buttonsize * 12 + T.buttonspacing * 13) + 2, 20, "BOTTOM", UIParent, "BOTTOM", 0, T.Scale(5))
 dbottom:SetFrameLevel(2)
-dbottom:SetTemplate("Default", true)
 
 local leftsd = CreateFrame("Frame", "TukuiLeftSplitBarData", UIParent)
-leftsd:CreatePanel("Default", (T.buttonsize * 3 + T.buttonspacing * 4) + 2, 20, "RIGHT", TukuiDataBottom, "LEFT", T.Scale(-5), 0)
+leftsd:CreatePanel("Default", (T.buttonsize * 3 + T.buttonspacing * 4) + 2, 20, "RIGHT", TukuiDataBottom, "LEFT", T.Scale(-6), 0)
 leftsd:SetFrameLevel(2)
-leftsd:SetTemplate("Default", true)
 
 local rightsd = CreateFrame("Frame", "TukuiRightSplitBarData", UIParent)
-rightsd:CreatePanel("Default", (T.buttonsize * 3 + T.buttonspacing * 4) + 2, 20, "LEFT", TukuiDataBottom, "RIGHT", T.Scale(5), 0)
+rightsd:CreatePanel("Default", (T.buttonsize * 3 + T.buttonspacing * 4) + 2, 20, "LEFT", TukuiDataBottom, "RIGHT", T.Scale(6), 0)
 rightsd:SetFrameLevel(2)
-rightsd:SetTemplate("Default", true)
 
 -- Action Bars
 if C["actionbar"].enable then

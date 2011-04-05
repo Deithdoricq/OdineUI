@@ -152,7 +152,7 @@ DB["datatext"] = {
 	["localtime"] = true,                              -- set time to local time instead of server time.
 	["bars"] = true,									-- enable rep/exp bars under minimap
 		["bar_text"] = false,							-- display text in rep/exp bars
-	["fsize"] = 14,										-- default font size
+	["fsize"] = 15,										-- default font size
 	
 	["classcolor"] = true,
 		["color"] = { .4, .4, .4 },
@@ -240,6 +240,8 @@ DB["media"] = {
 	["normTex"] = "Tukui Norm",
 	["glowTex"] = "Tukui Glow",
 	["blank"] = "Tukui Blank",
+	
+	["hTex"] = [[Interface\AddOns\Tukui\medias\textures\Glamour2]], -- testing new texture for health bars
 	
 	["striped"] = [[Interface\AddOns\Tukui\medias\textures\Striped]], -- unitframes combo points
 	["copyicon"] = [[Interface\AddOns\Tukui\medias\textures\copy]], -- copy icon

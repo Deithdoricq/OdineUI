@@ -152,21 +152,21 @@ ns.Filger_Spells = {
 			Interval = 4,
 			Mode = "ICON",
 			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 200 },
-
+			
 			-- Wyvern Sting
 			{ spellID = 19386, size = asize*1.5, unitId = "target", caster = "all", filter = "DEBUFF" },
 			-- Silencing Shot
 			{ spellID = 34490, size = asize*1.5, unitId = "target", caster = "all", filter = "DEBUFF" },
 			-- Serpent Sting
 			{ spellID = 1978, size = asize*1.5, unitId = "target", caster = "player", filter = "DEBUFF" },
-			-- Scorpid Sting
-			--{ spellID = 3043, size = asize*1.5, unitId = "target", caster = "player", filter = "DEBUFF" },
+			-- Widow Venom/Witwentoxin
+			{ spellID = 82654, size = asize*1.5, unitId = "target", caster = "all", filter = "DEBUFF" },
 			-- Black Arrow
 			{ spellID = 3674, size = asize*1.5, unitId = "target", caster = "player", filter = "DEBUFF" },
 			-- Explosive Shot
 			{ spellID = 53301, size = asize*1.5, unitId = "target", caster = "player", filter = "DEBUFF" },
 			-- Hunter's Mark
-			{ spellID = 1100, size = asize*1.5, unitId = "target", caster = "all", filter = "DEBUFF" },
+			{ spellID = 1130, size = asize*1.5, unitId = "target", caster = "all", filter = "DEBUFF" },
 
 		},
 		{

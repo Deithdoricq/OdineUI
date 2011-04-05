@@ -33,17 +33,7 @@ function T.exec(self, enable)
 			self:SetBackdropBorderColor(1,0,0,1)
 		else 
 			Minimap:Show()
-			local position = self:GetPoint()			
-			LFDSearchStatus:ClearAllPoints()
-			if position:match("TOPLEFT") then
-				self:Point("TOPLEFT", UIParent, "TOPLEFT", 8, -8)
-				LFDSearchStatus:SetPoint("TOPLEFT", MiniMapLFGFrame, "TOPRIGHT", 4, 0)
-			end
-			if position:match("TOPRIGHT") then
-				self:Point("TOPRIGHT", UIParent, "TOPRIGHT", -8, -8)
-				LFDSearchStatus:SetPoint("TOPRIGHT", MiniMapLFGFrame, "TOPLEFT", 0, 0)	
-			end
-			self:SetBackdropBorderColor(unpack(C.media.bordercolor))		
+			self:SetBackdropBorderColor(unpack(C.media.bordercolor))
 		end
 	end
 	

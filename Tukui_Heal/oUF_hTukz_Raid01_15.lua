@@ -29,7 +29,8 @@ local function Shared(self, unit)
 	else
 		health:Height(30)
 	end
-	health:SetStatusBarTexture(C["media"].normTex)
+	--health:SetStatusBarTexture(C["media"].normTex)
+	health:SetStatusBarTexture(C["media"].hTex)
 	self.Health = health
 	
 	if C["unitframes"].healthvertical then

@@ -275,6 +275,10 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 		StaticPopup_Show("TUKUIDISABLE_RAID")
 	end
 	
+	if C["nameplate"].enable == true and C["nameplate"].enhancethreat == true then
+		SetCVar("threatWarning", 3)
+	end
+	
 	print(L.core_welcome3)
 	print(L.core_welcome2)
 	

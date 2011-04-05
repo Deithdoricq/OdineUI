@@ -16,7 +16,7 @@ TukuiWorldStateAnchor:SetBackdropBorderColor(0,0,0,0)
 TukuiWorldStateAnchor:SetBackdropColor(0,0,0,0)
 TukuiWorldStateAnchor.text = T.SetFontString(TukuiWorldStateAnchor, C["media"].font, 12)
 TukuiWorldStateAnchor.text:SetPoint("CENTER")
-TukuiWorldStateAnchor.text:SetText("WorldStateFrame")
+TukuiWorldStateAnchor.text:SetText("World State")
 TukuiWorldStateAnchor.text:Hide()
 
 TukuiWorldStateAnchor:SetPoint("TOPLEFT", UIParent, "TOPLEFT", T.Scale(11), T.Scale(-90))

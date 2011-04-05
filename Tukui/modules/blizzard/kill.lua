@@ -1,5 +1,7 @@
-local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
 -- here we kill all shit stuff on default UI that we don't need!
+local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
+
+local _, build = GetBuildInfo() -- THIS FILE FOR 4.1
 
 local Kill = CreateFrame("Frame")
 Kill:RegisterEvent("ADDON_LOADED")
@@ -10,12 +12,13 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 	
 		if IsAddOnLoaded("Tukui_DPS") or IsAddOnLoaded("Tukui_Heal") then
 			InterfaceOptionsFrameCategoriesButton10:SetScale(0.00001)
-			InterfaceOptionsFrameCategoriesButton10:SetAlpha(0)		
+			InterfaceOptionsFrameCategoriesButton10:SetAlpha(0)			
 			InterfaceOptionsFrameCategoriesButton11:SetScale(0.00001)
 			InterfaceOptionsFrameCategoriesButton11:SetAlpha(0)
-			CompactRaidFrameManager:Kill()
 			CompactRaidFrameContainer:Kill()
-			SetCVar("useCompactPartyFrames", 0)
+			if tonumber(build) <= 13623 then
+				CompactPartyFrame:Kill()
+			end
 		end	
 	else
 		if addon == "Blizzard_AchievementUI" then
@@ -71,6 +74,10 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 			InterfaceOptionsActionBarsPanelRight:Kill()
 			InterfaceOptionsActionBarsPanelRightTwo:Kill()
 			InterfaceOptionsActionBarsPanelAlwaysShowActionBars:Kill()
+		end
+		
+		if C["nameplate"].enable == true and C["nameplate"].enhancethreat == true then
+			InterfaceOptionsDisplayPanelAggroWarningDisplay:Kill()
 		end
 	end
 end)

@@ -74,7 +74,8 @@ local function Shared(self, unit)
 		health:Height(30)
 		health:SetPoint("TOPLEFT", T.mult, -T.mult)
 		health:SetPoint("TOPRIGHT", -T.mult, T.mult)
-		health:SetStatusBarTexture(normTex)
+		--health:SetStatusBarTexture(normTex)
+		health:SetStatusBarTexture(C["media"].hTex)
 		health:GetStatusBarTexture():SetHorizTile(false)
 		self.Health = health
 		
@@ -829,7 +830,8 @@ local function Shared(self, unit)
 		health:Height(20)
 		health:SetPoint("TOPLEFT", T.mult, -T.mult)
 		health:SetPoint("TOPRIGHT", -T.mult, T.mult)
-		health:SetStatusBarTexture(normTex)
+		--health:SetStatusBarTexture(normTex)
+		health:SetStatusBarTexture(C["media"].hTex)
 		self.Health = health
 		
 		local healthBg = health:CreateTexture(nil, "BORDER")
@@ -1050,7 +1052,8 @@ local function Shared(self, unit)
 		health:Height(20*1.5)
 		health:SetPoint("TOPLEFT")
 		health:SetPoint("TOPRIGHT")
-		health:SetStatusBarTexture(normTex)
+		--health:SetStatusBarTexture(normTex)
+		health:SetStatusBarTexture(C["media"].hTex)
 		self.Health = health
 		
 		local healthBg = health:CreateTexture(nil, "BORDER")

@@ -32,7 +32,8 @@ local function Shared(self, unit)
 	health:SetFrameStrata(t:GetFrameStrata())
 	health:Point("TOPLEFT", t, 2, -2)
 	health:Point("BOTTOMRIGHT", t, -2, 2)
-	health:SetStatusBarTexture(C["media"].normTex)
+	--health:SetStatusBarTexture(C["media"].normTex)
+	health:SetStatusBarTexture(C["media"].hTex)
 	self.Health = health
 	
 	local healthBG = health:CreateTexture(nil, 'BORDER')

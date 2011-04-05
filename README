@@ -1,3 +1,8 @@
+V5.9f - [04/05/2011]
+* adjusted code for talent datatext
+* few more changes getting ready for 4.1
+* fixed some issues related to filger for the hunter class
+
 V5.9e - [04/05/2011]
 * started working on changes for Patch 4.1 (should function on PTR now)
 * bags spawn lower now (over chat frames) -- was sorta messy prior method!

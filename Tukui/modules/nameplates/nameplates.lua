@@ -128,7 +128,7 @@ local function UpdateThreat(frame, elapsed)
 		if not frame.region:IsShown() then
 			if InCombatLockdown() and frame.isFriendly ~= true then
 				--No Threat
-				if E.Role == "Tank" then
+				if T.Role == "Tank" then
 					frame.hp:SetStatusBarColor(badR, badG, badB)
 					frame.hp.hpbg:SetTexture(badR, badG, badB, 0.25)
 				else
@@ -145,7 +145,7 @@ local function UpdateThreat(frame, elapsed)
 			local r, g, b = frame.region:GetVertexColor()
 			if g + b == 0 then
 				--Have Threat
-				if E.Role == "Tank" then
+				if T.Role == "Tank" then
 					frame.hp:SetStatusBarColor(goodR, goodG, goodB)
 					frame.hp.hpbg:SetTexture(goodR, goodG, goodB, 0.25)
 				else

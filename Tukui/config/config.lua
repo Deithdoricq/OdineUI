@@ -247,6 +247,7 @@ DB["media"] = {
 
 	["bordercolor"] = { .05, .05, .05, 1 }, -- border color of tukui panels 
 	["backdropcolor"] = { .1, .1, .1, 1 }, -- background color of tukui panels
+	["backdropfadecolor"] = { .1, .1, .1, 0.9 }, -- same thing just different alpha
 	["altbordercolor"] = { .4, .4, .4 }, -- alternative border color, mainly for unitframes text panels.
 	
 	-- sound

@@ -1,19 +1,21 @@
-local T, C, L, DB = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
+local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
 -- here we kill all shit stuff on default UI that we don't need!
 
 local Kill = CreateFrame("Frame")
 Kill:RegisterEvent("ADDON_LOADED")
-Kill:RegisterEvent("PLAYER_LOGIN")
+Kill:RegisterEvent("PLAYER_ENTERING_WORLD")
 Kill:SetScript("OnEvent", function(self, event, addon)
-	if event == "PLAYER_LOGIN" then
+	if event == "PLAYER_ENTERING_WORLD" then
+		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+	
 		if IsAddOnLoaded("Tukui_DPS") or IsAddOnLoaded("Tukui_Heal") then
 			InterfaceOptionsFrameCategoriesButton10:SetScale(0.00001)
 			InterfaceOptionsFrameCategoriesButton10:SetAlpha(0)		
 			InterfaceOptionsFrameCategoriesButton11:SetScale(0.00001)
 			InterfaceOptionsFrameCategoriesButton11:SetAlpha(0)
-			CompactPartyFrame:Kill()
 			CompactRaidFrameManager:Kill()
 			CompactRaidFrameContainer:Kill()
+			SetCVar("useCompactPartyFrames", 0)
 		end	
 	else
 		if addon == "Blizzard_AchievementUI" then

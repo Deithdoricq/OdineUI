@@ -39,7 +39,7 @@ local function SkinButton(f)
 	if f.SetDisabledTexture then
 		f:SetDisabledTexture("")
 	end
-	f:SetTemplate("Default")
+	f:SetTemplate("Default", true)
 	
 	f:HookScript("OnEnter", SetModifiedBackdrop)
 	f:HookScript("OnLeave", SetOriginalBackdrop)
@@ -56,6 +56,7 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		local skins = {
 			"StaticPopup1",
 			"StaticPopup2",
+			"StaticPopup3",
 			"GameMenuFrame",
 			"InterfaceOptionsFrame",
 			"VideoOptionsFrame",
@@ -68,23 +69,16 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"DropDownList1Backdrop",
 			"DropDownList2Backdrop",
 			"LFDSearchStatus",
-			"AutoCompleteBox", -- this is the /w *nickname* box, press tab
-			"ReadyCheckFrame",
-			"GhostFrameContentsFrame",
+			"AutoCompleteBox",
 			"ColorPickerFrame",
+			"ConsolidatedBuffsTooltip",
+			"ReadyCheckFrame",
 			"StackSplitFrame",
 		}
-
-		-- reskin popup buttons
-		for i = 1, 3 do
-			for j = 1, 3 do
-				SkinButton(_G["StaticPopup"..i.."Button"..j])
-			end
-		end
 		
 		for i = 1, getn(skins) do
-			_G[skins[i]]:SetTemplate("Default")
-			if _G[skins[i]] ~= _G["AutoCompleteBox"] and _G[skins[i]] ~= _G["BNToastFrame"] then -- frame to blacklist from create shadow function
+			_G[skins[i]]:SetTemplate("Transparent")
+			if _G[skins[i]] ~= _G["GhostFrameContentsFrame"] or _G[skins[i]] ~= _G["AutoCompleteBox"] then -- frame to blacklist from create shadow function
 				_G[skins[i]]:CreateShadow("Default")
 			end
 		end
@@ -98,9 +92,16 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
  
 		for i = 1, getn(ChatMenus) do
 			if _G[ChatMenus[i]] == _G["ChatMenu"] then
-				_G[ChatMenus[i]]:HookScript("OnShow", function(self) self:SetTemplate("Default") self:ClearAllPoints() self:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, T.Scale(30)) end)
+				_G[ChatMenus[i]]:HookScript("OnShow", function(self) self:SetTemplate("Default", true) self:ClearAllPoints() self:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT", 0, T.Scale(30)) end)
 			else
-				_G[ChatMenus[i]]:HookScript("OnShow", function(self) self:SetTemplate("Default") end)
+				_G[ChatMenus[i]]:HookScript("OnShow", function(self) self:SetTemplate("Default", true) end)
+			end
+		end
+		
+		-- reskin popup buttons
+		for i = 1, 2 do
+			for j = 1, 3 do
+				SkinButton(_G["StaticPopup"..i.."Button"..j])
 			end
 		end
 		
@@ -116,16 +117,17 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"Logout", 
 			"Quit", 
 			"Continue", 
-			"MacOptions"
+			"MacOptions",
+			"Help"
 		}
 		
 		for i = 1, getn(BlizzardMenuButtons) do
 			local TukuiMenuButtons = _G["GameMenuButton"..BlizzardMenuButtons[i]]
 			if TukuiMenuButtons then
 				SkinButton(TukuiMenuButtons)
-				_G["GameMenuButton"..BlizzardMenuButtons[i].."Left"]:SetAlpha(0)
-				_G["GameMenuButton"..BlizzardMenuButtons[i].."Middle"]:SetAlpha(0)
-				_G["GameMenuButton"..BlizzardMenuButtons[i].."Right"]:SetAlpha(0)
+				--_G["GameMenuButton"..BlizzardMenuButtons[i].."Left"]:SetAlpha(0)
+				--_G["GameMenuButton"..BlizzardMenuButtons[i].."Middle"]:SetAlpha(0)
+				--_G["GameMenuButton"..BlizzardMenuButtons[i].."Right"]:SetAlpha(0)
 			end
 		end
 		
@@ -163,12 +165,13 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"InterfaceOptionsFrameDefaults", 
 			"InterfaceOptionsFrameOkay", 
 			"InterfaceOptionsFrameCancel",
-			"ReadyCheckFrameYesButton",
-			"ReadyCheckFrameNoButton",
 			"ColorPickerOkayButton",
 			"ColorPickerCancelButton",
+			"ReadyCheckFrameYesButton",
+			"ReadyCheckFrameNoButton",
 			"StackSplitOkayButton",
 			"StackSplitCancelButton",
+			"RolePollPopupAcceptButton"
 		}
 		
 		for i = 1, getn(BlizzardButtons) do
@@ -187,37 +190,54 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		_G["AudioOptionsFrameOkay"]:SetPoint("RIGHT",_G["AudioOptionsFrameCancel"],"LEFT",-4,0)
 		_G["InterfaceOptionsFrameOkay"]:ClearAllPoints()
 		_G["InterfaceOptionsFrameOkay"]:SetPoint("RIGHT",_G["InterfaceOptionsFrameCancel"],"LEFT", -4,0)
-		_G["ReadyCheckFrameYesButton"]:SetParent(_G["ReadyCheckFrame"])
-		_G["ReadyCheckFrameNoButton"]:SetParent(_G["ReadyCheckFrame"]) 
-		_G["ReadyCheckFrameYesButton"]:ClearAllPoints()
-		_G["ReadyCheckFrameNoButton"]:ClearAllPoints()
-		_G["ReadyCheckFrameYesButton"]:SetPoint("RIGHT", _G["ReadyCheckFrame"], "CENTER", 0, -22)
-		_G["ReadyCheckFrameNoButton"]:SetPoint("LEFT", _G["ReadyCheckFrameYesButton"], "RIGHT", 3, 0)
-		_G["ReadyCheckFrameText"]:SetParent(_G["ReadyCheckFrame"])	
-		_G["ReadyCheckFrameText"]:ClearAllPoints()
-		_G["ReadyCheckFrameText"]:SetPoint("TOP", 0, -12)
 		_G["ColorPickerCancelButton"]:ClearAllPoints()
 		_G["ColorPickerOkayButton"]:ClearAllPoints()
 		_G["ColorPickerCancelButton"]:SetPoint("BOTTOMRIGHT", ColorPickerFrame, "BOTTOMRIGHT", -6, 6)
-		_G["ColorPickerOkayButton"]:SetPoint("RIGHT",_G["ColorPickerCancelButton"],"LEFT", -4,0)		
+		_G["ColorPickerOkayButton"]:SetPoint("RIGHT",_G["ColorPickerCancelButton"],"LEFT", -4,0)
+		_G["ReadyCheckFrameYesButton"]:SetParent(_G["ReadyCheckFrame"])
+		_G["ReadyCheckFrameNoButton"]:SetParent(_G["ReadyCheckFrame"]) 
+		_G["ReadyCheckFrameYesButton"]:SetPoint("RIGHT", _G["ReadyCheckFrame"], "CENTER", -1, 0)
+		_G["ReadyCheckFrameNoButton"]:SetPoint("LEFT", _G["ReadyCheckFrameYesButton"], "RIGHT", 3, 0)
+		_G["ReadyCheckFrameText"]:SetParent(_G["ReadyCheckFrame"])	
+		_G["ReadyCheckFrameText"]:ClearAllPoints()
+		_G["ReadyCheckFrameText"]:SetPoint("TOP", 0, -12)	
 		
 		-- others
 		_G["ReadyCheckListenerFrame"]:SetAlpha(0)
 		_G["ReadyCheckFrame"]:HookScript("OnShow", function(self) if UnitIsUnit("player", self.initiator) then self:Hide() end end) -- bug fix, don't show it if initiator
 		_G["StackSplitFrame"]:GetRegions():Hide()
+		_G["StaticPopup1EditBoxLeft"]:SetTexture(nil)
+		_G["StaticPopup1EditBoxMid"]:SetTexture(nil)
+		_G["StaticPopup1EditBoxRight"]:SetTexture(nil)
+		
+		--Create backdrop for static popup editbox	
+		local bg = CreateFrame("Frame", nil, StaticPopup1EditBox)
+		bg:Point("TOPLEFT", StaticPopup1EditBox, "TOPLEFT", -2, -2)
+		bg:Point("BOTTOMRIGHT", StaticPopup1EditBox, "BOTTOMRIGHT", 2, 2)
+		bg:SetFrameLevel(StaticPopup1EditBox:GetFrameLevel())
+		bg:SetTemplate("Default")
+		
+		RolePollPopup:SetTemplate("Transparent")
+		RolePollPopup:CreateShadow("Default")
+		LFDDungeonReadyDialog:SetTemplate("Transparent")
+		LFDDungeonReadyDialog:CreateShadow("Default")
+		SkinButton(LFDDungeonReadyDialogEnterDungeonButton)
+		SkinButton(LFDDungeonReadyDialogLeaveQueueButton)
+		SkinButton(ColorPickerOkayButton)
+		SkinButton(ColorPickerCancelButton)
 	end
 	
 	-- mac menu/option panel, made by affli.
 	if IsMacClient() then
 		-- Skin main frame and reposition the header
-		MacOptionsFrame:SetTemplate("Default")
+		MacOptionsFrame:SetTemplate("Default", true)
 		MacOptionsFrameHeader:SetTexture("")
 		MacOptionsFrameHeader:ClearAllPoints()
 		MacOptionsFrameHeader:SetPoint("TOP", MacOptionsFrame, 0, 0)
  
 		--Skin internal frames
-		MacOptionsFrameMovieRecording:SetTemplate("Default")
-		MacOptionsITunesRemote:SetTemplate("Default")
+		MacOptionsFrameMovieRecording:SetTemplate("Default", true)
+		MacOptionsITunesRemote:SetTemplate("Default", true)
  
 		--Skin buttons
 		SkinButton(_G["MacOptionsFrameCancel"])

@@ -1,3 +1,8 @@
+V5.9e - [04/05/2011]
+* started working on changes for Patch 4.1 (should function on PTR now)
+* bags spawn lower now (over chat frames) -- was sorta messy prior method!
+
+
 V5.9d - [04/04/2011]
 * worldframe is movable with /moveui again
 * fixed typo/bug with boss percentage (could be source of random crashes?)

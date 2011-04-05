@@ -9,12 +9,6 @@ local SetFont = function(obj, font, size, style, r, g, b, sr, sg, sb, sox, soy)
 	elseif r then obj:SetAlpha(r) end
 end
 
-local FixTitleFont = function()
-	for _,butt in pairs(PlayerTitlePickerScrollFrame.buttons) do
-		butt.text:SetFontObject(GameFontHighlightSmallLeft)
-	end
-end
-
 TukuiFonts:RegisterEvent("ADDON_LOADED")
 TukuiFonts:SetScript("OnEvent", function(self, event, addon)
 	if addon ~= "Tukui" then return end
@@ -22,6 +16,15 @@ TukuiFonts:SetScript("OnEvent", function(self, event, addon)
 	local NORMAL     = C["media"].font
 	local COMBAT     = C["media"].dmgfont
 	local NUMBER     = C["media"].font
+
+	
+	UIDROPDOWNMENU_DEFAULT_TEXT_HEIGHT = 12
+	CHAT_FONT_HEIGHTS = { 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }
+
+	UNIT_NAME_FONT     = NORMAL
+	NAMEPLATE_FONT     = NORMAL
+	DAMAGE_TEXT_FONT   = COMBAT
+	STANDARD_TEXT_FONT = NORMAL
 
 	if T.eyefinity then
 		-- damage are huge on eyefinity, so we disable it
@@ -38,14 +41,6 @@ TukuiFonts:SetScript("OnEvent", function(self, event, addon)
 		local INVISIBLE = [=[Interface\Addons\Tukui\medias\fonts\invisible_font.ttf]=]
 		COMBAT = INVISIBLE
 	end
-
-	UIDROPDOWNMENU_DEFAULT_TEXT_HEIGHT = 12
-	CHAT_FONT_HEIGHTS = { 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }
-
-	UNIT_NAME_FONT     = NORMAL
-	NAMEPLATE_FONT     = NORMAL
-	DAMAGE_TEXT_FONT   = COMBAT
-	STANDARD_TEXT_FONT = NORMAL
 
 	-- Base fonts
 	SetFont(GameTooltipHeader,                  NORMAL, 11)
@@ -77,9 +72,6 @@ TukuiFonts:SetScript("OnEvent", function(self, event, addon)
 	SetFont(SubZoneTextString,                  NORMAL, 25, "OUTLINE")
 	SetFont(PVPInfoTextString,                  NORMAL, 22, "THINOUTLINE")
 	SetFont(PVPArenaTextString,                 NORMAL, 22, "THINOUTLINE")
-
-	hooksecurefunc("PlayerTitleFrame_UpdateTitles", FixTitleFont)
-	FixTitleFont()
 
 	SetFont = nil
 	self:SetScript("OnEvent", nil)

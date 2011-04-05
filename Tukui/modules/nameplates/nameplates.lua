@@ -3,7 +3,13 @@
 --Base code by Dawn (dNameplates), Rewritten by Elv22
 if not C["nameplate"].enable == true then return end
 
+local _, build = GetBuildInfo() -- THIS FILE FOR 4.1
+if tonumber(build) <= 13623 then return end
+
 local TEXTURE = C["media"].normTex
+local FONT = C["media"].font
+local FONTSIZE = 10
+local FONTFLAG = "THINOUTLINE"
 local hpHeight = 12
 local hpWidth = 110
 local iconSize = 25		--Size of all Icons, RaidIcon/ClassIcon/Castbar Icon
@@ -25,16 +31,6 @@ local NamePlates = CreateFrame("Frame", nil, UIParent)
 NamePlates:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
 if C["nameplate"].trackdebuffs == true or C["nameplate"].trackcc == true then
 	NamePlates:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-end
-
-SetCVar("bloatthreat", 0)
-SetCVar("bloattest", 0)
-SetCVar("bloatnameplates", 0)
-
-if C["nameplate"].overlap == true or T.eyefinity then
-	SetCVar("spreadnameplates", "0")
-else
-	SetCVar("spreadnameplates", "1")
 end
 
 local function QueueObject(parent, object)
@@ -62,48 +58,83 @@ local function HideObjects(parent)
 	end
 end
 
+--Create a fake backdrop frame using textures
+local function CreateVirtualFrame(parent, point)
+	if point == nil then point = parent end
+	
+	if point.backdrop then return end
+	parent.backdrop = parent:CreateTexture(nil, "BORDER")
+	parent.backdrop:SetDrawLayer("BORDER", -8)
+	parent.backdrop:SetPoint("TOPLEFT", point, "TOPLEFT", -noscalemult*3, noscalemult*3)
+	parent.backdrop:SetPoint("BOTTOMRIGHT", point, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
+	parent.backdrop:SetTexture(unpack(C["media"].backdropcolor))
+
+	parent.bordertop = parent:CreateTexture(nil, "BORDER")
+	parent.bordertop:SetPoint("TOPLEFT", point, "TOPLEFT", -noscalemult*2, noscalemult*2)
+	parent.bordertop:SetPoint("TOPRIGHT", point, "TOPRIGHT", noscalemult*2, noscalemult*2)
+	parent.bordertop:SetHeight(noscalemult)
+	parent.bordertop:SetTexture(unpack(C["media"].bordercolor))	
+	parent.bordertop:SetDrawLayer("BORDER", -7)
+	
+	parent.borderbottom = parent:CreateTexture(nil, "BORDER")
+	parent.borderbottom:SetPoint("BOTTOMLEFT", point, "BOTTOMLEFT", -noscalemult*2, -noscalemult*2)
+	parent.borderbottom:SetPoint("BOTTOMRIGHT", point, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
+	parent.borderbottom:SetHeight(noscalemult)
+	parent.borderbottom:SetTexture(unpack(C["media"].bordercolor))	
+	parent.borderbottom:SetDrawLayer("BORDER", -7)
+	
+	parent.borderleft = parent:CreateTexture(nil, "BORDER")
+	parent.borderleft:SetPoint("TOPLEFT", point, "TOPLEFT", -noscalemult*2, noscalemult*2)
+	parent.borderleft:SetPoint("BOTTOMLEFT", point, "BOTTOMLEFT", noscalemult*2, -noscalemult*2)
+	parent.borderleft:SetWidth(noscalemult)
+	parent.borderleft:SetTexture(unpack(C["media"].bordercolor))	
+	parent.borderleft:SetDrawLayer("BORDER", -7)
+	
+	parent.borderright = parent:CreateTexture(nil, "BORDER")
+	parent.borderright:SetPoint("TOPRIGHT", point, "TOPRIGHT", noscalemult*2, noscalemult*2)
+	parent.borderright:SetPoint("BOTTOMRIGHT", point, "BOTTOMRIGHT", -noscalemult*2, -noscalemult*2)
+	parent.borderright:SetWidth(noscalemult)
+	parent.borderright:SetTexture(unpack(C["media"].bordercolor))	
+	parent.borderright:SetDrawLayer("BORDER", -7)	
+end
+
+local function SetVirtualBorder(parent, r, g, b)
+	parent.bordertop:SetTexture(r, g, b)
+	parent.borderbottom:SetTexture(r, g, b)
+	parent.borderleft:SetTexture(r, g, b)
+	parent.borderright:SetTexture(r, g, b)
+end
+
 --OnUpdate function for all nameplates, we use this to update threat, health, and anything else that may require rapid updates.
 local goodR, goodG, goodB = unpack(C["nameplate"].goodcolor)
 local badR, badG, badB = unpack(C["nameplate"].badcolor)
 local transitionR, transitionG, transitionB = unpack(C["nameplate"].transitioncolor)
 local function UpdateThreat(frame, elapsed)
 	frame.hp:Show()
-
+	if frame.hasClass == true then return end
+	
 	if C["nameplate"].enhancethreat ~= true then
 		if(frame.region:IsShown()) then
 			local _, val = frame.region:GetVertexColor()
 			if(val > 0.7) then
-				frame.healthborder_tex1:SetTexture(transitionR, transitionG, transitionB)
-				frame.healthborder_tex2:SetTexture(transitionR, transitionG, transitionB)
-				frame.healthborder_tex3:SetTexture(transitionR, transitionG, transitionB)
-				frame.healthborder_tex4:SetTexture(transitionR, transitionG, transitionB)
+				SetVirtualBorder(frame.hp, transitionR, transitionG, transitionB)
 			else
-				frame.healthborder_tex1:SetTexture(1, 0, 0)
-				frame.healthborder_tex2:SetTexture(1, 0, 0)
-				frame.healthborder_tex3:SetTexture(1, 0, 0)
-				frame.healthborder_tex4:SetTexture(1, 0, 0)
+				SetVirtualBorder(frame.hp, badR, badG, badB)
 			end
 		else
-			frame.healthborder_tex1:SetTexture(unpack(C["media"].bordercolor))
-			frame.healthborder_tex2:SetTexture(unpack(C["media"].bordercolor))
-			frame.healthborder_tex3:SetTexture(unpack(C["media"].bordercolor))
-			frame.healthborder_tex4:SetTexture(unpack(C["media"].bordercolor))
+			SetVirtualBorder(frame.hp, unpack(C["media"].bordercolor))
 		end
-
-		--Set colors to their original, fixes reloading UI with a nameplate shown, not being colored correctly
-		frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
-		frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, 0.25)
 	else
 		if not frame.region:IsShown() then
-			if InCombatLockdown() and frame.hasclass ~= true and frame.isFriendly ~= true then
+			if InCombatLockdown() and frame.isFriendly ~= true then
 				--No Threat
-				if T.Role == "Tank" then
+				if E.Role == "Tank" then
 					frame.hp:SetStatusBarColor(badR, badG, badB)
 					frame.hp.hpbg:SetTexture(badR, badG, badB, 0.25)
 				else
 					frame.hp:SetStatusBarColor(goodR, goodG, goodB)
 					frame.hp.hpbg:SetTexture(goodR, goodG, goodB, 0.25)
-				end
+				end		
 			else
 				--Set colors to their original, not in combat
 				frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
@@ -114,7 +145,7 @@ local function UpdateThreat(frame, elapsed)
 			local r, g, b = frame.region:GetVertexColor()
 			if g + b == 0 then
 				--Have Threat
-				if T.Role == "Tank" then
+				if E.Role == "Tank" then
 					frame.hp:SetStatusBarColor(goodR, goodG, goodB)
 					frame.hp.hpbg:SetTexture(goodR, goodG, goodB, 0.25)
 				else
@@ -123,53 +154,10 @@ local function UpdateThreat(frame, elapsed)
 				end
 			else
 				--Losing/Gaining Threat
-				frame.hp:SetStatusBarColor(transitionR, transitionG, transitionB)
+				frame.hp:SetStatusBarColor(transitionR, transitionG, transitionB)	
 				frame.hp.hpbg:SetTexture(transitionR, transitionG, transitionB, 0.25)
 			end
 		end
-	end
-
-	-- show current health value
-	local minHealth, maxHealth = frame.healthOriginal:GetMinMaxValues()
-	local valueHealth = frame.healthOriginal:GetValue()
-	local d =(valueHealth/maxHealth)*100
-
-	if C["nameplate"].showhealth == true then
-		frame.hp.value:SetText(T.ShortValue(valueHealth).." - "..(string.format("%d%%", math.floor((valueHealth/maxHealth)*100))))
-	end
-
-	--Change frame style if the frame is our target or not
-	if UnitName("target") == frame.name:GetText() and frame:GetAlpha() == 1 then
-		--Targetted Unit
-		frame.name:SetTextColor(1, 1, 0)
-	else
-		--Not Targetted
-		frame.name:SetTextColor(1, 1, 1)
-	end
-
-	--Setup frame shadow to change depending on enemy players health, also setup targetted unit to have white shadow
-	if frame.hasclass == true or frame.isFriendly == true then
-		if(d <= 50 and d >= 20) then
-			frame.healthborder_tex1:SetTexture(1, 1, 0)
-			frame.healthborder_tex2:SetTexture(1, 1, 0)
-			frame.healthborder_tex3:SetTexture(1, 1, 0)
-			frame.healthborder_tex4:SetTexture(1, 1, 0)
-		elseif(d < 20) then
-			frame.healthborder_tex1:SetTexture(1, 0, 0)
-			frame.healthborder_tex2:SetTexture(1, 0, 0)
-			frame.healthborder_tex3:SetTexture(1, 0, 0)
-			frame.healthborder_tex4:SetTexture(1, 0, 0)
-		else
-			frame.healthborder_tex1:SetTexture(unpack(C["media"].bordercolor))
-			frame.healthborder_tex2:SetTexture(unpack(C["media"].bordercolor))
-			frame.healthborder_tex3:SetTexture(unpack(C["media"].bordercolor))
-			frame.healthborder_tex4:SetTexture(unpack(C["media"].bordercolor))
-		end
-	elseif (frame.hasclass ~= true and frame.isFriendly ~= true) and C["nameplate"].enhancethreat == true then
-		frame.healthborder_tex1:SetTexture(unpack(C["media"].bordercolor))
-		frame.healthborder_tex2:SetTexture(unpack(C["media"].bordercolor))
-		frame.healthborder_tex3:SetTexture(unpack(C["media"].bordercolor))
-		frame.healthborder_tex4:SetTexture(unpack(C["media"].bordercolor))
 	end
 end
 
@@ -201,7 +189,7 @@ local function CreateAuraIcon(parent)
 	button.cd:SetAllPoints(button)
 	button.cd:SetReverse(true)
 	button.count = button:CreateFontString(nil,"OVERLAY")
-	button.count:SetFont(C["media"].font, 7, "THINOUTLINE")
+	button.count:SetFont(FONT, 7, FONTFLAG)
 	button.count:SetShadowColor(0, 0, 0, 0.4)
 	button.count:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 2)
 	return button
@@ -221,7 +209,7 @@ local function UpdateAuraIcon(button, unit, index, filter)
 	else
 		button.count:SetText("")
 	end
-	button.cd:SetScript("OnUpdate", function(self) if not button.cd.timer then self:SetScript("OnUpdate", nil) return end button.cd.timer.text:SetFont(C["media"].font,8,"THINOUTLINE") button.cd.timer.text:SetShadowColor(0, 0, 0, 0.4) end)
+	button.cd:SetScript("OnUpdate", function(self) if not button.cd.timer then self:SetScript("OnUpdate", nil) return end button.cd.timer.text:SetFont(FONT,8,FONTFLAG) button.cd.timer.text:SetShadowColor(0, 0, 0, 0.4) end)
 	button:Show()
 end
 
@@ -265,8 +253,7 @@ local function UpdateCastbar(frame)
 	frame:SetSize(cbWidth, cbHeight)
 	frame:SetPoint('TOP', frame:GetParent().hp, 'BOTTOM', 0, -8)
 	frame:GetStatusBarTexture():SetHorizTile(true)
-
-	if(not frame.shield:IsShown()) then
+	if(frame.shield:IsShown()) then
 		frame:SetStatusBarColor(0.78, 0.25, 0.25, 1)
 	end
 end	
@@ -323,24 +310,35 @@ end
 
 --Color the nameplate to 'Our' style instead of using blizzards ugly colors.
 local function Colorize(frame)
-	local r,g,b = frame.hp:GetStatusBarColor()
-	if frame.hasclass == true then frame.isFriendly = false return end
-
+	local r,g,b = frame.healthOriginal:GetStatusBarColor()
+	
+	for class, color in pairs(RAID_CLASS_COLORS) do
+		local r, g, b = floor(r*100+.5)/100, floor(g*100+.5)/100, floor(b*100+.5)/100
+		if RAID_CLASS_COLORS[class].r == r and RAID_CLASS_COLORS[class].g == g and RAID_CLASS_COLORS[class].b == b then
+			frame.hasClass = true
+			frame.isFriendly = false
+			frame.hp:SetStatusBarColor(unpack(T.oUF_colors.class[class]))
+			return
+		end
+	end
+	
 	if g+b == 0 then -- hostile
-		r,g,b = 222/255, 95/255,  95/255
+		r,g,b = unpack(T.oUF_colors.reaction[1])
 		frame.isFriendly = false
 	elseif r+b == 0 then -- friendly npc
-		r,g,b = 0.31, 0.45, 0.63
+		r,g,b = unpack(T.oUF_colors.power["MANA"])
 		frame.isFriendly = true
 	elseif r+g > 1.95 then -- neutral
-		r,g,b = 218/255, 197/255, 92/255
+		r,g,b = unpack(T.oUF_colors.reaction[4])
 		frame.isFriendly = false
 	elseif r+g == 0 then -- friendly player
-		r,g,b = 75/255,  175/255, 76/255
+		r,g,b = unpack(T.oUF_colors.reaction[5])
 		frame.isFriendly = true
 	else -- enemy player
 		frame.isFriendly = false
 	end
+	frame.hasClass = false
+	
 	frame.hp:SetStatusBarColor(r,g,b)
 end
 
@@ -348,59 +346,47 @@ end
 --size settings when it gets reshown
 local function UpdateObjects(frame)
 	local frame = frame:GetParent()
-
+	
 	local r, g, b = frame.hp:GetStatusBarColor()
-	local r, g, b = floor(r*100+.5)/100, floor(g*100+.5)/100, floor(b*100+.5)/100
-	local classname = ""
 
 	--Have to reposition this here so it doesnt resize after being hidden
 	frame.hp:ClearAllPoints()
-	frame.hp:SetSize(hpWidth, hpHeight)
-	frame.hp:SetPoint('TOP', frame, 'TOP', 0, -noscalemult*3)
+	frame.hp:SetSize(hpWidth, hpHeight)	
+	frame.hp:SetPoint('TOP', frame, 'TOP', 0, -15)
 	frame.hp:GetStatusBarTexture():SetHorizTile(true)
 
-	--Determine if its an Enemy Player frame
-	for class, color in pairs(RAID_CLASS_COLORS) do
-		if RAID_CLASS_COLORS[class].r == r and RAID_CLASS_COLORS[class].g == g and RAID_CLASS_COLORS[class].b == b then
-			classname = class
-			break
-		end
-	end
-	if (classname) then
-		texcoord = CLASS_BUTTONS[classname]
-		if texcoord then
-			frame.hasclass = true
-		else
-			frame.hasclass = false
-		end
-	else
-		frame.hasclass = false
-	end
-
-	if frame.hp.rcolor == 0 and frame.hp.gcolor == 0 and frame.hp.bcolor ~= 0 then
-		frame.hasclass = true
-	end
-
-	--create variable for original colors
+	--Match values
+	frame.hp:SetMinMaxValues(frame.healthOriginal:GetMinMaxValues())
+	frame.hp:SetValue(frame.healthOriginal:GetValue())
+	frame.healthOriginal:SetScript("OnValueChanged", function()
+		frame.hp:SetMinMaxValues(frame.healthOriginal:GetMinMaxValues())
+		frame.hp:SetValue(frame.healthOriginal:GetValue())
+	end)
+	
+	--Colorize Plate
 	Colorize(frame)
 	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = frame.hp:GetStatusBarColor()
 	frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, 0.25)
-
+	SetVirtualBorder(frame.hp, unpack(C["media"].bordercolor))
+	if C["nameplate"].enhancethreat == true then
+		frame.hp.name:SetTextColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
+	end
+	
 	--Set the name text
-	frame.name:SetText(frame.oldname:GetText())
-
+	frame.hp.name:SetText(frame.hp.oldname:GetText())
+	
 	--Setup level text
-	local level, elite, mylevel = tonumber(frame.oldlevel:GetText()), frame.elite:IsShown(), UnitLevel("player")
+	local level, elite, mylevel = tonumber(frame.hp.oldlevel:GetText()), frame.hp.elite:IsShown(), UnitLevel("player")
 	frame.hp.level:ClearAllPoints()
 	if C["nameplate"].showhealth == true then
-		frame.hp.level:SetPoint("RIGHT", frame.hp, "RIGHT", 2, 2)
+		frame.hp.level:SetPoint("RIGHT", frame.hp, "RIGHT", 2, 0)
 	else
-		frame.hp.level:SetPoint("RIGHT", frame.hp, "LEFT", -1, 2)
+		frame.hp.level:SetPoint("RIGHT", frame.hp, "LEFT", -1, 0)
 	end
-
-	frame.hp.level:SetTextColor(frame.oldlevel:GetTextColor())
-	if frame.boss:IsShown() then
-		frame.hp.level:SetText("B")
+	
+	frame.hp.level:SetTextColor(frame.hp.oldlevel:GetTextColor())
+	if frame.hp.boss:IsShown() then
+		frame.hp.level:SetText("??")
 		frame.hp.level:SetTextColor(0.8, 0.05, 0)
 		frame.hp.level:Show()
 	elseif not elite and level == mylevel then
@@ -409,7 +395,7 @@ local function UpdateObjects(frame)
 		frame.hp.level:SetText(level..(elite and "+" or ""))
 		frame.hp.level:Show()
 	end
-
+	
 	frame.overlay:ClearAllPoints()
 	frame.overlay:SetAllPoints(frame.hp)
 	
@@ -417,7 +403,7 @@ local function UpdateObjects(frame)
 	if C["nameplate"].trackdebuffs == true or C["nameplate"].trackcc == true then
 		if frame.icons then return end
 		frame.icons = CreateFrame("Frame",nil,frame)
-		frame.icons:SetPoint("BOTTOMRIGHT", frame.hp, "TOPRIGHT", 0, 10+5)
+		frame.icons:SetPoint("BOTTOMRIGHT",frame.hp,"TOPRIGHT", 0, FONTSIZE+5)
 		frame.icons:SetWidth(20 + hpWidth)
 		frame.icons:SetHeight(25)
 		frame.icons:SetFrameLevel(frame.hp:GetFrameLevel()+2)
@@ -430,165 +416,96 @@ end
 
 --This is where we create most 'Static' objects for the nameplate, it gets fired when a nameplate is first seen.
 local function SkinObjects(frame)
-	local hp, cb = frame:GetChildren()
-	local threat, hpborder, cbshield, cbborder, cbicon, overlay, oldname, oldlevel, bossicon, raidicon, elite = frame:GetRegions()
-	frame.healthOriginal = hp
+	local oldhp, cb = frame:GetChildren()
+	local threat, hpborder, overlay, oldname, oldlevel, bossicon, raidicon, elite = frame:GetRegions()
+	local _, cbborder, cbshield, cbicon = cb:GetRegions()
 
-	--Just make sure these are correct
+	--Health Bar
+	frame.healthOriginal = oldhp
+	local hp = CreateFrame("Statusbar", nil, frame)
 	hp:SetFrameLevel(1)
-	cb:SetFrameLevel(1)
-	
-	--Create hp backdrop
-	local healthbarbackdrop_tex = hp:CreateTexture(nil, "BORDER")
-	healthbarbackdrop_tex:SetPoint("TOPLEFT", hp, "TOPLEFT", -noscalemult*3, noscalemult*3)
-	healthbarbackdrop_tex:SetPoint("TOPRIGHT", hp, "TOPRIGHT", noscalemult*3, noscalemult*3)
-	healthbarbackdrop_tex:SetHeight(hpHeight + noscalemult*6)
-	healthbarbackdrop_tex:SetTexture(unpack(C["media"].backdropcolor))	
-	healthbarbackdrop_tex:SetDrawLayer("BORDER", -1) --This is what was causing all the issues
-	
-	--Create our fake border.. fuck blizz
-	local healthbarborder_tex1 = hp:CreateTexture(nil, "BORDER")
-	healthbarborder_tex1:SetPoint("TOPLEFT", hp, "TOPLEFT", -noscalemult*2, noscalemult*2)
-	healthbarborder_tex1:SetPoint("TOPRIGHT", hp, "TOPRIGHT", noscalemult*2, noscalemult*2)
-	healthbarborder_tex1:SetHeight(noscalemult)
-	healthbarborder_tex1:SetTexture(unpack(C["media"].bordercolor))
-	frame.healthborder_tex1 = healthbarborder_tex1
-
-	local healthbarborder_tex2 = hp:CreateTexture(nil, "BORDER")
-	healthbarborder_tex2:SetPoint("BOTTOMLEFT", hp, "BOTTOMLEFT", -noscalemult*2, -noscalemult*2)
-	healthbarborder_tex2:SetPoint("BOTTOMRIGHT", hp, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
-	healthbarborder_tex2:SetHeight(noscalemult)
-	healthbarborder_tex2:SetTexture(unpack(C["media"].bordercolor))
-	frame.healthborder_tex2 = healthbarborder_tex2
-
-	local healthbarborder_tex3 = hp:CreateTexture(nil, "BORDER")
-	healthbarborder_tex3:SetPoint("TOPLEFT", hp, "TOPLEFT", -noscalemult*2, noscalemult*2)
-	healthbarborder_tex3:SetPoint("BOTTOMLEFT", hp, "BOTTOMLEFT", noscalemult*2, -noscalemult*2)
-	healthbarborder_tex3:SetWidth(noscalemult)
-	healthbarborder_tex3:SetTexture(unpack(C["media"].bordercolor))
-	frame.healthborder_tex3 = healthbarborder_tex3
-
-	local healthbarborder_tex4 = hp:CreateTexture(nil, "BORDER")
-	healthbarborder_tex4:SetPoint("TOPRIGHT", hp, "TOPRIGHT", noscalemult*2, noscalemult*2)
-	healthbarborder_tex4:SetPoint("BOTTOMRIGHT", hp, "BOTTOMRIGHT", -noscalemult*2, -noscalemult*2)
-	healthbarborder_tex4:SetWidth(noscalemult)
-	healthbarborder_tex4:SetTexture(unpack(C["media"].bordercolor))
-	frame.healthborder_tex4 = healthbarborder_tex4
-
+	hp:SetFrameStrata(oldhp:GetFrameStrata())
 	hp:SetStatusBarTexture(TEXTURE)
-	frame.hp = hp
-
-	--Actual Background for the Healthbar
-	hp.hpbg = hp:CreateTexture(nil, 'BORDER')
-	hp.hpbg:SetAllPoints(hp)
-	hp.hpbg:SetTexture(1,1,1,0.25)  
-
-	--Reuse old Overlay Highlight
-	frame.overlay = overlay
-	frame.overlay:SetTexture(1,1,1,0.15)
-	frame.overlay:SetAllPoints(hp)
-
+	CreateVirtualFrame(hp)
+	
 	--Create Level
 	hp.level = hp:CreateFontString(nil, "OVERLAY")
-	hp.level:SetFont(C["media"].font, 10, "OUTLINE")
+	hp.level:SetFont(FONT, FONTSIZE, FONTFLAG)
+	hp.level:SetShadowColor(0, 0, 0, 0.4)
 	hp.level:SetTextColor(1, 1, 1)
-
-	--Needed for level text
-	frame.oldlevel = oldlevel
-	frame.boss = bossicon
-	frame.elite = elite
-
+	hp.level:SetShadowOffset(T.mult, -T.mult)	
+	hp.oldlevel = oldlevel
+	hp.boss = bossicon
+	hp.elite = elite
+	
 	--Create Health Text
 	if C["nameplate"].showhealth == true then
-		hp.value = hp:CreateFontString(nil, "OVERLAY")
-		hp.value:SetFont(C["media"].font, 10, "OUTLINE")
+		hp.value = hp:CreateFontString(nil, "OVERLAY")	
+		hp.value:SetFont(FONT, FONTSIZE, FONTFLAG)
+		hp.value:SetShadowColor(0, 0, 0, 0.4)
 		hp.value:SetPoint("CENTER", hp)
 		hp.value:SetTextColor(1,1,1)
+		hp.value:SetShadowOffset(T.mult, -T.mult)
 	end
+	
+	--Create Name Text
+	hp.name = hp:CreateFontString(nil, 'OVERLAY')
+	hp.name:SetPoint('BOTTOMLEFT', hp, 'TOPLEFT', -10, 3)
+	hp.name:SetPoint('BOTTOMRIGHT', hp, 'TOPRIGHT', 10, 3)
+	hp.name:SetFont(FONT, FONTSIZE, FONTFLAG)
+	hp.name:SetShadowColor(0, 0, 0, 0.4)
+	hp.name:SetShadowOffset(T.mult, -T.mult)
+	hp.oldname = oldname
 
-	-- Create Cast Bar Backdrop frame
-	local castbarbackdrop_tex = cb:CreateTexture(nil, "BACKGROUND")
-	castbarbackdrop_tex:SetPoint("TOPLEFT", cb, "TOPLEFT", -noscalemult*3, noscalemult*3)
-	castbarbackdrop_tex:SetPoint("BOTTOMRIGHT", cb, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
-	castbarbackdrop_tex:SetTexture(unpack(C["media"].backdropcolor))
-
-	--Create our fake border.. fuck blizz
-	local castbarborder_tex1 = cb:CreateTexture(nil, "BORDER")
-	castbarborder_tex1:SetPoint("TOPLEFT", cb, "TOPLEFT", -noscalemult*2, noscalemult*2)
-	castbarborder_tex1:SetPoint("TOPRIGHT", cb, "TOPRIGHT", noscalemult*2, noscalemult*2)
-	castbarborder_tex1:SetHeight(noscalemult)
-	castbarborder_tex1:SetTexture(unpack(C["media"].bordercolor))	
-
-	local castbarborder_tex2 = cb:CreateTexture(nil, "BORDER")
-	castbarborder_tex2:SetPoint("BOTTOMLEFT", cb, "BOTTOMLEFT", -noscalemult*2, -noscalemult*2)
-	castbarborder_tex2:SetPoint("BOTTOMRIGHT", cb, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
-	castbarborder_tex2:SetHeight(noscalemult)
-	castbarborder_tex2:SetTexture(unpack(C["media"].bordercolor))	
-
-	local castbarborder_tex3 = cb:CreateTexture(nil, "BORDER")
-	castbarborder_tex3:SetPoint("TOPLEFT", cb, "TOPLEFT", -noscalemult*2, noscalemult*2)
-	castbarborder_tex3:SetPoint("BOTTOMLEFT", cb, "BOTTOMLEFT", noscalemult*2, -noscalemult*2)
-	castbarborder_tex3:SetWidth(noscalemult)
-	castbarborder_tex3:SetTexture(unpack(C["media"].bordercolor))	
-
-	local castbarborder_tex4 = cb:CreateTexture(nil, "BORDER")
-	castbarborder_tex4:SetPoint("TOPRIGHT", cb, "TOPRIGHT", noscalemult*2, noscalemult*2)
-	castbarborder_tex4:SetPoint("BOTTOMRIGHT", cb, "BOTTOMRIGHT", -noscalemult*2, -noscalemult*2)
-	castbarborder_tex4:SetWidth(noscalemult)
-	castbarborder_tex4:SetTexture(unpack(C["media"].bordercolor))	
-
-	--Setup CastBar Icon
-	cbicon:ClearAllPoints()
-	cbicon:SetPoint("TOPLEFT", hp, "TOPRIGHT", 8, 0)
-	cbicon:SetSize(iconSize, iconSize)
-	cbicon:SetTexCoord(.07, .93, .07, .93)
-	cbicon:SetDrawLayer("OVERLAY")
-	cb.icon = cbicon
-
-	-- Create Cast Icon Backdrop frame
-	local casticonbackdrop_tex = cb:CreateTexture(nil, "BACKGROUND")
-	casticonbackdrop_tex:SetPoint("TOPLEFT", cbicon, "TOPLEFT", -noscalemult*3, noscalemult*3)
-	casticonbackdrop_tex:SetPoint("BOTTOMRIGHT", cbicon, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
-	casticonbackdrop_tex:SetTexture(unpack(C["media"].backdropcolor))
-
-	local casticonborder_tex = cb:CreateTexture(nil, "BORDER")
-	casticonborder_tex:SetPoint("TOPLEFT", cbicon, "TOPLEFT", -noscalemult*2, noscalemult*2)
-	casticonborder_tex:SetPoint("BOTTOMRIGHT", cbicon, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
-	casticonborder_tex:SetTexture(unpack(C["media"].bordercolor))	
-
-	--Create Cast Backdrop Frame
-	local casticonbackdrop2_tex = cb:CreateTexture(nil, "ARTWORK")
-	casticonbackdrop2_tex:SetPoint("TOPLEFT", cbicon, "TOPLEFT", -noscalemult, noscalemult)
-	casticonbackdrop2_tex:SetPoint("BOTTOMRIGHT", cbicon, "BOTTOMRIGHT", noscalemult, -noscalemult)
-	casticonbackdrop2_tex:SetTexture(unpack(C["media"].backdropcolor))
-
+	hp.hpbg = hp:CreateTexture(nil, 'BORDER')
+	hp.hpbg:SetAllPoints(hp)
+	hp.hpbg:SetTexture(1,1,1,0.25) 		
+	
+	hp:HookScript('OnShow', UpdateObjects)
+	frame.hp = hp
+	
+	--Cast Bar
+	cb:SetFrameLevel(1)
+	cb:SetStatusBarTexture(TEXTURE)
+	CreateVirtualFrame(cb)
+	
 	--Create Cast Time Text
 	cb.time = cb:CreateFontString(nil, "ARTWORK")
 	cb.time:SetPoint("RIGHT", cb, "LEFT", -1, 0)
-	cb.time:SetFont(C["media"].font, 10, "OUTLINE")
+	cb.time:SetFont(FONT, FONTSIZE, FONTFLAG)
+	cb.time:SetShadowColor(0, 0, 0, 0.4)
 	cb.time:SetTextColor(1, 1, 1)
+	cb.time:SetShadowOffset(T.mult, -T.mult)
 
 	--Create Cast Name Text
 	cb.name = cb:CreateFontString(nil, "ARTWORK")
 	cb.name:SetPoint("TOP", cb, "BOTTOM", 0, -3)
-	cb.name:SetFont(C["media"].font, 10, "OUTLINE")
+	cb.name:SetFont(FONT, FONTSIZE, FONTFLAG)
 	cb.name:SetTextColor(1, 1, 1)
-
-	--We need the castbar shield to determine if it can be interrupted or not
+	cb.name:SetShadowColor(0, 0, 0, 0.4)
+	cb.name:SetShadowOffset(T.mult, -T.mult)		
+	
+	--Setup CastBar Icon
+	cbicon:ClearAllPoints()
+	cbicon:SetPoint("TOPLEFT", hp, "TOPRIGHT", 8, 0)		
+	cbicon:SetSize(iconSize, iconSize)
+	cbicon:SetTexCoord(.07, .93, .07, .93)
+	cbicon:SetDrawLayer("OVERLAY")
+	cb.icon = cbicon
+	CreateVirtualFrame(cb, cb.icon)
+	
 	cb.shield = cbshield
+	cbshield:ClearAllPoints()
+	cbshield:SetPoint("TOP", cb, "BOTTOM")
 	cb:HookScript('OnShow', UpdateCastbar)
 	cb:HookScript('OnSizeChanged', OnSizeChanged)
-	cb:HookScript('OnValueChanged', OnValueChanged)
-	cb:SetStatusBarTexture(TEXTURE)
+	cb:HookScript('OnValueChanged', OnValueChanged)			
 	frame.cb = cb
-
-	--Create Name Text
-	local name = hp:CreateFontString(nil, 'OVERLAY')
-	name:SetPoint('BOTTOMLEFT', hp, 'TOPLEFT', -10, 3)
-	name:SetPoint('BOTTOMRIGHT', hp, 'TOPRIGHT', 10, 3)
-	name:SetFont(C["media"].font, 10, "OUTLINE")
-	frame.oldname = oldname
-	frame.name = name
+	
+	--Highlight
+	overlay:SetTexture(1,1,1,0.15)
+	overlay:SetAllPoints(hp)	
+	frame.overlay = overlay
 
 	--Reposition and Resize RaidIcon
 	raidicon:ClearAllPoints()
@@ -596,8 +513,9 @@ local function SkinObjects(frame)
 	raidicon:SetSize(iconSize*1.4, iconSize*1.4)
 	raidicon:SetTexture([[Interface\AddOns\Tukui\medias\textures\raidicons.blp]])
 	frame.raidicon = raidicon
-
+	
 	--Hide Old Stuff
+	QueueObject(frame, oldhp)
 	QueueObject(frame, oldlevel)
 	QueueObject(frame, threat)
 	QueueObject(frame, hpborder)
@@ -606,49 +524,74 @@ local function SkinObjects(frame)
 	QueueObject(frame, oldname)
 	QueueObject(frame, bossicon)
 	QueueObject(frame, elite)
-
+	
 	UpdateObjects(hp)
 	UpdateCastbar(cb)
-
-	frame.hp:HookScript('OnShow', UpdateObjects)
+	
 	frame:HookScript('OnHide', OnHide)
 	frames[frame] = true
 end
 
 --Create our blacklist for nameplates, so prevent a certain nameplate from ever showing
 local function CheckBlacklist(frame, ...)
-	if T.PlateBlacklist[frame.name:GetText()] then
+	if T.PlateBlacklist[frame.hp.name:GetText()] then
 		frame:SetScript("OnUpdate", function() end)
 		frame.hp:Hide()
 		frame.cb:Hide()
 		frame.overlay:Hide()
-		frame.oldlevel:Hide()
+		frame.hp.oldlevel:Hide()
 	end
 end
 
 --When becoming intoxicated blizzard likes to re-show the old level text, this should fix that
 local function HideDrunkenText(frame, ...)
-	if frame and frame.oldlevel and frame.oldlevel:IsShown() then
-		frame.oldlevel:Hide()
+	if frame and frame.hp.oldlevel and frame.hp.oldlevel:IsShown() then
+		frame.hp.oldlevel:Hide()
 	end
 end
 
 --Force the name text of a nameplate to be behind other nameplates unless it is our target
 local function AdjustNameLevel(frame, ...)
-	if UnitName("target") == frame.name:GetText() and frame:GetAlpha() == 1 then
-		frame.name:SetDrawLayer("OVERLAY")
+	if UnitName("target") == frame.hp.name:GetText() and frame:GetAlpha() == 1 then
+		frame.hp.name:SetDrawLayer("OVERLAY")
 	else
-		frame.name:SetDrawLayer("BORDER")
+		frame.hp.name:SetDrawLayer("BORDER")
 	end
 end
 
+--Health Text, also border coloring for certain plates depending on health
+local function ShowHealth(frame, ...)
+	-- show current health value
+	local minHealth, maxHealth = frame.healthOriginal:GetMinMaxValues()
+	local valueHealth = frame.healthOriginal:GetValue()
+	local d =(valueHealth/maxHealth)*100
+	
+	if C["nameplate"].showhealth == true then
+		frame.hp.value:SetText(T.ShortValue(valueHealth).." - "..(string.format("%d%%", math.floor((valueHealth/maxHealth)*100))))
+	end
+			
+	--Setup frame shadow to change depending on enemy players health, also setup targetted unit to have white shadow
+	if frame.hasClass == true or frame.isFriendly == true then
+		if(d <= 50 and d >= 20) then
+			SetVirtualBorder(frame.hp, 1, 1, 0)
+		elseif(d < 20) then
+			SetVirtualBorder(frame.hp, 1, 0, 0)
+		else
+			SetVirtualBorder(frame.hp, unpack(C["media"].bordercolor))
+		end
+	elseif (frame.hasClass ~= true and frame.isFriendly ~= true) and C["nameplate"].enhancethreat == true then
+		SetVirtualBorder(frame.hp, unpack(C["media"].bordercolor))
+	end
+end
+
+--Scan all visible nameplate for a known unit.
 local function CheckUnit_Guid(frame, ...)
 	--local numParty, numRaid = GetNumPartyMembers(), GetNumRaidMembers()
-	if UnitExists("target") and frame:GetAlpha() == 1 and UnitName("target") == frame.name:GetText() then
+	if UnitExists("target") and frame:GetAlpha() == 1 and UnitName("target") == frame.hp.name:GetText() then
 		frame.guid = UnitGUID("target")
 		frame.unit = "target"
 		OnAura(frame, "target")
-	elseif frame.overlay:IsShown() and UnitExists("mouseover") and UnitName("mouseover") == frame.name:GetText() then
+	elseif frame.overlay:IsShown() and UnitExists("mouseover") and UnitName("mouseover") == frame.hp.name:GetText() then
 		frame.guid = UnitGUID("mouseover")
 		frame.unit = "mouseover"
 		OnAura(frame, "mouseover")
@@ -681,8 +624,8 @@ local function HookFrames(...)
 	for index = 1, select('#', ...) do
 		local frame = select(index, ...)
 		local region = frame:GetRegions()
-
-		if(not frames[frame] and not frame:GetName() and region and region:GetObjectType() == 'Texture' and region:GetTexture() == OVERLAY) then
+		
+		if(not frames[frame] and (frame:GetName() and frame:GetName():find("NamePlate%d")) and region and region:GetObjectType() == 'Texture' and region:GetTexture() == OVERLAY) then
 			SkinObjects(frame)
 			frame.region = region
 		end
@@ -704,6 +647,7 @@ CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
 		self.elapsed = (self.elapsed or 0) + elapsed
 	end
 	
+	ForEachPlate(ShowHealth)
 	ForEachPlate(CheckBlacklist)
 	ForEachPlate(HideDrunkenText)
 	ForEachPlate(CheckUnit_Guid)
@@ -719,7 +663,7 @@ end
 if C["nameplate"].combat == true then
 	NamePlates:RegisterEvent("PLAYER_REGEN_ENABLED")
 	NamePlates:RegisterEvent("PLAYER_REGEN_DISABLED")
-	NamePlates:RegisterEvent("PLAYER_ENTERING_WORLD")
+	
 	function NamePlates:PLAYER_REGEN_ENABLED()
 		SetCVar("nameplateShowEnemies", 0)
 	end
@@ -727,12 +671,27 @@ if C["nameplate"].combat == true then
 	function NamePlates:PLAYER_REGEN_DISABLED()
 		SetCVar("nameplateShowEnemies", 1)
 	end
+end
 
-	function NamePlates:PLAYER_ENTERING_WORLD()
+NamePlates:RegisterEvent("PLAYER_ENTERING_WORLD")
+function NamePlates:PLAYER_ENTERING_WORLD()
+	if C["nameplate"].combat == true then
 		if InCombatLockdown() then
 			SetCVar("nameplateShowEnemies", 1)
 		else
 			SetCVar("nameplateShowEnemies", 0)
 		end
+	end
+	
+	if C["nameplate"].enable == true and C["nameplate"].enhancethreat == true then
+		SetCVar("threatWarning", 3)
+	end
+	
+	SetCVar("bloatthreat", 0)
+	SetCVar("bloattest", 0)
+	SetCVar("bloatnameplates", 0)
+	if T.eyefinity then
+		SetCVar("nameplateMotion", "0")
+		InterfaceOptionsNamesPanelUnitNameplatesMotionDropDown:Kill()
 	end
 end

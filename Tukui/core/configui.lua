@@ -6,12 +6,14 @@ local T, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config
 local myPlayerRealm = GetCVar("realmName")
 local myPlayerName  = UnitName("player")
 
+
 for group,options in pairs(DB) do
 	if not C[group] then C[group] = {} end
 	for option, value in pairs(options) do
 		C[group][option] = value
 	end
 end
+
 
 if IsAddOnLoaded("Tukui_Config") and OUIDB then
 	local profile = OUIDB["profileKeys"][myPlayerName.." - "..myPlayerRealm]
@@ -26,5 +28,5 @@ if IsAddOnLoaded("Tukui_Config") and OUIDB then
 				end
 			end
 		end
-	end
+	end	
 end

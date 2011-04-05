@@ -2,6 +2,9 @@ V5.9d - [04/04/2011]
 * worldframe is movable with /moveui again
 * fixed typo/bug with boss percentage (could be source of random crashes?)
 * playerhighlight is disabled by default now
+* fixed bug with grid frames alpha not being correct and not being able to be changed in config
+* adjusted frame level for minimap
+* started moving all spellfilters/procs/etc into one section to find and change easier
 
 V5.9c - [04/03/2011]
 * added option to move worldframe with /moveui
@@ -36,7 +39,6 @@ V5.7 - [03/31/2011]
 
 
 V5.6 - [03/29/2011]
-
 * PLEASE TAKE NOTE DPS/HEAL LAYOUT FOLDERS WERE RENAMED, DELETE THE OLD NAMES FROM YOUR ADDONS FOLDER WHEN INSTALLING!!!!
 * fixed problem with tooltips fading when they shouldn't be
 * compatibility fix for chat loot frame

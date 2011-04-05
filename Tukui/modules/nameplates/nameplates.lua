@@ -67,7 +67,7 @@ local goodR, goodG, goodB = unpack(C["nameplate"].goodcolor)
 local badR, badG, badB = unpack(C["nameplate"].badcolor)
 local transitionR, transitionG, transitionB = unpack(C["nameplate"].transitioncolor)
 local function UpdateThreat(frame, elapsed)
-	frame.hp:Show() --Blacklist needs this
+	frame.hp:Show()
 
 	if C["nameplate"].enhancethreat ~= true then
 		if(frame.region:IsShown()) then

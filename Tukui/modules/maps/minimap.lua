@@ -10,9 +10,12 @@ TukuiMinimap:Point("TOPRIGHT", UIParent, "TOPRIGHT", -8, -8)
 TukuiMinimap:Size(144, 144)
 TukuiMinimap:SetClampedToScreen(true)
 TukuiMinimap:SetMovable(true)
-TukuiMinimap.text = T.SetFontString(TukuiMinimap, C["media"].font, 12, "OUTLINE")
+TukuiMinimap.text = T.SetFontString(TukuiMinimap, C["media"].font, 12)
 TukuiMinimap.text:SetPoint("CENTER")
 TukuiMinimap.text:SetText(L.move_minimap)
+
+-- Adjust Frame Level so its over other frames if needbe
+Minimap:SetFrameLevel(3)
 
 -- kill the minimap cluster
 MinimapCluster:Kill()
@@ -75,21 +78,6 @@ local function UpdateLFG()
 	MiniMapLFGFrame:ClearAllPoints()
 	MiniMapLFGFrame:Point("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", 2, 1)
 	MiniMapLFGFrameBorder:Hide()
-	
---	LFDDungeonReadyStatus:ClearAllPoints()
---	LFDDungeonReadyStatus:SetPoint("TOPRIGHT", Minimap, "BOTTOMLEFT", 5, -5)
---	LFDDungeonReadyStatus:SetScale(1)
---	LFDDungeonReadyStatus:SetAlpha(1,0.8)
-
---	LFDDungeonReadyDialog:ClearAllPoints()
---	LFDDungeonReadyDialog:SetPoint("TOPRIGHT", Minimap, "BOTTOMLEFT", -5, 5)
---	LFDDungeonReadyDialog:SetScale(1)
---	LFDDungeonReadyDialog:SetAlpha(1,0.8)
-
-	LFDSearchStatus:ClearAllPoints()
-	LFDSearchStatus:Point("TOPRIGHT", Minimap, "BOTTOMLEFT", -5, -5)
-	LFDSearchStatus:SetScale(1)
-	LFDSearchStatus:SetAlpha(1,0.8)
 end
 hooksecurefunc("MiniMapLFG_UpdateIsShown", UpdateLFG)
 
@@ -163,11 +151,11 @@ local menuList = {
     func = function() if IsInGuild() then if not GuildFrame then LoadAddOn("Blizzard_GuildUI") end GuildFrame_Toggle() end end},
     {text = LFG_TITLE,
     func = function() ToggleFrame(LFDParentFrame) end},
-    {text = L_LFRAID,
+    {text = LOOKING_FOR_RAID,
     func = function() ToggleFrame(LFRParentFrame) end},
     {text = HELP_BUTTON,
     func = function() ToggleHelpFrame() end},
-    {text = L_CALENDAR,
+    {text = CALENDAR_VIEW_EVENT,
     func = function()
     if(not CalendarFrame) then LoadAddOn("Blizzard_Calendar") end
         Calendar_Toggle()

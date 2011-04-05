@@ -244,16 +244,13 @@ DB["media"] = {
 	["hTex"] = [[Interface\AddOns\Tukui\medias\textures\Glamour2]], -- testing new texture for health bars
 	["panTex"] = [[Interface\AddOns\Tukui\medias\textures\Glamour7]], -- testing new texture for health bars
 	
-	["backdropcolor"] = { .175, .175, .175, 1 }, -- background color of tukui panels
-	["backdropfadecolor"] = { .05, .05, .05, .75 }, -- faded background color of tukui panels
-	
 	["striped"] = [[Interface\AddOns\Tukui\medias\textures\Striped]], -- unitframes combo points
 	["copyicon"] = [[Interface\AddOns\Tukui\medias\textures\copy]], -- copy icon
 	["buttonhover"] = [[Interface\AddOns\Tukui\medias\textures\button_hover]],
 
 	["bordercolor"] = { .05, .05, .05, 1 }, -- border color of tukui panels 
-	--["backdropcolor"] = { .1, .1, .1, 1 }, -- background color of tukui panels
-	--["backdropfadecolor"] = { .1, .1, .1, 0.9 }, -- same thing just different alpha
+	["backdropcolor"] = { .132, .132, .132, 1 }, -- background color of tukui panels
+	["backdropfadecolor"] = { .1, .1, .1, 0.9 }, -- same thing just different alpha
 	["altbordercolor"] = { .4, .4, .4 }, -- alternative border color, mainly for unitframes text panels.
 	
 	-- sound

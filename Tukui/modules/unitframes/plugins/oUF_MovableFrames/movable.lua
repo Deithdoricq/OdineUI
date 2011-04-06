@@ -341,7 +341,7 @@ do
 		backdrop:SetParent(UIParent)
 		backdrop:Hide()
 		
-		backdrop:SetTemplate("Default")
+		backdrop:SetTemplate("Default", true)
 		--backdrop:SetBackdrop(_BACKDROP)
 		backdrop:SetFrameStrata("MEDIUM")
 		backdrop:SetFrameLevel(20)

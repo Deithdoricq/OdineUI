@@ -681,7 +681,7 @@ if C["unitframes"].raidunitdebuffwatch == true then
 		
 		ORD.ShowDispelableDebuff = true
 		ORD.FilterDispellableDebuff = true
-		ORD.MatchBySpellName = false
+		ORD.MatchBySpellName = true
 		
 		ORD:RegisterDebuffs(T.debuffids)
 	end

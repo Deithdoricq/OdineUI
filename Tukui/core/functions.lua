@@ -214,7 +214,6 @@ end
 -- Define action bar buttons size
 T.buttonsize = T.Scale(C.actionbar.buttonsize)
 T.petbuttonsize = T.Scale(C.actionbar.petbuttonsize)
-T.stancebuttonsize = T.Scale(C.actionbar.stancebuttonsize)
 T.buttonspacing = T.Scale(C.actionbar.buttonspacing)
 
 T.Round = function(number, decimals)

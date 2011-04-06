@@ -1,3 +1,9 @@
+V5.9h - [04/06/2011]
+* moveui elements match new changes to look n feel
+* all filters are found in one location now config/filters (let me know if bugs occur might of missed something lol)
+* revert happiness changes until patch live
+* cleaned ingame config up a little. moved color settings to general. felt it belongs there instead!
+
 V5.9g - [04/05/2011]
 * added more options to config (rep/xp bar text, debuff related options)
 * buffs on target frame were not fitting properly.

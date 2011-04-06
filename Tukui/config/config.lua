@@ -34,7 +34,7 @@ DB["unitframes"] = {
 	["totdebuffs"] = true,                             -- enable tot debuffs (high reso only)
 	["focusdebuffs"] = true,                            -- enable focus debuffs
 	["focusbuffs"] = true,                              -- enable focus buffs
-	["petbuffs"] = false,								-- display pets buffs
+	["petbuffs"] = true,								-- display pets buffs
 	["onlyselfdebuffs"] = false,                        -- display only our own debuffs applied on target
 	["onlyselfbuffs"] = false,                        	-- display only our own buffs applied on target
 	["buffrows"] = 2,                       
@@ -193,6 +193,7 @@ DB["tooltip"] = {
 	["hidebuttons"] = false,                            -- always hide action bar buttons tooltip.
 	["hideuf"] = false,                                 -- hide tooltip on unitframes
 	["cursor"] = false,                                 -- tooltip via cursor only
+	["whotarget"] = false,								-- show who is targeting you (raid/party only)
 }
 
 DB["merchant"] = {

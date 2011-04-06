@@ -5,7 +5,7 @@ if not L then return end
 
 -- General Section
 L["General Settings"] = true
-	L["OUI_INTRO"] = "Complete UI replacement for World of Warcraft"
+	L["OUI_INTRO"] = "Complete UI replacement based off Tukui. Creditz: Dajova, Elv, Eclipse, Tukz"
 	L["Auto Scale"] = true
 		L["GEN_ASCALE"] = "Automatically scale the UI based on your current screen resolution"
 	L["Scale"] = true

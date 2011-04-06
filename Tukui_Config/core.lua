@@ -154,6 +154,67 @@ function OUI.GenerateOptionsInternal()
 						desc = "This is EXPERIMENTAL! Override lower version to higher version on a lower reso setup!",
 						type = "toggle",
 					},
+					empty5 = {
+						name = "   ",
+						width = "full",
+						type = "description",
+						order = 6,
+					},
+					Colors = {
+						type = "group",
+						order = 7,
+						name = "Color Options",
+						guiInline = true,
+						disabled = function() return not db.unitframes.enable end,
+						args = {
+							unicolor = {
+								type = "toggle",
+								order = 1,
+								name = "Unicolor Theme",
+								desc = "When checked allows you to choose health and bg colors below, unchecked will use class colors",
+								get = function() return db.unitframes.unicolor end,
+								set = function(info, value) db.unitframes.unicolor = value; StaticPopup_Show("RELOAD_UI") end,
+							},
+							empty5 = {
+								name = "   ",
+								width = "half",
+								type = "description",
+								order = 1.5,
+							},
+							healthColor = {
+								type = "color",
+								order = 2,
+								name = "Healthbar Color",
+								desc = "Allows you to select a custom color for health bars",
+								disabled = function() return not db.unitframes.unicolor end,
+								get = function(info)
+									local r, g, b = unpack(db.unitframes[ info[#info] ])
+									return r, g, b
+								end,
+								set = function(info, r, g, b)
+									StaticPopup_Show("RELOAD_UI")
+									db.unitframes[ info[#info] ] = {r, g, b}
+								end,
+								hasAlpha = false,
+							},
+							healthBgColor = {
+								type = "color",
+								order = 3,
+								name = "Healthbar BG Color",
+								desc = "Allows you to select a custom color for health bars BG",
+								disabled = function() return not db.unitframes.unicolor end,
+								get = function(info)
+									local r, g, b = unpack(db.unitframes[ info[#info] ])
+									return r, g, b
+								end,
+								set = function(info, r, g, b)
+									StaticPopup_Show("RELOAD_UI")
+									db.unitframes[ info[#info] ] = {r, g, b}
+								end,
+								hasAlpha = false,
+							},
+						},
+					},
 				},
 			},
 			unitframes = {
@@ -256,7 +317,7 @@ function OUI.GenerateOptionsInternal()
 							},
 						},
 					},
-					Colors = {
+					--[[Colors = {
 						type = "group",
 						order = 4,
 						name = "Color Options",
@@ -308,7 +369,7 @@ function OUI.GenerateOptionsInternal()
 								hasAlpha = false,
 							},
 						},
-					},
+					},--]]
 					Castbar = {
 						order = 5,
 						type = "group",
@@ -483,7 +544,7 @@ function OUI.GenerateOptionsInternal()
 					ClassOpts = {
 						order = 8,
 						type = "group",
-						name = "Class Related",
+						name = "Other Stuff",
 						guiInline = true,
 						disabled = function() return not db.unitframes.enable end,
 						get = function(info) return db.unitframes[ info[#info] ] end,
@@ -495,15 +556,9 @@ function OUI.GenerateOptionsInternal()
 								name = "Class Bars",
 								desc = "Toggles whether you want to use class related bars.(ie: totem bar, rune bar, eclipse bar)",
 							},
-							empty7 = {
-								name = "   ",
-								width = "full",
-								type = "description",
-								order = 2,
-							},
 							weakenedsoulbar = {
 								type = "toggle",
-								order = 3,
+								order = 2,
 								name = "Weakened Soul Bar",
 								desc = "Toggles whether you want to display a weakened soul bar",
 							},
@@ -780,14 +835,6 @@ function OUI.GenerateOptionsInternal()
 						order = 8,
 						name = "Pet Button Size",
 						desc = "Controls the size of your pets actionbar buttons.",
-						type = "range",
-						min = 22, max = 32, step = 1,									
-					},
-					stancebuttonsize = {
-						type = "range",
-						order = 9,
-						name = "Stance Button Size",
-						desc = "Controls the size of your stance actionbar buttons.",
 						type = "range",
 						min = 22, max = 32, step = 1,									
 					},
@@ -1160,6 +1207,19 @@ function OUI.GenerateOptionsInternal()
 						order = 5,
 						name = "Cursor",
 						desc = "When enabled allows you to have tooltips display where your mouse is.",
+						disabled = function() return not db.tooltip.enable end,
+					},
+					empty6t = {
+						name = "   ",
+						width = "full",
+						type = "description",
+						order = 6,
+					},
+					whotarget = {
+						type = "toggle",
+						order = 5,
+						name = "Who Target",
+						desc = "When enabled allows you to see who is targetting you while in a raid or party.",
 						disabled = function() return not db.tooltip.enable end,
 					},
 				},

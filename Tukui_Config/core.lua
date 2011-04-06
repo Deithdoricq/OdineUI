@@ -85,14 +85,15 @@ function OUI:SetupOptions()
 	local ACD3 = LibStub("AceConfigDialog-3.0")
 	self.optionsFrames = {}
 	self.optionsFrames.OUI = ACD3:AddToBlizOptions("OUI", "OdineUI", nil, "general")
-	self.optionsFrames.Media = ACD3:AddToBlizOptions("OUI", "Media", "OdineUI", "media")
+	self.optionsFrames.Actionbar = ACD3:AddToBlizOptions("OUI", "Action Bars", "OdineUI", "actionbar")
 	self.optionsFrames.Nameplates = ACD3:AddToBlizOptions("OUI", "Nameplates", "OdineUI", "nameplate")
 	self.optionsFrames.Unitframes = ACD3:AddToBlizOptions("OUI", "Unit Frames", "OdineUI", "unitframes")
-	self.optionsFrames.Actionbar = ACD3:AddToBlizOptions("OUI", "Action Bars", "OdineUI", "actionbar")
+	self.optionsFrames.Raidparty = ACD3:AddToBlizOptions("OUI", "Raid/Party Settings", "OdineUI", "raidparty")
 	self.optionsFrames.Datatext = ACD3:AddToBlizOptions("OUI", "Data Texts", "OdineUI", "datatext")
 	self.optionsFrames.Chat = ACD3:AddToBlizOptions("OUI", "Chat", "OdineUI", "chat")
 	self.optionsFrames.Misc = ACD3:AddToBlizOptions("OUI", "Misc", "OdineUI", "misc")
 	self.optionsFrames.Tooltip = ACD3:AddToBlizOptions("OUI", "Tooltip", "OdineUI", "tooltip")
+	self.optionsFrames.Media = ACD3:AddToBlizOptions("OUI", "Media", "OdineUI", "media")
 	self.optionsFrames.Profiles = ACD3:AddToBlizOptions("OUIProfiles", "Profiles", "OdineUI")
 	self.SetupOptions = nil
 end
@@ -153,14 +154,6 @@ function OUI.GenerateOptionsInternal()
 						desc = "This is EXPERIMENTAL! Override lower version to higher version on a lower reso setup!",
 						type = "toggle",
 					},
-					--[[perchar = {
-						order = 6,
-						name = "PerChar Profiles",
-						desc = "This is EXPERIMENTAL! When enabled all characters will have their own profile settings!",
-						type = "toggle",
-						get = function() return defaults.profile.general.perchar end,
-						set = function(info, value) defaults.profile.general.perchar = value; StaticPopup_Show("RELOAD_UI") end,
-					},--]]
 				},
 			},
 			unitframes = {
@@ -457,9 +450,21 @@ function OUI.GenerateOptionsInternal()
 								name = "Only My Buffs",
 								desc = "Display only your buffs on target frame",									
 							},
+							debuffHighlightFilter = { 
+								type = "toggle",
+								order = 11,
+								name = "Filter Debuff Borders",
+								desc = "Toggles whether you want border of debuffs filtered.",
+							},
+							emptyuf1 = {
+								name = "   ",
+								width = "full",
+								type = "description",
+								order = 12,
+							},
 							buffrows = {
 								type = "range",
-								order = 11,
+								order = 13,
 								name = "Buff Rows",
 								desc = "Controls how many rows of buffs are allowed",
 								type = "range",
@@ -467,103 +472,11 @@ function OUI.GenerateOptionsInternal()
 							},
 							debuffrows = {
 								type = "range",
-								order = 12,
+								order = 14,
 								name = "Debuff Rows",
 								desc = "Controls how many rows of debuffs are allowed",
 								type = "range",
 								min = 1, max = 3, step = 1,									
-							},
-						},
-					},
-					Frames = {
-						order = 7,
-						type = "group",
-						name = "Raid/Party Settings",
-						guiInline = true,
-						disabled = function() return not db.unitframes.enable end,
-						get = function(info) return db.unitframes[ info[#info] ] end,
-						set = function(info, value) db.unitframes[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
-						args = {
-							showrange = {
-								type = "toggle",
-								order = 1,
-								name = "Range Opacity",
-								desc = "Toggles whether you want to use alpha opacity for units out of range",									
-							},
-							raidalphaoor = {
-								type = "range",
-								order = 2,
-								name = "Alpha Amount",
-								desc = "Controls how much alpha is used when unit is out of range",
-								type = "range",
-								disabled = function() return (not db.unitframes.enable or not db.unitframes.showrange) end,
-								min = 0.1, max = 1, step = 0.1,									
-							},
-							showplayerinparty = {
-								type = "toggle",
-								order = 3,
-								name = "Show Self",
-								desc = "Toggles whether you want to be displayed in party frames",									
-							},
-							showsymbols = {
-								type = "toggle",
-								order = 4,
-								name = "Show Symbols",
-								desc = "Toggles whether you want to show raid symbols in frames",									
-							},
-							aggro = {
-								type = "toggle",
-								order = 5,
-								name = "Show Aggro",
-								desc = "Toggles whether you want to show aggro on all raid frames",									
-							},
-							raidunitdebuffwatch = {
-								type = "toggle",
-								order = 6,
-								name = "Show Debuffs",
-								desc = "Toggles whether you want to show aggro on all raid frames",									
-							},
-							healcomm = {
-								type = "toggle",
-								order = 7,
-								name = "Healcomm",
-								desc = "Toggles whether you want to display incoming heals",						
-							},
-							healthvertical = { -- healer layout only
-								type = "toggle",
-								order = 8,
-								name = "Display HP Vertically",
-								desc = "Toggles whether you want to display health vertically instead.(HEAL LAYOUT ONLY)",
-							},
-							healthdeficit = { -- healer layout only
-								type = "toggle",
-								order = 9,
-								name = "Display HP Deficit",
-								desc = "Toggles whether you want to display HP deficits instead.(HEAL LAYOUT ONLY)",
-							},
-							hidepower = { -- dps layout only
-								type = "toggle",
-								order = 10,
-								name = "Hide Power",
-								desc = "Toggles whether you want to hide Power from being displayed on raid/party frames.(DPS LAYOUT ONLY)",
-							},
-							maintank = { 
-								type = "toggle",
-								order = 11,
-								name = "Show Main Tank",
-								desc = "Toggles Main Tank display.",
-							},
-							mainassist = { 
-								type = "toggle",
-								order = 12,
-								name = "Show Main Assist",
-								desc = "Toggles Main Assist display.",
-							},
-							showboss = {
-								type = "toggle",
-								order = 13,
-								name = "Show Boss Frames",
-								desc = "Toggles whether you want to display frames for bosses.",
 							},
 						},
 					},
@@ -595,6 +508,109 @@ function OUI.GenerateOptionsInternal()
 								desc = "Toggles whether you want to display a weakened soul bar",
 							},
 						},
+					},
+				},
+			},
+			raidparty = {
+				order = 3,
+				type = "group",
+				name = "Raid/Party Settings",
+				desc = "Configure Settings for Raid and Parties.",
+				get = function(info) return db.unitframes[ info[#info] ] end,
+				set = function(info, value) db.unitframes[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
+				args = {
+					showrange = {
+						type = "toggle",
+						order = 1,
+						name = "Range Opacity",
+						desc = "Toggles whether you want to use alpha opacity for units out of range",									
+					},
+					raidalphaoor = {
+						type = "range",
+						order = 2,
+						name = "Alpha Amount",
+						desc = "Controls how much alpha is used when unit is out of range",
+						type = "range",
+						disabled = function() return (not db.unitframes.enable or not db.unitframes.showrange) end,
+						min = 0.1, max = 1, step = 0.1,									
+					},
+					emptyrp1 = {
+						name = "   ",
+						width = "full",
+						type = "description",
+						order = 2.5,
+					},
+					showplayerinparty = {
+						type = "toggle",
+						order = 3,
+						name = "Show Self",
+						desc = "Toggles whether you want to be displayed in party frames",									
+					},
+					showsymbols = {
+						type = "toggle",
+						order = 4,
+						name = "Show Symbols",
+						desc = "Toggles whether you want to show raid symbols in frames",									
+					},
+					aggro = {
+						type = "toggle",
+						order = 5,
+						name = "Show Aggro",
+						desc = "Toggles whether you want to show aggro on all raid frames",									
+					},
+					raidunitdebuffwatch = {
+						type = "toggle",
+						order = 6,
+						name = "Show Debuffs",
+						desc = "Toggles whether you want to show aggro on all raid frames",									
+					},
+					healcomm = {
+						type = "toggle",
+						order = 7,
+						name = "Healcomm",
+						desc = "Toggles whether you want to display incoming heals",						
+					},
+					healthvertical = { -- healer layout only
+						type = "toggle",
+						order = 8,
+						name = "Display HP Vertically",
+						desc = "Toggles whether you want to display health vertically instead.(HEAL LAYOUT ONLY)",
+					},
+					healthdeficit = { -- healer layout only
+						type = "toggle",
+						order = 9,
+						name = "Display HP Deficit",
+						desc = "Toggles whether you want to display HP deficits instead.(HEAL LAYOUT ONLY)",
+					},
+					hidepower = { -- dps layout only
+						type = "toggle",
+						order = 10,
+						name = "Hide Power",
+						desc = "Toggles whether you want to hide Power from being displayed on raid/party frames.(DPS LAYOUT ONLY)",
+					},
+					emptyrp2 = {
+						name = "   ",
+						width = "full",
+						type = "description",
+						order = 10.5,
+					},
+					maintank = { 
+						type = "toggle",
+						order = 11,
+						name = "Show Main Tank",
+						desc = "Toggles Main Tank display.",
+					},
+					mainassist = { 
+						type = "toggle",
+						order = 12,
+						name = "Show Main Assist",
+						desc = "Toggles Main Assist display.",
+					},
+					showboss = {
+						type = "toggle",
+						order = 13,
+						name = "Show Boss Frames",
+						desc = "Toggles whether you want to display frames for bosses.",
 					},
 				},
 			},
@@ -1178,17 +1194,17 @@ function OUI.GenerateOptionsInternal()
 						name = "   ",
 						width = "full",
 						type = "description",
-						order = 3.5,
+						order = 4,
 					},
 					time24 = {
 						type = "toggle",
-						order = 4,
+						order = 5,
 						name = "24H Format",
 						desc = "Sets time to 24 hour format.",
 					},
 					localtime = {
 						type = "toggle",
-						order = 5,
+						order = 6,
 						name = "Local Time",
 						desc = "Set time to use local time instead of server time.",
 					},
@@ -1214,8 +1230,27 @@ function OUI.GenerateOptionsInternal()
 						end,
 						hasAlpha = false,
 					},
-					DataConfig = {
+					empty8dtt = {
+						name = "   ",
+						width = "full",
+						type = "description",
 						order = 9,
+					},
+					bars = {
+						type = "toggle",
+						order = 10,
+						name = "Show Rep/Exp Bar",
+						desc = "Enables showing reputation/experience bars under your minimap.",
+					},
+					bar_text = {
+						type = "toggle",
+						order = 11,
+						name = "Show Bar Text",
+						desc = "Enables showing text inside your reputation/experience bar (bar must be enabled).",
+						disabled = function() return not db.datatext.bars end,
+					},
+					DataConfig = {
+						order = 12,
 						type = "group",
 						name = "Text Positions",
 						guiInline = true,

@@ -124,15 +124,15 @@ local function Shared(self, unit)
 	name:SetFont(font, fonts, fontf)
 	if C["unitframes"].healthdeficit then
 		if C["unitframes"].unicolor then
-			self:Tag(name, "[Tukui:leader][Tukui:getnamecolor][Tukui:nameshort][Tukui:masterlooter]")
+			self:Tag(name, "[Tukui:getnamecolor][Tukui:nameshort]")
 		else
-			self:Tag(name, "[Tukui:leader][Tukui:nameshort][Tukui:masterlooter]")
+			self:Tag(name, "[Tukui:nameshort]")
 		end
 	else
 		if C["unitframes"].unicolor then
-			self:Tag(name, "[Tukui:leader][Tukui:getnamecolor][Tukui:name_short][Tukui:masterlooter][Tukui:dead][Tukui:afk]")
+			self:Tag(name, "[Tukui:getnamecolor][Tukui:name_short][Tukui:dead][Tukui:afk]")
 		else
-			self:Tag(name, "[Tukui:leader][Tukui:name_short][Tukui:masterlooter][Tukui:dead][Tukui:afk]")
+			self:Tag(name, "[Tukui:name_short][Tukui:dead][Tukui:afk]")
 		end
 	end
 	self.Name = name

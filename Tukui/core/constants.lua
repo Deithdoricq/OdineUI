@@ -14,12 +14,12 @@ T.incombat = UnitAffectingCombat("player")
 T.patch = GetBuildInfo()
 T.level = UnitLevel("player")
 T.myrealm = GetRealmName()
-T.InfoLeftRightWidth = 376
+T.InfoLeftRightWidth = 380
 
 if not TukuiSaved then
 	TukuiSaved = {	
 		["bottomrows"] = 2,
-		["rightbars"] = 1,
+		["rightbars"] = 0,
 		["splitbars"] = true,
 		["actionbarsLocked"] = false,
 	}

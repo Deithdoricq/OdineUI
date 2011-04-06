@@ -64,8 +64,6 @@ DB["unitframes"] = {
 		["raidunitdebuffwatch"] = true,                     -- track important spell to watch in pve for grid mode.
 		["healcomm"] = true,                               -- enable healprediction support.
 		["debuffHighlightFilter"] = false,					-- filter debuff border coloring
-			-- enable player / target debuff highlight
-			["playerHighlight"] = false,
 
 		-- Heal
 		["healthvertical"] = false,
@@ -155,7 +153,7 @@ DB["datatext"] = {
 	["fsize"] = 15,										-- default font size
 	
 	["classcolor"] = true,
-		["color"] = { .4, .4, .4 },
+		["color"] = { .156, .149, .149 }, -- was .4 .4 .4
 }
 
 DB["misc"] = {

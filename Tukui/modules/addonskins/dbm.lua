@@ -216,7 +216,7 @@ hooksecurefunc(DBM.BossHealth,"UpdateSettings",SkinBoss)
 DBM.RangeCheck:Show()
 DBM.RangeCheck:Hide()
 DBMRangeCheck:HookScript("OnShow",function(self)
-	self:SetTemplate("Default")
+	self:SetTemplate("Default", true)
 end)
 
 

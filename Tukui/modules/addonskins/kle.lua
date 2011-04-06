@@ -10,7 +10,6 @@ if not IsAddOnLoaded("KLE") or C["addonskins"].kle == false then return end
 
 local KLE = KLE
 local _G = getfenv(0)
-
 local barSpacing = T.Scale(1, 1)
 local borderWidth = T.Scale(2, 2)
 local buttonZoom = {.09,.91,.09,.91}
@@ -136,7 +135,12 @@ KLE.Pane.border:Kill()
 if not KLEDB then KLEDB = {} end
 if not KLEDB["profiles"] then KLEDB["profiles"] = {} end
 if not KLEDB["profiles"][T.myname.." - "..GetRealmName()] then KLEDB["profiles"][T.myname.." - "..T.myrealm] = {} end
-if not KLEDB["profiles"][T.myname.." - "..GetRealmName()]["Globals"] then KLEDB["profiles"][E.myname.." - "..E.myrealm]["Globals"] = {} end
+if not KLEDB["profiles"][T.myname.." - "..GetRealmName()]["Globals"] then KLEDB["profiles"][T.myname.." - "..T.myrealm]["Globals"] = {} end
+KLEDB["profiles"][T.myname.." - "..T.myrealm]["Globals"]["BackgroundTexture"] = "Tukui Blank"
+KLEDB["profiles"][T.myname.." - "..T.myrealm]["Globals"]["BarTexture"] = "Tukui Norm"
+KLEDB["profiles"][T.myname.." - "..T.myrealm]["Globals"]["Border"] = "None"
+KLEDB["profiles"][T.myname.." - "..T.myrealm]["Globals"]["Font"] = "Tukui Font"
+KLEDB["profiles"][T.myname.." - "..T.myrealm]["Globals"]["TimerFont"] = "Tukui Font"
 
 --Hook bar to chatframe, rest of this is handled inside chat.lua and chatanimation.lua
 local KLE_Skin = CreateFrame("Frame")
@@ -151,7 +155,7 @@ KLE_Skin:SetScript("OnEvent", function(self, event)
 		KLE.Pane.timer.right:SetFont(C["media"].font, 12)
 		
 		for i=1, #movers do
-			_G[movers[i]]:SetTemplate("Transparent")
+			_G[movers[i]]:SetTemplate("Default")
 		end
 	end
 end)

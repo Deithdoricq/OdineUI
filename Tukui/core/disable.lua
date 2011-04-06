@@ -46,6 +46,6 @@ if (IsAddOnLoaded("SatrinaBuffFrame") or IsAddOnLoaded("ElkBuffBars")) then
 	C["auras"].player = false
 end
 
-if (IsAddOnLoaded("TotemTimers")) then
+if IsAddOnLoaded("TotemTimers") then
 	C["actionbar"].hideshapeshift = true
 end

@@ -447,7 +447,7 @@ local function Shared(self, unit)
 				end
 				
 				-- shaman totem bar
-				if T.myclass == "SHAMAN" and not IsAddOnLoaded("TotemTimers") then				
+				if T.myclass == "SHAMAN" then	
 					local TotemBar = {}
 					TotemBar.Destroy = true
 					
@@ -565,7 +565,7 @@ local function Shared(self, unit)
 				buffs.num = bn
 
 				debuffs:SetHeight(dh)
-				debuffs:SetWidth(186)
+				debuffs:SetWidth(185)
 				debuffs:SetPoint("BOTTOMRIGHT", buffs, "TOPRIGHT", 0, -1)
 				debuffs.size = ds - 2
 				debuffs.num = dn
@@ -576,19 +576,19 @@ local function Shared(self, unit)
 				buffs.num = bn + 2
 				
 				debuffs:SetHeight(dh)
-				debuffs:SetWidth(220)
-				debuffs:SetPoint("BOTTOMRIGHT", buffs, "TOPRIGHT", 9, 3)
+				debuffs:SetWidth(215)
+				debuffs:SetPoint("BOTTOMRIGHT", buffs, "TOPRIGHT", 2, 5)
 				debuffs.size = ds
 				debuffs.num = dn + 2
 			end
 
-			buffs.spacing = 3
+			buffs.spacing = 2
 			buffs.initialAnchor = "BOTTOMLEFT"
 			buffs.PostCreateIcon = T.PostCreateAura
 			buffs.PostUpdateIcon = T.PostUpdateAura
 			self.Buffs = buffs	
 
-			debuffs.spacing = 3
+			debuffs.spacing = 2
 			debuffs.initialAnchor = "BOTTOMRIGHT"
 			debuffs["growth-y"] = "UP"
 			debuffs["growth-x"] = "LEFT"
@@ -802,18 +802,6 @@ local function Shared(self, unit)
 			self:RegisterEvent('PLAYER_TARGET_CHANGED', T.UpdateThreat)
 			self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', T.UpdateThreat)
 			self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', T.UpdateThreat)
-		end
-		
-		-- player/target debuff hightlight
-		if C["unitframes"].playerHighlight then
-			local debuffHighlight = healthB:CreateTexture(nil, "OVERLAY")
-			debuffHighlight:SetAllPoints()
-			debuffHighlight:SetTexture(C["media"].blank)
-			debuffHighlight:SetBlendMode("DISABLE")
-			debuffHighlight:SetVertexColor(0, 0, 0, 0)
-			self.DebuffHighlight = debuffHighlight
-			self.DebuffHighlightAlpha = 1
-			self.DebuffHighlightFilter = C["unitframes"].debuffHighlightFilter
 		end
 	end
 	
@@ -1423,7 +1411,7 @@ if C["unitframes"].showboss then
 		if i == 1 then
 			boss[i]:SetPoint("BOTTOMLEFT", TukuiChatRight, "TOPLEFT", 0, 135)
 		else
-			boss[i]:SetPoint('BOTTOM', boss[i-1], 'TOP', 0, T.Scale(70))             
+			boss[i]:SetPoint('BOTTOM', boss[i-1], 'TOP', 0, T.Scale(85))             
 		end
 		boss[i]:Size(T.Boss, 20*1.5)
 	end

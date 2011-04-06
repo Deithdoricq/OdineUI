@@ -1,3 +1,9 @@
+V5.9g - [04/05/2011]
+* added more options to config (rep/xp bar text, debuff related options)
+* buffs on target frame were not fitting properly.
+* adjusted space between boss frames slightly
+* adjusted code for shaman compatibility with TotemTimers
+
 V5.9f - [04/05/2011]
 * adjusted code for talent datatext
 * few more changes getting ready for 4.1

@@ -3,6 +3,8 @@ V5.9g - [04/05/2011]
 * buffs on target frame were not fitting properly.
 * adjusted space between boss frames slightly
 * adjusted code for shaman compatibility with TotemTimers
+* updated following editless skins: tinydps, recount, omen, kle
+* pet happiness updated to be backwards compatible until patch release
 
 V5.9f - [04/05/2011]
 * adjusted code for talent datatext

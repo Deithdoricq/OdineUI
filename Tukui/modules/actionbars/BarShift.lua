@@ -17,7 +17,7 @@ TukuiShift:SetClampedToScreen(true)
 -- shapeshift command to move totem or shapeshift in-game
 local ssmover = CreateFrame("Frame", "TukuiShapeShiftHolder", UIParent)
 ssmover:SetAllPoints(TukuiShift)
-ssmover:SetTemplate("Default")
+ssmover:SetTemplate("Default", true)
 ssmover:SetFrameStrata("HIGH")
 ssmover:SetBackdropBorderColor(1,0,0)
 ssmover:SetAlpha(0)

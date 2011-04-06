@@ -10,7 +10,7 @@ TinyDPS:SetScript("OnEvent", function(self, event, addon)
 	if tdps then
 		tdps.width = TukuiMinimap:GetWidth()
 		tdps.spacing = 2
-		tdps.barHeight = T.buttonsize - 14
+		tdps.barHeight = 16 --T.buttonsize - 14
 		tdpsFont.name = C["media"].font
 		tdpsFont.size = 10
 		tdpsFont.outline = "OUTLINE"

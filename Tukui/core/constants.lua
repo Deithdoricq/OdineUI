@@ -14,7 +14,7 @@ T.incombat = UnitAffectingCombat("player")
 T.patch = GetBuildInfo()
 T.level = UnitLevel("player")
 T.myrealm = GetRealmName()
-T.InfoLeftRightWidth = 380
+T.InfoLeftRightWidth = 376
 
 if not TukuiSaved then
 	TukuiSaved = {	

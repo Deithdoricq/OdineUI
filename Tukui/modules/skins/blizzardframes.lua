@@ -136,7 +136,7 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			GhostFrame.SetBackdropColor = T.dummy
 			GhostFrame.SetBackdropBorderColor = T.dummy
 			GhostFrame:ClearAllPoints()
-			GhostFrame:SetPoint("TOP", UIParent, "TOP", 0, -150)
+			GhostFrame:SetPoint("TOP", UIParent, "TOP", 0, -75)
 			SkinButton(GhostFrameContentsFrame)
 			GhostFrameContentsFrameIcon:SetTexture(nil)
 			local x = CreateFrame("Frame", nil, GhostFrame)

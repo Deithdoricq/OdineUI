@@ -3,8 +3,9 @@ V5.9h - [04/06/2011]
 * all filters are found in one location now config/filters (let me know if bugs occur might of missed something lol)
 * revert happiness changes until patch live
 * cleaned ingame config up a little. moved color settings to general. felt it belongs there instead!
+* fixed bug with adjusting datatext panel positions
+* fixed bug with remindbuffs lua error
 * adjusted font for rep/exp bars when enabled
-* added ability to add/remove/disable/enable nameplate, error msg filters
 
 V5.9g - [04/05/2011]
 * added more options to config (rep/xp bar text, debuff related options)

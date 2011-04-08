@@ -285,7 +285,7 @@ local function AddTargetedBy()
 			GameTooltip:AddLine(" ",nil,nil,nil,1);
 			local line = _G["GameTooltipTextLeft"..GameTooltip:NumLines()];
 			if not line then return end
-			line:SetFormattedText(L.tooltip_whotarget.." (|cffffffff%d|r): %s",(#targetedList + 1) / 3,table.concat(targetedList));
+			line:SetFormattedText("Targeted By (|cffffffff%d|r): %s",(#targetedList + 1) / 3,table.concat(targetedList));
 			wipe(targetedList);
 		end
 	end

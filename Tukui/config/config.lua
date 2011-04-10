@@ -229,6 +229,7 @@ DB["addonskins"] = {
 	["dbm"] = true,										-- skins DBM
 	["recount"] = true,									-- skins Recount 
 	["omen"] = true,									-- skins Omen
+	["skada"] = true,									-- skins skada
 }
 
 DB["media"] = {

@@ -13,6 +13,7 @@ V6.0 - [04/10/2011]
 * moved up castbars when outside of unitframes
 * adjust positions of: filger icons to not have so much overlapping
 * adjusted placement of xct text. most overlapping should be gone.. give or take a few. report them in forums if found!
+* added skinning for skada
 
 V5.9i - [04/07/2011]
 * added some information as to what the numbers mean in the datatext config area

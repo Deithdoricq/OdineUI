@@ -29,16 +29,19 @@ DB["unitframes"] = {
 	-- Auras
 	["auratimer"] = true,                               -- enable timers on buffs/debuffs
 	["auratextscale"] = 11,                             -- the font size of buffs/debuffs timers on unitframes
-	["playerauras"] = false,                            -- enable auras
+	["playerauras"] = true,                            -- enable auras
+	["playershowonlydebuffs"] = true, 					-- only show the players debuffs over the player frame, not buffs (playerauras must be true) (CODE NOT FINISHED)
+	["playerdebuffsonly"] = true,						-- show the players debuffs on target, and any debuff in the whitelist.
 	["targetauras"] = true,                             -- enable auras on target unit frame
 	["totdebuffs"] = true,                             -- enable tot debuffs (high reso only)
 	["focusdebuffs"] = true,                            -- enable focus debuffs
-	["focusbuffs"] = true,                              -- enable focus buffs
-	["petbuffs"] = true,								-- display pets buffs
-	["onlyselfdebuffs"] = false,                        -- display only our own debuffs applied on target
-	["onlyselfbuffs"] = false,                        	-- display only our own buffs applied on target
-	["buffrows"] = 2,                       
-	["debuffrows"] = 2,                        
+	["arenabuffs"] = true,								-- enable arena buffs
+	["arenadebuffs"] = true, 							-- enable debuff filter for arena frames
+	["bossbuffs"] = true,								-- enable boss buffs
+	["bossdebuffs"] = true,								-- enable boss debuffs
+	["buffsperrow"] = 8,                  				-- set amount of buffs shown (player/target only)
+	["debuffsperrow"] = 7,								-- set amount of debuffs shown (player/target only)
+	
 	
 	-- Misc.
 	["charportrait"] = true,                           -- do i really need to explain this?
@@ -71,6 +74,11 @@ DB["unitframes"] = {
 		
 		-- Dps
 		["hidepower"] = false,
+		
+	-- Frame Sizes
+	["playtarframe"] = 215,								-- size of player/target frame
+	["otherframe"] = 130,								-- size of tot/focus/pet frames
+	["baframe"] = 200,									-- size of boss/arena frames
 	
 
 	-- Extra Frames
@@ -140,8 +148,8 @@ DB["datatext"] = {
 	["hps_text"] = 0,                                   -- show a heal meter on panels
 	["mastery"] = 4,
 	["spec"] = 8,             							-- show your active talent group and allow you to switch on panels.
-	["micromenu"] = 0,
 	["power"] = 7,                                      -- show your attackpower/spellpower/healpower/rangedattackpower whatever stat is higher gets displayed
+	["regen"] = 0,										-- display your mana regen
 
 	["battleground"] = true,                            -- enable 3 stats in battleground only that replace stat1,stat2,stat3.
 	["statblock"] = true,								-- enables stat block at top left
@@ -153,7 +161,7 @@ DB["datatext"] = {
 	["fsize"] = 15,										-- default font size
 	
 	["classcolor"] = true,
-		["color"] = { .156, .149, .149 }, -- was .4 .4 .4
+		["color"] = { .156, .149, .149 },
 }
 
 DB["misc"] = {
@@ -161,7 +169,6 @@ DB["misc"] = {
 	["epgp"] = false,									-- enable to show epgp points in guild datatext
 	["viewport"] = false,								-- enable viewport
 	["autoquest"] = false,								-- enable automatic turn in/autoaccept quests
-	["sct"] = true,										-- enable lightweight scrolling combat text mod by Monolit
 }
 
 DB["chat"] = {
@@ -203,10 +210,7 @@ DB["merchant"] = {
 }
 
 DB["error"] = {
-	["enable"] = false,                                  -- true to enable this mod, false to disable
-	filter = {                                          -- what messages to not hide
-		[INVENTORY_FULL] = true,                        -- inventory is full will not be hidden by default
-	},
+	["enable"] = true,                                  -- true to enable this mod, false to disable
 }
 
 DB["invite"] = { 
@@ -215,7 +219,7 @@ DB["invite"] = {
 
 DB["buffreminder"] = {
 	["enable"] = true,                                  -- this is now the new innerfire warning script for all armor/aspect class.
-	["sound"] = false,                                   -- enable warning sound notification for reminder.
+	["sound"] = true,                                   -- enable warning sound notification for reminder.
 }
 
 -- Addons skins by Darth Android
@@ -240,8 +244,8 @@ DB["media"] = {
 	["glowTex"] = "Tukui Glow",
 	["blank"] = "Tukui Blank",
 	
-	["hTex"] = [[Interface\AddOns\Tukui\medias\textures\Glamour2]], -- testing new texture for health bars
-	["panTex"] = [[Interface\AddOns\Tukui\medias\textures\Glamour7]], -- testing new texture for health bars
+	["hTex"] = [[Interface\AddOns\Tukui\medias\textures\Glamour2]], -- texture used for health bars
+	["panTex"] = [[Interface\AddOns\Tukui\medias\textures\Glamour7]], -- texture used for datatext panels
 	
 	["striped"] = [[Interface\AddOns\Tukui\medias\textures\Striped]], -- unitframes combo points
 	["copyicon"] = [[Interface\AddOns\Tukui\medias\textures\copy]], -- copy icon

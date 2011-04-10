@@ -13,7 +13,7 @@ ns.Filger_Spells = {
 			Interval = 4,
 			Opacity = 1,
 			Mode = "ICON",
-			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 200 },
+			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 240 },
 
 			-- Lifebloom/Blühendes Leben
 			{ spellID = 33763, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
@@ -30,7 +30,7 @@ ns.Filger_Spells = {
 			Interval = 4,
 			Opacity = 1,
 			Mode = "ICON",
-			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 200 },
+			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 240 },
 
 			-- Lifebloom/Blühendes Leben
 			{ spellID = 33763, size = asize, unitId = "target", caster = "player", filter = "BUFF" },
@@ -46,7 +46,7 @@ ns.Filger_Spells = {
 			Direction = "LEFT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 80 },
+			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 240 },
 
 			-- Eclipse (Lunar)/Mondfinsternis
 			{ spellID = 48518, size = asize*1.5, unitId = "player", caster = "player", filter = "BUFF" },
@@ -72,7 +72,7 @@ ns.Filger_Spells = {
 			Direction = "RIGHT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 200 },
+			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 240 },
 
 			-- Hibernate/Winterschlaf
 			{ spellID = 2637, size = asize*1.5, unitId = "target", caster = "all", filter = "DEBUFF" },
@@ -107,7 +107,7 @@ ns.Filger_Spells = {
 			IconSide = "LEFT",
 			Interval = 4,
 			Mode = "BAR",
-			setPoint = { "BOTTOMLEFT", oUF_Tukz_focus, "TOPLEFT", 0, 50 },
+			setPoint = { "BOTTOMLEFT", TukuiFocus, "TOPLEFT", 0, 100 },
 
 			-- Hibernate/Winterschlaf
 			{ spellID = 2637, size = asize, barWidth = 200, unitId = "focus", caster = "all", filter = "DEBUFF" },
@@ -123,7 +123,7 @@ ns.Filger_Spells = {
 			Direction = "LEFT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 80 },
+			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 240 },
 
 			-- Lock and Load
 			{ spellID = 56342, size = asize*1.5, unitId = "player", caster = "player", filter = "BUFF" },
@@ -151,7 +151,7 @@ ns.Filger_Spells = {
 			Direction = "RIGHT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 200 },
+			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 240 },
 			
 			-- Wyvern Sting
 			{ spellID = 19386, size = asize*1.5, unitId = "target", caster = "all", filter = "DEBUFF" },
@@ -175,7 +175,7 @@ ns.Filger_Spells = {
 			IconSide = "LEFT",
 			Interval = 4,
 			Mode = "BAR",
-			setPoint = { "BOTTOMLEFT", oUF_Tukz_focus, "TOPLEFT", 0, 50 },
+			setPoint = { "BOTTOMLEFT", TukuiFocus, "TOPLEFT", 0, 100 },
 
 			-- Wyvern Sting
 			{ spellID = 19386, size = asize, barWidth = 200, unitId = "focus", caster = "all", filter = "DEBUFF" },
@@ -189,7 +189,7 @@ ns.Filger_Spells = {
 			Direction = "LEFT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 80 },
+			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 240 },
 
 			-- Frostbite
 			--{ spellID = 11071, size = asize*1.5, unitId = "target", caster = "all", filter = "DEBUFF" },
@@ -213,7 +213,7 @@ ns.Filger_Spells = {
 			Direction = "RIGHT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 200 },
+			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 240 },
 
 			-- Polymorph
 			{ spellID = 118, size = asize*1.5, unitId = "target", caster = "all", filter = "DEBUFF" },
@@ -230,7 +230,7 @@ ns.Filger_Spells = {
 			IconSide = "LEFT",
 			Interval = 4,
 			Mode = "BAR",
-			setPoint = { "BOTTOMLEFT", oUF_Tukz_focus, "TOPLEFT", 0, 50 },
+			setPoint = { "BOTTOMLEFT", TukuiFocus, "TOPLEFT", 0, 100 },
 
 			-- Polymorph
 			{ spellID = 118, size = asize, barWidth = 200, unitId = "focus", caster = "all", filter = "DEBUFF" },
@@ -242,7 +242,7 @@ ns.Filger_Spells = {
 			Direction = "LEFT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 80 },
+			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 240 },
 
 			-- Sudden Death
 			{ spellID = 52437, size = asize*1.5, unitId = "player", caster = "player", filter = "BUFF" },
@@ -270,7 +270,7 @@ ns.Filger_Spells = {
 			Direction = "RIGHT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 200 },
+			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 240 },
 
 			-- Hamstring
 			{ spellID = 1715, size = asize*1.5, unitId = "target", caster = "all", filter = "DEBUFF" },
@@ -290,7 +290,7 @@ ns.Filger_Spells = {
 			Direction = "LEFT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 200 },
+			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 240 },
 
 			-- Earth Shield/Erdschild
 			{ spellID = 974, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
@@ -308,44 +308,41 @@ ns.Filger_Spells = {
 			Direction = "RIGHT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 200 },
+			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 240 },
 
 			-- Earth Shield/Erdschild
 			{ spellID = 974, size = asize, unitId = "target", caster = "player", filter = "BUFF" },
 			-- Riptide/Springflut
 			{ spellID = 61295, size = asize, unitId = "target", caster = "player", filter = "BUFF" },
-			
-			-- Ancestral Fortitude
-			{ spellID = 85838, size = asize, unitId = "target", caster = "player", filter = "BUFF" },
-			-- Ancestral Awakening
-			{ spellID = 51558, size = asize, unitId = "target", caster = "player", filter = "BUFF" },
+			-- Earthliving
+			{ spellID = 51945, size = asize, unitId = "target", caster = "player", filter = "BUFF" },
 		},
 		{
 			Name = "P_PROC_ICON",
 			Direction = "LEFT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 80 },
+			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 240 },
 
+			-- Maelstorm Weapon
+			--{ spellID = 53817, size = asize*1.5, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Shamanistic Rage
 			{ spellID = 30823, size = asize*1.5, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Clearcasting
 			{ spellID = 16246, size = asize*1.5, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Tidal Waves
-			{ spellID = 51562, size = asize*1.5, unitId = "player", caster = "player", filter = "BUFF" },
+			--{ spellID = 51562, size = asize*1.5, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Unleash Flame
 			{ spellID = 73683, size = asize*1.5, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Unleash Life
 			{ spellID = 73685, size = asize*1.5, unitId = "player", caster = "player", filter = "BUFF" },
-			-- Unleash
-			{ spellID = 73680, size = asize*1.5, unitId = "player", caster = "player", filter = "BUFF" },
 		},
 		{
 			Name = "T_DEBUFF_ICON",
 			Direction = "RIGHT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 200 },
+			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 240 },
 
 			-- Hex
 			{ spellID = 51514, size = asize*1.5, unitId = "target", caster = "all", filter = "DEBUFF" },
@@ -370,7 +367,7 @@ ns.Filger_Spells = {
 			IconSide = "LEFT",
 			Interval = 4,
 			Mode = "BAR",
-			setPoint = { "BOTTOMLEFT", oUF_Tukz_focus, "TOPLEFT", 0, 50 },
+			setPoint = { "BOTTOMLEFT", TukuiFocus, "TOPLEFT", 0, 100 },
 
 			-- Hex
 			{ spellID = 51514, size = asize, barWidth = 200, unitId = "focus", caster = "all", filter = "DEBUFF" },
@@ -385,7 +382,7 @@ ns.Filger_Spells = {
 			Interval = 4,
 			Opacity = 1,
 			Mode = "ICON",
-			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 200 },
+			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 240 },
 
 			-- Beacon of Light/Flamme des Glaubens
 			{ spellID = 53563, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
@@ -400,7 +397,7 @@ ns.Filger_Spells = {
 			Interval = 4,
 			Opacity = 1,
 			Mode = "ICON",
-			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 200 },
+			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 240 },
 
 			-- Beacon of Light/Flamme des Glaubens
 			{ spellID = 53563, size = asize, unitId = "target", caster = "player", filter = "BUFF" },
@@ -412,7 +409,7 @@ ns.Filger_Spells = {
 			Direction = "LEFT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 80 },
+			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 240 },
 
 			-- Holy Shield
 			{ spellID = 20925, size = asize*1.5, unitId = "player", caster = "player", filter = "BUFF" },
@@ -430,7 +427,7 @@ ns.Filger_Spells = {
 			Direction = "RIGHT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 200 },
+			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 240 },
 
 			-- Hammer of Justice/Hammer der Gerechtigkeit
 			{ spellID = 853, size = asize*1.5, unitId = "target", caster = "all", filter = "DEBUFF" },
@@ -445,7 +442,7 @@ ns.Filger_Spells = {
 			IconSide = "LEFT",
 			Interval = 4,
 			Mode = "BAR",
-			setPoint = { "BOTTOMLEFT", oUF_Tukz_focus, "TOPLEFT", 0, 50 },
+			setPoint = { "BOTTOMLEFT", TukuiFocus, "TOPLEFT", 0, 100 },
 
 			-- Hammer of Justice/Hammer der Gerechtigkeit
 			{ spellID = 853, size = asize, barWidth = 200, unitId = "focus", caster = "all", filter = "DEBUFF" },
@@ -459,7 +456,7 @@ ns.Filger_Spells = {
 			Direction = "LEFT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 200 },
+			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 240 },
 
 			-- Prayer of Mending/Gebet der Besserung
 			{ spellID = 41637, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
@@ -486,7 +483,7 @@ ns.Filger_Spells = {
 			Direction = "RIGHT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 200 },
+			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 240 },
 
 			-- Prayer of Mending/Gebet der Besserung
 			{ spellID = 41637, size = asize, unitId = "target", caster = "player", filter = "BUFF" },
@@ -506,7 +503,7 @@ ns.Filger_Spells = {
 			Direction = "LEFT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 80 },
+			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 240 },
 
 			-- Surge of Light
 			{ spellID = 33151, size = asize*1.5, unitId = "player", caster = "all", filter = "BUFF" },
@@ -530,7 +527,7 @@ ns.Filger_Spells = {
 			Direction = "RIGHT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 200 },
+			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 240 },
 
 			-- Shackle undead
 			{ spellID = 9484, size = asize*1.5, unitId = "target", caster = "all", filter = "DEBUFF" },
@@ -549,7 +546,7 @@ ns.Filger_Spells = {
 			IconSide = "LEFT",
 			Interval = 4,
 			Mode = "BAR",
-			setPoint = { "BOTTOMLEFT", oUF_Tukz_focus, "TOPLEFT", 0, 50 },
+			setPoint = { "BOTTOMLEFT", TukuiFocus, "TOPLEFT", 0, 100 },
 
 			-- Shackle undead
 			{ spellID = 9484, size = asize, barWidth = 200, unitId = "focus", caster = "all", filter = "DEBUFF" },
@@ -563,7 +560,7 @@ ns.Filger_Spells = {
 			Direction = "LEFT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 80 },
+			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 240 },
 
 			--Devious Minds/Teuflische Absichten
 			{ spellID = 70840, size = asize*1.5, unitId = "player", caster = "player", filter = "BUFF" },
@@ -589,7 +586,7 @@ ns.Filger_Spells = {
 			Direction = "RIGHT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 200 },
+			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 240 },
 
 			-- Fear
 			{ spellID = 5782, size = asize*1.5, unitId = "target", caster = "all", filter = "DEBUFF" },
@@ -634,7 +631,7 @@ ns.Filger_Spells = {
 			IconSide = "RIGHT",
 			Interval = 4,
 			Mode = "BAR",
-			setPoint = { "BOTTOMLEFT", oUF_Tukz_focus, "TOPLEFT", 0, 50 },
+			setPoint = { "BOTTOMLEFT", TukuiFocus, "TOPLEFT", 0, 100 },
 
 			-- Fear
 			{ spellID = 5782, size = asize, barWidth = 200, unitId = "focus", caster = "all", filter = "DEBUFF" },
@@ -648,7 +645,7 @@ ns.Filger_Spells = {
 			Direction = "LEFT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 80 },
+			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 240 },
 
 			-- Sprint
 			{ spellID = 2983, size = asize*1.5, unitId = "player", caster = "player", filter = "BUFF" },
@@ -678,7 +675,7 @@ ns.Filger_Spells = {
 			Direction = "RIGHT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 200 },
+			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 240 },
 
 			-- Cheap shot
 			{ spellID = 1833, size = asize*1.5, unitId = "target", caster = "all", filter = "DEBUFF" },
@@ -713,7 +710,7 @@ ns.Filger_Spells = {
 			IconSide = "LEFT",
 			Interval = 4,
 			Mode = "BAR",
-			setPoint = { "BOTTOMLEFT", oUF_Tukz_focus, "TOPLEFT", 0, 50 },
+			setPoint = { "BOTTOMLEFT", TukuiFocus, "TOPLEFT", 0, 100 },
 
 			-- Blind
 			{ spellID = 2094, size = asize, barWidth = 200, unitId = "focus", caster = "all", filter = "DEBUFF" },
@@ -727,7 +724,7 @@ ns.Filger_Spells = {
 			Direction = "LEFT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 200 },
+			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 240 },
 
 			-- Bone Shield
 			{ spellID = 49222, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
@@ -741,7 +738,7 @@ ns.Filger_Spells = {
 			Direction = "LEFT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 80 },
+			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 240 },
 
 			-- Unholy Force/Unheilige Kraft
 			{ spellID = 67383, size = asize*1.5, unitId = "player", caster = "player", filter = "BUFF" },
@@ -765,7 +762,7 @@ ns.Filger_Spells = {
 			Direction = "RIGHT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 200 },
+			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 240 },
 
 			-- Blood Plague/Blutseuche
 			{ spellID = 59879, size = asize*1.5, unitId = "target", caster = "player", filter = "DEBUFF" },
@@ -783,7 +780,7 @@ ns.Filger_Spells = {
 			Direction = "LEFT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 45 },
+			setPoint = { "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", 0, 130 },
 
 			-- Eyes of Twilight/Augen des Zwielichts
 			{ spellID = 75495, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
@@ -878,7 +875,10 @@ ns.Filger_Spells = {
 			-- Slayer
 			{ spellID = 91810, size = asize, unitId = "player", caster = "player", filter = "BUFF" },		
 			-- Raw Fury
-			{ spellID = 91832, size = asize, unitId = "player", caster = "player", filter = "BUFF" },		
+			{ spellID = 91832, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
+
+			-- Blind Spot (Jar of Ancient Remedies)
+			{ spellID = 91322, size = asize, unitId = "player", caster = "player", filter = "DEBUFF" },
 			
 			-- Weapon Enchants
 			-- Hurricane
@@ -889,14 +889,6 @@ ns.Filger_Spells = {
 			{ spellID = 74241, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Landslide
 			{ spellID = 74245, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
-			-- Trinket proc (Fall of Mortality)
-			{ spellID = 91184, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
-			--Memory of Invic.
-			{ spellID = 92213, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
-			--Tsunami
-			{ spellID = 89182, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
-			--Witching Hour
-			{ spellID = 90885, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
 		},
 		{
 			Name = "PVE/PVP_P_DEBUFF_ICON",
@@ -1190,7 +1182,7 @@ ns.Filger_Spells = {
 			Direction = "RIGHT",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 190 },
+			setPoint = { "BOTTOMLEFT", TukuiTarget, "TOPLEFT", 0, 170 },
 
 			-- Aspect of the Pack
 			{ spellID = 13159, size = asize*2, unitId = "player", caster = "player", filter = "BUFF" },

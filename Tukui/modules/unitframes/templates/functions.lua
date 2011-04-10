@@ -83,6 +83,65 @@ local ShortValueNegative = function(v)
 	end
 end
 
+T.AuraFilter = function(icons, unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID)	
+	local inInstance, instanceType = IsInInstance()
+	icon.owner = caster
+	icon.isStealable = isStealable
+	
+	if (unit and unit:find("arena%d")) then --Arena frames
+		if dtype then
+			if T.DebuffWhiteList[name] then
+				return true
+			else
+				return false
+			end			
+		else
+			if T.ArenaBuffWhiteList[name] then
+				return true
+			else
+				return false
+			end		
+		end
+	elseif unit == "target" or (unit and unit:find("boss%d")) then --Target/Boss Only
+		if C["unitframes"].playerdebuffsonly == true then
+			-- Show all debuffs on friendly targets
+			if UnitIsFriend("player", "target") then return true end
+			
+			local isPlayer
+			
+			if(caster == 'player' or caster == 'vehicle') then
+				isPlayer = true
+			else
+				isPlayer = false
+			end
+
+			if isPlayer then
+				return true
+			elseif T.DebuffWhiteList[name] or (inInstance and ((instanceType == "pvp" or instanceType == "arena") and T.TargetPVPOnly[name])) then
+				return true
+			else
+				return false
+			end
+		else
+			return true
+		end
+	else --Everything else
+		if unit ~= "player" and unit ~= "targettarget" and unit ~= "focus" and C["unitframes"].arenadebuffs == true and inInstance and (instanceType == "pvp" or instanceType == "arena") then
+			if T.DebuffWhiteList[name] or T.TargetPVPOnly[name] then
+				return true
+			else
+				return false
+			end
+		else
+			if T.DebuffBlacklist[name] then
+				return false
+			else
+				return true
+			end
+		end
+	end
+end
+
 T.PostUpdateHealth = function(health, unit, min, max)
 	if not UnitIsConnected(unit) or UnitIsDead(unit) or UnitIsGhost(unit) then
 		if not UnitIsConnected(unit) then
@@ -363,13 +422,28 @@ T.PostUpdateAura = function(icons, unit, icon, index, offset, filter, isDebuff, 
 	local _, _, _, _, dtype, duration, expirationTime, unitCaster, _ = UnitAura(unit, index, icon.filter)
 
 	if(icon.debuff) then
-		if(not UnitIsFriend("player", unit) and icon.owner ~= "player" and icon.owner ~= "vehicle") then
+		if(not UnitIsFriend("player", unit) and icon.owner ~= "player" and icon.owner ~= "vehicle") and (not T.DebuffWhiteList[name]) then
 			icon:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 			icon.icon:SetDesaturated(true)
 		else
 			local color = DebuffTypeColor[dtype] or DebuffTypeColor.none
-			icon:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
+			if (name == "Unstable Affliction" or name == "Vampiric Touch") and T.myclass ~= "WARLOCK" then
+				icon:SetBackdropBorderColor(0.05, 0.85, 0.94)
+			else
+				icon:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
+			end
 			icon.icon:SetDesaturated(false)
+		end
+	else
+		if (icon.isStealable or ((T.myclass == "PRIEST" or T.myclass == "SHAMAN") and dtype == "Magic")) and not UnitIsFriend("player", unit) then
+			icon:SetBackdropBorderColor(237/255, 234/255, 142/255)
+		else
+			if C["unitframes"].unicolor == false then
+				local r, g, b = icon:GetParent():GetParent().Health.backdrop:GetBackdropBorderColor()
+				icon:SetBackdropBorderColor(r, g, b)
+			else
+				icon:SetBackdropBorderColor(unpack(C["media"].bordercolor))
+			end			
 		end
 	end
 	
@@ -670,19 +744,14 @@ T.createAuraWatch = function(self, unit)
 end
 
 if C["unitframes"].raidunitdebuffwatch == true then
-	-- Classbuffs { spell ID, position [, {r,g,b,a}][, anyUnit] }
-	-- For oUF_AuraWatch
 	local _, ns = ...
-	-- Raid debuffs (now using it with oUF_RaidDebuff instead of oUF_Aurawatch)
-	do
-		local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs
+	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs
 
-		if not ORD then return end
-		
-		ORD.ShowDispelableDebuff = true
-		ORD.FilterDispellableDebuff = true
-		ORD.MatchBySpellName = true
-		
-		ORD:RegisterDebuffs(T.debuffids)
-	end
+	if not ORD then return end
+	
+	ORD.ShowDispelableDebuff = true
+	ORD.FilterDispellableDebuff = true
+	ORD.MatchBySpellName = true
+	
+	ORD:RegisterDebuffs(T.debuffids)
 end

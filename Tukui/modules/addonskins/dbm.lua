@@ -1,3 +1,8 @@
+--[[
+Author: Affli@RU-Howling Fjord, 
+Modified: Elv
+All rights reserved.
+]]--
 local T, C, L, DB = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
 
 if not IsAddOnLoaded("DBM-Core") or C["addonskins"].dbm == false then return end
@@ -235,9 +240,8 @@ local ForceOptions = function()
 	DBT_SavedOptions["DBM"].HugeScale = 1
 	DBT_SavedOptions["DBM"].BarXOffset = 0
 	DBT_SavedOptions["DBM"].BarYOffset = 9
-	DBT_SavedOptions["DBM"].ExpandUpwards = true
-	DBT_SavedOptions["DBM"].Texture = C["media"].normTex
-	DBT_SavedOptions["DBM"].Font = C["media"].font
+	DBT_SavedOptions["DBM"].Texture = "Tukui Norm"
+	DBT_SavedOptions["DBM"].Font = "Tukui Font"
 end
 
 local loadOptions = CreateFrame("Frame")

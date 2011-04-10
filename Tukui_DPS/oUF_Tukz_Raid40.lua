@@ -28,7 +28,6 @@ local function Shared(self, unit)
 	health:SetFrameStrata(t:GetFrameStrata())
 	health:Point("TOPLEFT", t, 2, -2)
 	health:Point("BOTTOMRIGHT", t, -2, 2)
-	--health:SetStatusBarTexture(C["media"].normTex)
 	health:SetStatusBarTexture(C["media"].hTex)
 	self.Health = health
 
@@ -63,9 +62,9 @@ local function Shared(self, unit)
 	name:Point("CENTER", health, "CENTER", 0, 1)
 	name:SetWidth(40)
 	if C["unitframes"].unicolor then
-		self:Tag(name, '[Tukui:getnamecolor][Tukui:namemedium] [Tukui:dead][Tukui:afk]')
+		self:Tag(name, '[Tukui:getnamecolor][Tukui:nameshort] [Tukui:dead][Tukui:afk]')
 	else
-		self:Tag(name, '[Tukui:namemedium] [Tukui:dead][Tukui:afk]')
+		self:Tag(name, '[Tukui:nameshort] [Tukui:dead][Tukui:afk]')
 	end
 	self.Name = name
 	

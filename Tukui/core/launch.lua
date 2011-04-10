@@ -287,6 +287,20 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 	end
 end)
 
+-- collect garbage
+local eventcount = 0
+local OUIInGame = CreateFrame("Frame")
+OUIInGame:RegisterAllEvents()
+OUIInGame:SetScript("OnEvent", function(self, event)
+	eventcount = eventcount + 1
+	if InCombatLockdown() then return end
+
+	if eventcount > 6000 then
+		collectgarbage("collect")
+		eventcount = 0
+	end
+end)
+
 ------------------------------------------------------------------------
 --	UI HELP
 ------------------------------------------------------------------------

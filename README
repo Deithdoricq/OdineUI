@@ -1,3 +1,23 @@
+V6.0 - [04/10/2011]
+* updated stat block code condensed one block, and moved markbar to spawn there instead
+* updated latency code to show bandwidth usage when patch 4.1 goes live
+* can now customize spell filters, error msgs, and other filters ingame
+* fixed some bugs with buffs on player/target/tot/focus frames, and tweaked them in the process....
+* adjusted boss frames layout slightly, and moved them up a bit to acct for tooltips if shown in combat
+* temp hack/fix with tooltip border colors if unitframes are disabled
+* fixed bug causing lua errors if battle.net was down
+* removed pet happiness notifications as its no longer used come patch 4.1
+* added NEW datatext to display mana regeneration
+* added option to hide location panel while in combat
+* adjusted text in boss frames slightly
+* moved up castbars when outside of unitframes
+* adjust positions of: filger icons to not have so much overlapping
+* adjusted placement of xct text. most overlapping should be gone.. give or take a few. report them in forums if found!
+
+V5.9i - [04/07/2011]
+* added some information as to what the numbers mean in the datatext config area
+* fixed bug with tooltips
+
 V5.9h - [04/06/2011]
 * moveui elements match new changes to look n feel
 * all filters are found in one location now config/filters (let me know if bugs occur might of missed something lol)

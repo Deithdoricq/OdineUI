@@ -74,17 +74,14 @@
 	<Script file="modules\datatext\guild.lua"/>
 	<Script file="modules\datatext\haste.lua"/>
 	<Script file="modules\datatext\hps.lua"/>
-	<Script file="modules\datatext\system.lua"/>
 	<Script file="modules\datatext\power.lua"/>
-	<Script file="modules\datatext\time.lua"/>
 	<Script file="modules\datatext\currency.lua"/>
 	<Script file="modules\datatext\hit.lua"/>
 	<Script file="modules\datatext\spec.lua"/>
-	<Script file="modules\datatext\micromenu.lua"/>
 	<Script file="modules\datatext\mastery.lua"/>
 	<Script file="modules\datatext\statblock.lua"/>
 	<Script file="modules\datatext\location_coords.lua"/>
-	
+	<Script file="modules\datatext\regen.lua"/>
 	<Script file="modules\datatext\experience.lua"/>
 	<Script file="modules\datatext\reputation.lua"/>
 	
@@ -113,11 +110,9 @@
 	<Script file="modules\unitframes\tags\tags.lua"/>
 	<Script file="core\movers.lua"/>
 	<Script file="modules\unitframes\layouts\tukui.lua"/>
-	<Script file="modules\notifications\hunterpethappiness.lua"/>	
 	<Script file="modules\misc\altpowerbar.lua"/>
 	<Script file="modules\misc\threatbar.lua"/>
 	<Script file="modules\blizzard\achievements.lua"/>
-	<Script file="modules\misc\raidMark.lua"/>
 	<Script file="modules\misc\raidUtility.lua"/>
 	<Script file="modules\misc\combo.lua"/>
 	<Script file="modules\misc\announceint.lua"/>

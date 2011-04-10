@@ -30,6 +30,16 @@ function OUI:LoadDefaults()
 			addonskins = DB["addonskins"],
 			media = DB["media"],
 			error = DB["error"],
+			spellfilter = {
+				FilterPicker = "ErrorList",
+				RaidDebuffs = T["RaidDebuffs"],
+				DebuffBlacklist = T["DebuffBlacklist"],
+				ErrorList = T["ErrorList"],
+				DebuffWhiteList = T["DebuffWhiteList"],
+				PlateBlacklist = T["PlateBlacklist"],
+				TargetPVPOnly = T["TargetPVPOnly"],
+				ArenaBuffWhiteList = T["ArenaBuffWhiteList"],
+			},
 		},
 	}
 	
@@ -63,6 +73,7 @@ function OUI:PLAYER_LOGIN()
 	self:LoadDefaults()
 
 	self.db = LibStub("AceDB-3.0"):New("OUIDB", defaults) -- PerChar
+	--self.db = LibStub("AceDB-3.0"):New("OUIDB", defaults, true) -- Default Profile
 	
 	self.db.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
 	self.db.RegisterCallback(self, "OnProfileCopied", "OnProfileChanged")
@@ -94,6 +105,7 @@ function OUI:SetupOptions()
 	self.optionsFrames.Misc = ACD3:AddToBlizOptions("OUI", "Misc", "OdineUI", "misc")
 	self.optionsFrames.Tooltip = ACD3:AddToBlizOptions("OUI", "Tooltip", "OdineUI", "tooltip")
 	self.optionsFrames.Media = ACD3:AddToBlizOptions("OUI", "Media", "OdineUI", "media")
+	self.optionsFrames.SpellFilter = ACD3:AddToBlizOptions("OUI", "Filters", "OdineUI", "spellfilter")
 	self.optionsFrames.Profiles = ACD3:AddToBlizOptions("OUIProfiles", "Profiles", "OdineUI")
 	self.SetupOptions = nil
 end
@@ -109,6 +121,84 @@ end
 
 function OUI.GenerateOptionsInternal()
 	local T, C, _, DB = unpack(Tukui)
+	
+	-- Filter related code by Elv
+	local function CreateFilterTable(tab)
+		local spelltable = db.spellfilter[tab]
+		if not spelltable then error("db.spellfilter could not find value 'tab'") return {} end
+		local newtable = {}
+		
+		local ORDER = 1
+		if tab == "RaidDebuffs" then --RaidDebuffs require a reloadui
+			for spell, value in pairs(spelltable) do
+				if db.spellfilter[tab][spell] ~= nil then
+					newtable[spell] = {
+						order = ORDER,
+						name = spell,
+						type = "toggle",
+						get = function(info) if db.spellfilter[tab][spell] then return true else return false end end,
+						set = function(info, value) db.spellfilter[tab][spell] = value; T[tab] = db.spellfilter[tab]; StaticPopup_Show("RELOAD_UI") end,
+					}
+					ORDER = ORDER + 1
+				end
+			end
+		else
+			for spell, value in pairs(spelltable) do
+				if db.spellfilter[tab][spell] ~= nil then
+					newtable[spell] = {
+						order = ORDER,
+						name = spell,
+						type = "toggle",
+						get = function(info) if db.spellfilter[tab][spell] then return true else return false end end,
+						set = function(info, value) db.spellfilter[tab][spell] = value; T[tab] = db.spellfilter[tab] end,
+					}
+					ORDER = ORDER + 1
+				end
+			end		
+		end
+				
+		return newtable
+	end		
+				
+	local function GetFilterDesc()
+		if db.spellfilter.FilterPicker == "PlateBlacklist" then
+			return "Filter whether or not a nameplate is shown by the name of the nameplate"
+		elseif db.spellfilter.FilterPicker == "ErrorList" then
+			return "Allows you to customize which error messages will be shown."
+		elseif db.spellfilter.FilterPicker == "RaidDebuffs" then
+			return "These debuffs will be displayed on your raid frames in addition to any debuff that is dispellable."
+		elseif db.spellfilter.FilterPicker == "TargetPVPOnly" then
+			return "These debuffs only get displayed on the target unit when the unit happens to be an enemy player."
+		elseif db.spellfilter.FilterPicker == "DebuffWhiteList" then
+			return "These debuffs will always get displayed on the Target Frame, Arena Frames, and Nameplates."
+		elseif db.spellfilter.FilterPicker == "ArenaBuffWhiteList" then
+			return "Filter the buffs that get displayed on arena units."
+		elseif db.spellfilter.FilterPicker == "DebuffBlacklist" then
+			return "Set buffs that will never get displayed."
+		else
+			return ""
+		end
+	end
+	
+	local function GetFilterName()
+		if db.spellfilter.FilterPicker == "PlateBlacklist" then
+			return "Nameplate Names"
+		else
+			return "Buff/Debuff Names"
+		end	
+	end
+	
+	local function UpdateSpellFilter()
+		local config = LibStub("AceConfigRegistry-3.0"):GetOptionsTable("OUI", "dialog", "MyLib-1.2")
+		local curfilter = db.spellfilter.FilterPicker
+		
+		config.args.spellfilter.args.SpellListTable.args = CreateFilterTable(curfilter)
+		config.args.spellfilter.args.FilterDesc.name = GetFilterDesc()
+		config.args.spellfilter.args.SpellListTable.name = GetFilterName()
+		
+		LibStub("AceConfigRegistry-3.0"):NotifyChange("OUI")
+		collectgarbage("collect")
+	end
 
 	OUI.Options = {
 		type = "group",
@@ -317,59 +407,6 @@ function OUI.GenerateOptionsInternal()
 							},
 						},
 					},
-					--[[Colors = {
-						type = "group",
-						order = 4,
-						name = "Color Options",
-						guiInline = true,
-						disabled = function() return not db.unitframes.enable end,
-						args = {
-							unicolor = {
-								type = "toggle",
-								order = 1,
-								name = "Unicolor Theme",
-								desc = "When checked allows you to choose health and bg colors below, unchecked will use class colors",
-							},
-							empty5 = {
-								name = "   ",
-								width = "half",
-								type = "description",
-								order = 1.5,
-							},
-							healthColor = {
-								type = "color",
-								order = 2,
-								name = "Healthbar Color",
-								desc = "Allows you to select a custom color for health bars",
-								disabled = function() return not db.unitframes.unicolor end,
-								get = function(info)
-									local r, g, b = unpack(db.unitframes[ info[#info] ])
-									return r, g, b
-								end,
-								set = function(info, r, g, b)
-									StaticPopup_Show("RELOAD_UI")
-									db.unitframes[ info[#info] ] = {r, g, b}
-								end,
-								hasAlpha = false,
-							},
-							healthBgColor = {
-								type = "color",
-								order = 3,
-								name = "Healthbar BG Color",
-								desc = "Allows you to select a custom color for health bars BG",
-								disabled = function() return not db.unitframes.unicolor end,
-								get = function(info)
-									local r, g, b = unpack(db.unitframes[ info[#info] ])
-									return r, g, b
-								end,
-								set = function(info, r, g, b)
-									StaticPopup_Show("RELOAD_UI")
-									db.unitframes[ info[#info] ] = {r, g, b}
-								end,
-								hasAlpha = false,
-							},
-						},
-					},--]]
 					Castbar = {
 						order = 5,
 						type = "group",
@@ -453,7 +490,7 @@ function OUI.GenerateOptionsInternal()
 								type = "toggle",
 								order = 1,
 								name = "Aura Timers",
-								desc = "Enable aura timers on buffs/debuffs",
+								desc = "Enables timers on buffs and debuffs",
 							},
 							auratextscale = {
 								type = "range",
@@ -463,57 +500,88 @@ function OUI.GenerateOptionsInternal()
 								type = "range",
 								min = 8, max = 16, step = 1,									
 							},
+							emptyuf41 = {
+								name = "   ",
+								width = "full",
+								type = "description",
+								order = 2.5,
+							},
 							playerauras = {
 								type = "toggle",
 								order = 3,
 								name = "Player Auras",
 								desc = "Display auras on player frame",				
 							},
-							targetauras = {
+							playershowonlydebuffs = {
 								type = "toggle",
 								order = 4,
+								name = "Player Only My Debuffs",
+								desc = "Display only debuffs on your player frame (must have playerauras enabled)",
+								disabled = function() return not db.unitframes.playerauras end,
+							},
+							targetauras = {
+								type = "toggle",
+								order = 5,
 								name = "Target Auras",
 								desc = "Display auras on target frame",								
 							},
+							playerdebuffsonly = {
+								type = "toggle",
+								order = 6,
+								name = "Target Only My Debuffs",
+								desc = "Display only your debuffs on the target frame. (and anything displayed in the debuff whitelist)",								
+							},
+							emptyuf16 = {
+								name = "   ",
+								width = "full",
+								type = "description",
+								order = 6.5,
+							},
 							totdebuffs = {
 								type = "toggle",
-								order = 5,
+								order = 7,
 								name = "ToT Debuffs",
 								desc = "Display debuffs on target of target frame",									
 							},
 							focusdebuffs = {
 								type = "toggle",
-								order = 6,
-								name = "Focus Debuffs",
-								desc = "Display debuffs on focus frame",									
-							},
-							focusbuffs = {
-								type = "toggle",
-								order = 7,
-								name = "Focus Debuffs",
-								desc = "Display buffs on focus frame",									
-							},
-							petbuffs = {
-								type = "toggle",
 								order = 8,
-								name = "Pet Buffs",
-								desc = "Display buffs on your pet",									
+								name = "Focus Debuffs",
+								desc = "Display only your debuffs on the targets frame.",									
 							},
-							onlyselfdebuffs = {
+							bossbuffs = {
 								type = "toggle",
 								order = 9,
-								name = "Only My Debuffs",
-								desc = "Display only your debuffs on target frame",									
+								name = "Boss Buffs",
+								desc = "Display buffs on boss frames",									
 							},
-							onlyselfbuffs = {
+							bossdebuffs = {
 								type = "toggle",
 								order = 10,
-								name = "Only My Buffs",
-								desc = "Display only your buffs on target frame",									
+								name = "Boss Debuffs",
+								desc = "Display debuffs on boss frames.",									
+							},
+							arenabuffs = {
+								type = "toggle",
+								order = 11,
+								name = "Arena Buffs",
+								desc = "Display buffs on arena frames.",									
+							},
+							arenadebuffs = {
+								type = "toggle",
+								order = 12,
+								name = "Arena Debuffs",
+								desc = "Display debuffs on arena frames.",									
+							},
+							emptyuf122 = {
+								name = "   ",
+								width = "full",
+								type = "description",
+								order = 12.5,
 							},
 							debuffHighlightFilter = { 
 								type = "toggle",
-								order = 11,
+								order = 13,
 								name = "Filter Debuff Borders",
 								desc = "Toggles whether you want border of debuffs filtered.",
 							},
@@ -521,23 +589,23 @@ function OUI.GenerateOptionsInternal()
 								name = "   ",
 								width = "full",
 								type = "description",
-								order = 12,
-							},
-							buffrows = {
-								type = "range",
-								order = 13,
-								name = "Buff Rows",
-								desc = "Controls how many rows of buffs are allowed",
-								type = "range",
-								min = 1, max = 3, step = 1,									
-							},
-							debuffrows = {
-								type = "range",
 								order = 14,
-								name = "Debuff Rows",
-								desc = "Controls how many rows of debuffs are allowed",
+							},
+							buffsperrow = {
 								type = "range",
-								min = 1, max = 3, step = 1,									
+								order = 15,
+								name = "Buff Rows",
+								desc = "Controls how many buffs PER row are shown.(player/target frames only)",
+								type = "range",
+								min = 5, max = 9, step = 1,									
+							},
+							debuffsperrow = {
+								type = "range",
+								order = 16,
+								name = "Debuff Rows",
+								desc = "Controls how many debuffs PER row are shown (player/target frames only)",
+								type = "range",
+								min = 5, max = 9, step = 1,									
 							},
 						},
 					},
@@ -858,7 +926,7 @@ function OUI.GenerateOptionsInternal()
 						order = 1,
 						type = "group",
 						name = "Loot",
-						guiInline = true,
+						--guiInline = true,
 						get = function(info) return db.loot[ info[#info] ] end,
 						set = function(info, value) db.loot[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
 						args = {
@@ -886,7 +954,7 @@ function OUI.GenerateOptionsInternal()
 						order = 2,
 						type = "group",
 						name = "Merchant",
-						guiInline = true,
+						--guiInline = true,
 						get = function(info) return db.merchant[ info[#info] ] end,
 						set = function(info, value) db.merchant[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
 						args = {
@@ -914,7 +982,7 @@ function OUI.GenerateOptionsInternal()
 						order = 3,
 						type = "group",
 						name = "Bags",
-						guiInline = true,
+						--guiInline = true,
 						get = function(info) return db.bags[ info[#info] ] end,
 						set = function(info, value) db.bags[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
 						args = {
@@ -930,7 +998,7 @@ function OUI.GenerateOptionsInternal()
 						order = 4,
 						type = "group",
 						name = "Map",
-						guiInline = true,
+						--guiInline = true,
 						get = function(info) return db.map[ info[#info] ] end,
 						set = function(info, value) db.map[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
 						args = {
@@ -946,7 +1014,7 @@ function OUI.GenerateOptionsInternal()
 						order = 5,
 						type = "group",
 						name = "Cooldowns",
-						guiInline = true,
+						--guiInline = true,
 						get = function(info) return db.cooldown[ info[#info] ] end,
 						set = function(info, value) db.cooldown[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
 						args = {
@@ -969,7 +1037,7 @@ function OUI.GenerateOptionsInternal()
 						order = 6,
 						type = "group",
 						name = "Auras",
-						guiInline = true,
+						--guiInline = true,
 						get = function(info) return db.auras[ info[#info] ] end,
 						set = function(info, value) db.auras[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
 						args = {
@@ -985,7 +1053,7 @@ function OUI.GenerateOptionsInternal()
 						order = 7,
 						type = "group",
 						name = "Other",
-						guiInline = true,
+						--guiInline = true,
 						get = function(info) return db.misc[ info[#info] ] end,
 							set = function(info, value) db.misc[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
 						args = {
@@ -1027,7 +1095,7 @@ function OUI.GenerateOptionsInternal()
 						order = 8,
 						type = "group",
 						name = "Errors",
-						guiInline = true,
+						--guiInline = true,
 						get = function(info) return db.error[ info[#info] ] end,
 						set = function(info, value) db.error[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
 						args = {
@@ -1043,7 +1111,7 @@ function OUI.GenerateOptionsInternal()
 						order = 9,
 						type = "group",
 						name = "Buff Reminders",
-						guiInline = true,
+						--guiInline = true,
 						get = function(info) return db.buffreminder[ info[#info] ] end,
 						set = function(info, value) db.buffreminder[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
 						args = {
@@ -1065,7 +1133,7 @@ function OUI.GenerateOptionsInternal()
 						order = 10,
 						type = "group",
 						name = "Addon Skins",
-						guiInline = true,
+						--guiInline = true,
 						get = function(info) return db.addonskins[ info[#info] ] end,
 						set = function(info, value) db.addonskins[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
 						args = {
@@ -1319,56 +1387,56 @@ function OUI.GenerateOptionsInternal()
 								order = 1,
 								type = "range",
 								name = "Armor",
-								desc = "Display amount of armor",
+								desc = "Display amount of armor"..L["DT_POS"],
 								min = 0, max = 11, step = 1,
 							},
 							avd = {
 								order = 2,
 								type = "range",
 								name = "Avoidance",
-								desc = "Display avoidance you currently have",
+								desc = "Display avoidance you currently have"..L["DT_POS"],
 								min = 0, max = 11, step = 1,
 							},
 							bags = {
 								order = 3,
 								type = "range",
 								name = "Bags",
-								desc = "Display ammount of bag space",
+								desc = "Display ammount of bag space"..L["DT_POS"],
 								min = 0, max = 11, step = 1,								
 							},
 							crit = {
 								order = 4,
 								type = "range",
 								name = "Crit",
-								desc = "Display ammount of crit rating",
+								desc = "Display ammount of crit rating"..L["DT_POS"],
 								min = 0, max = 11, step = 1,								
 							},
 							currency = {
 								order = 5,
 								type = "range",
 								name = "Currency",
-								desc = "Display currency you are tracking",
+								desc = "Display currency you are tracking"..L["DT_POS"],
 								min = 0, max = 11, step = 1,								
 							},
 							dps_text = {
 								order = 6,
 								type = "range",
 								name = "DPS Text",
-								desc = "Display ammount of DPS",
+								desc = "Display ammount of DPS"..L["DT_POS"],
 								min = 0, max = 11, step = 1,								
 							},
 							dur = {
 								order = 7,
 								type = "range",
 								name = "Durability",
-								desc = "Display your current durability",
+								desc = "Display your current durability"..L["DT_POS"],
 								min = 0, max = 11, step = 1,								
 							},
 							friends = {
 								order = 8,
 								type = "range",
 								name = "Friends",
-								desc = "Display ammount of friends online",
+								desc = "Display ammount of friends online"..L["DT_POS"],
 								min = 0, max = 11, step = 1,								
 							},
 							gold = {
@@ -1382,56 +1450,56 @@ function OUI.GenerateOptionsInternal()
 								order = 10,
 								type = "range",
 								name = "Guild",
-								desc = "Display guilld members online",
+								desc = "Display guilld members online"..L["DT_POS"],
 								min = 0, max = 11, step = 1,								
 							},
 							haste = {
 								order = 11,
 								type = "range",
 								name = "Haste",
-								desc = "Display ammount of haste",
+								desc = "Display ammount of haste"..L["DT_POS"],
 								min = 0, max = 11, step = 1,								
 							},
 							hit = {
 								order = 12,
 								type = "range",
 								name = "Hit",
-								desc = "Display ammount of hit rating",
+								desc = "Display ammount of hit rating"..L["DT_POS"],
 								min = 0, max = 11, step = 1,								
 							},
 							hps_text = {
 								order = 13,
 								type = "range",
 								name = "HPS Text",
-								desc = "Display your hps in combat",
+								desc = "Display your hps in combat"..L["DT_POS"],
 								min = 0, max = 11, step = 1,								
 							},
 							mastery = {
 								order = 14,
 								type = "range",
 								name = "Mastery",
-								desc = "Display ammount of mastery rating",
+								desc = "Display ammount of mastery rating"..L["DT_POS"],
 								min = 0, max = 11, step = 1,								
 							},
 							spec = {
 								order = 15,
 								type = "range",
 								name = "Spec",
-								desc = "Display current spec, and can be clicked to change to other spec",
+								desc = "Display current spec, and can be clicked to change to other spec"..L["DT_POS"],
 								min = 0, max = 11, step = 1,								
 							},
-							micromenu = {
+							regen = {
 								order = 16,
 								type = "range",
-								name = "Micromenu",
-								desc = "Display a micromenu",
+								name = "Mana Regen",
+								desc = "Display ammount of mana regen you have (base/combat)"..L["DT_POS"],
 								min = 0, max = 11, step = 1,								
 							},
 							power = {
 								order = 17,
 								type = "range",
 								name = "Power",
-								desc = "Display ammount of power you have (STR, AGI, INT)",
+								desc = "Display ammount of power you have (STR, AGI, INT)"..L["DT_POS"],
 								min = 0, max = 11, step = 1,								
 							},
 						},
@@ -1613,6 +1681,91 @@ function OUI.GenerateOptionsInternal()
 							},
 						},
 					},	
+				},
+			},
+			spellfilter = {
+				order = 12,
+				type = "group",
+				name = "Filters",
+				desc = "Customize certain filters",
+				get = function(info) return db.spellfilter[ info[#info] ] end,
+				set = function(info, value) db.spellfilter[ info[#info] ] = value end,
+				args = {
+					FilterPicker = {
+						order = 2,
+						type = "select",
+						name = "Choose Filter",
+						desc = "Choose the filter you want to modify.",
+						set = function(info, value) 
+							db.spellfilter[ info[#info] ] = value 
+							UpdateSpellFilter()
+						end,
+						values = {
+							["RaidDebuffs"] = "Raid Debuffs",
+							["ErrorList"] = "Error Messages",
+							["PlateBlacklist"] = "Nameplate Blacklist",
+							["DebuffWhiteList"] = "Debuff Whitelist",
+							["TargetPVPOnly"] = "Target Debuffs (PvP Only)",
+							["DebuffBlacklist"] = "Debuff Blacklist",
+							["ArenaBuffWhiteList"] = "Arena Buffs",
+						},						
+					},			
+					spacer = {
+						type = 'description',
+						name = '',
+						desc = '',
+						order = 3,
+					},		
+					FilterDesc = {
+						type = 'description',
+						name = GetFilterDesc(),
+						order = 4,
+					},						
+					NewName = {
+						type = 'input',
+						name = "New name",
+						desc = "Add a new name to the list.",
+						get = function(info) return "" end,
+						set = function(info, value)
+							local name_list = db.spellfilter[db.spellfilter.FilterPicker]
+							name_list[value] = true
+							UpdateSpellFilter()
+							T[name_list] = db.spellfilter[name_list]
+							if name_list == "RaidDebuffs" then
+								StaticPopup_Show("RELOAD_UI")
+							end
+						end,
+						order = 5,
+					},
+					DeleteName = {
+						type = 'input',
+						name = "Remove name",
+						desc = "Remove a name from the list.",
+						get = function(info) return "" end,
+						set = function(info, value)
+							local name_list = db.spellfilter[db.spellfilter.FilterPicker]
+							
+							if db.spellfilter[db.spellfilter.FilterPicker][value] == nil then
+								print("Spell not found in list")
+							else
+								name_list[value] = nil
+								UpdateSpellFilter()
+								T[name_list] = db.spellfilter[name_list]
+								
+								if name_list == "RaidDebuffs" then
+									StaticPopup_Show("RELOAD_UI")
+								end
+							end
+						end,
+						order = 6,
+					},
+					SpellListTable = {
+						order = 7,
+						type = "group",
+						name = GetFilterName(),
+						guiInline = true,
+						args = CreateFilterTable(db.spellfilter.FilterPicker),
+					},
 				},
 			},
 		},

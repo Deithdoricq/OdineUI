@@ -9,12 +9,11 @@ local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, vari
 
 if not C["unitframes"].enable == true then return end
 
-local tempo = (T.InfoLeftRightWidth / 2) + T.buttonsize
-
 if T.lowversion then
-	T.Player, T.Target, T.ToT, T.Pet, T.Focus, T.Boss = 180, 180, 180, 180, 130, 200
+	T.Player, T.Target, T.ToT, T.Pet, T.Focus, T.Boss = 200, 200, 130, 130, 130, 200
 else
-	T.Player, T.Target, T.ToT, T.Pet, T.Focus, T.Boss = tempo, tempo, 130, 130, 150, 200
+	--T.Player, T.Target, T.ToT, T.Pet, T.Focus, T.Boss = ((T.InfoLeftRightWidth / 2) + T.buttonsize), ((T.InfoLeftRightWidth / 2) + T.buttonsize), 130, 130, 130, 200
+	T.Player, T.Target, T.ToT, T.Pet, T.Focus, T.Boss = 215, 215, 130, 130, 130, 200
 end
 
 local font, fonts, fontf = C["media"].uffont, 14, "OUTLINE"
@@ -518,90 +517,85 @@ local function Shared(self, unit)
 			self.Name = Name
 		end
 
-		if (unit == "target" and C["unitframes"].targetauras) or (unit == "player" and C["unitframes"].playerauras) then
-			local buffs = CreateFrame("Frame", nil, self)
-			local debuffs = CreateFrame("Frame", nil, self)
+		if (unit == "player" and C["unitframes"].playerauras) then
+			local buffs = CreateFrame("Frame", nil, self.panel)
+			local debuffs = CreateFrame("Frame", nil, self.panel)
 			
-			if (T.myclass == "SHAMAN" and C["unitframes"].shaman) or
-				(T.myclass == "DEATHKNIGHT" and C["unitframes"].deathknight) or
-				(T.myclass == "WARLOCK" and C["unitframes"].warlock) or
-				(T.myclass == "PALADIN" and C["unitframes"].paladin) or
-				(T.myclass == "DRUID" and C["unitframes"].druid) and 
-				(C["unitframes"].classbar and C["unitframes"].playerauras and unit == "player") then
-				buffs:SetPoint("BOTTOMLEFT", panel, "TOPLEFT", 0, 7)
+			if (T.myclass == "SHAMAN" or
+				T.myclass == "DEATHKNIGHT" or
+				T.myclass == "WARLOCK" or
+				T.myclass == "PALADIN" or
+				T.myclass == "DRUID") and (C["unitframes"].classbar and unit == "player") then
+				buffs:SetPoint("BOTTOMLEFT", self.panel, "TOPLEFT", 0, 13)
 			else
-				buffs:SetPoint("BOTTOMLEFT", panel, "TOPLEFT", 0, 3)
+				buffs:SetPoint("BOTTOMLEFT", self.panel, "TOPLEFT", 0, 3)
 			end
 			
-			local bs = 26
-			local bh = 0
-			local bn = 0
-			if C["unitframes"].buffrows == 1 then
-				bh = bs
-				bn = 7
-			else
-				bh = bs * 2 + 3
-				bn = 14
-			end
+			buffs.num = C["unitframes"].buffsperrow
+			buffs:SetWidth(T.Player)
+			buffs.spacing = T.Scale(1*T.raidscale)
+			buffs.size = ((T.Player - (buffs.spacing*(buffs.num - 1))) / buffs.num)*T.raidscale
+			buffs:SetHeight(buffs.size)
 			
-			local ds = bs
-			local dh = ds
-			local dn = 0
-			if C["unitframes"].debuffrows == 3 then
-				dh = ds * 3 + 6
-				dn = 21
-			elseif C["unitframes"].debuffrows == 2 then
-				dh = ds * 2 + 3
-				dn = 14
-			elseif C["unitframes"].debuffrows == 1 then
-				dh = ds
-				dn = 7
-			end
+			debuffs.num = C["unitframes"].debuffsperrow
+			debuffs:SetWidth(T.Player)
+			debuffs.spacing = T.Scale(1*T.raidscale)
+			debuffs.size = ((T.Player - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)*T.raidscale
+			debuffs:SetHeight(debuffs.size)
+			debuffs:SetPoint("BOTTOMRIGHT", buffs, "TOPRIGHT", 2, 5)
 
-			if T.lowversion then
-				buffs:SetHeight(bh)
-				buffs:SetWidth(186)
-				buffs.size = bs - 2
-				buffs.num = bn
 
-				debuffs:SetHeight(dh)
-				debuffs:SetWidth(185)
-				debuffs:SetPoint("BOTTOMRIGHT", buffs, "TOPRIGHT", 0, -1)
-				debuffs.size = ds - 2
-				debuffs.num = dn
-			else				
-				buffs:SetHeight(bh)
-				buffs:SetWidth(220)
-				buffs.size = bs
-				buffs.num = bn + 2
-				
-				debuffs:SetHeight(dh)
-				debuffs:SetWidth(215)
-				debuffs:SetPoint("BOTTOMRIGHT", buffs, "TOPRIGHT", 2, 5)
-				debuffs.size = ds
-				debuffs.num = dn + 2
-			end
-
-			buffs.spacing = 2
 			buffs.initialAnchor = "BOTTOMLEFT"
 			buffs.PostCreateIcon = T.PostCreateAura
 			buffs.PostUpdateIcon = T.PostUpdateAura
-			self.Buffs = buffs	
+			if C["unitframes"].playershowonlydebuffs == false then
+				self.Buffs = buffs	
+			end
 
-			debuffs.spacing = 2
 			debuffs.initialAnchor = "BOTTOMRIGHT"
 			debuffs["growth-y"] = "UP"
 			debuffs["growth-x"] = "LEFT"
 			debuffs.PostCreateIcon = T.PostCreateAura
 			debuffs.PostUpdateIcon = T.PostUpdateAura
-			
-			-- an option to show only our debuffs on target
-			if unit == "target" then
-				debuffs.onlyShowPlayer = C.unitframes.onlyselfdebuffs
-				buffs.onlyShowPlayer = C.unitframes.onlyselfbuffs
-			end
-			
+			debuffs.CustomFilter = T.AuraFilter			
 			self.Debuffs = debuffs
+			
+		end
+		
+		-- target frame
+		if (unit == "target" and C["unitframes"].targetauras) then
+			local buffs = CreateFrame("Frame", nil, self.panel)
+			local debuffs = CreateFrame("Frame", nil, self.panel)
+			
+			buffs:SetPoint("BOTTOMLEFT", self.panel, "TOPLEFT", 0, 3)
+			
+			buffs.num = C["unitframes"].buffsperrow
+			buffs:SetWidth(T.Target)
+			buffs.spacing = T.Scale(1*T.raidscale)
+			buffs.size = ((T.Target - (buffs.spacing*(buffs.num - 1))) / buffs.num)*T.raidscale
+			buffs:SetHeight(buffs.size)
+			
+			debuffs.num = C["unitframes"].debuffsperrow
+			debuffs:SetWidth(T.Target)
+			debuffs.spacing = T.Scale(1*T.raidscale)
+			debuffs.size = ((T.Target - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)*T.raidscale
+			debuffs:SetHeight(debuffs.size)
+			debuffs:SetPoint("BOTTOMRIGHT", buffs, "TOPRIGHT", 2, 5)
+
+
+			buffs.initialAnchor = "BOTTOMLEFT"
+			buffs.PostCreateIcon = T.PostCreateAura
+			buffs.PostUpdateIcon = T.PostUpdateAura
+			self.Buffs = buffs	
+
+			debuffs.initialAnchor = "BOTTOMRIGHT"
+			debuffs["growth-y"] = "UP"
+			debuffs["growth-x"] = "LEFT"
+			debuffs.PostCreateIcon = T.PostCreateAura
+			debuffs.PostUpdateIcon = T.PostUpdateAura
+			debuffs.CustomFilter = T.AuraFilter			
+			self.Debuffs = debuffs
+			
 		end
 		
 		-- cast bar for player and target
@@ -667,11 +661,11 @@ local function Shared(self, unit)
 							castbar:SetPoint("BOTTOMLEFT", TukuiBar1, "TOPLEFT", 2, 5)
 						end
 					else
-						castbar:Point("BOTTOM", TukuiPlayer, "TOP", T.buttonspacing, 168)
+						castbar:Point("BOTTOM", TukuiPlayer, "TOP", T.buttonspacing, 295)
 						castbar:SetWidth(T.Player)
 					end
 				elseif unit == "target" then
-					castbar:Point("BOTTOM", TukuiTarget, "TOP", T.buttonspacing, 168)
+					castbar:Point("BOTTOM", TukuiTarget, "TOP", T.buttonspacing, 295) -- 168
 					castbar:SetWidth(T.Target)
 				end
 			
@@ -894,64 +888,20 @@ local function Shared(self, unit)
 		end
 		
 		-- auras
-		if C["unitframes"].totdebuffs == true and unit == "targettarget" then
-			local debuffs = CreateFrame("Frame", nil, health)
-			debuffs:Height(26)
-			debuffs:Width(T.Focus)
-			debuffs.size = (debuffs:GetHeight() - 3)
-			debuffs.spacing = 2
-			debuffs.num = 4
-			debuffs:Point("BOTTOMLEFT", health, "TOPLEFT", -1, 1)
-			debuffs.initialAnchor = "TOPLEFT"
-			debuffs["growth-y"] = "UP"
-			debuffs.PostCreateIcon = T.PostCreateAura
-			debuffs.PostUpdateIcon = T.PostUpdateAura
-			self.Debuffs = debuffs
-			
-		elseif C["unitframes"].petbuffs == true and unit == "pet" then
-			local buffs = CreateFrame("Frame", nil, health)
-			buffs:Height(26)
-			buffs:Width(T.Focus)
-			buffs.size = (buffs:GetHeight() - 3)
-			buffs.spacing = 2
-			buffs.num = 4
-			buffs:Point("BOTTOMLEFT", health, "TOPLEFT", -1, 1)
-			buffs.initialAnchor = "TOPLEFT"
-			buffs["growth-y"] = "UP"
-			buffs.PostCreateIcon = T.PostCreateAura
-			buffs.PostUpdateIcon = T.PostUpdateAura
-			buffs.onlyShowPlayer = true
-			self.Buffs = buffs
-			
-		elseif C["unitframes"].focusbuffs and unit == "focus" then
-			local buffs = CreateFrame("Frame", nil, self)
-			buffs:SetHeight(26)
-			buffs:SetWidth(T.Focus)
-			buffs.size = buffs:GetHeight()
-			buffs.spacing = 3
-			buffs.num = 4
-
-			buffs:SetPoint("TOPLEFT", ufbg, "BOTTOMLEFT", -1, 1)
-			buffs.initialAnchor = "LEFT"
-			buffs["growth-x"] = "RIGHT"
-			buffs["growth-y"] = "DOWN"
-			
-			buffs.PostCreateIcon = TukuiDB.PostCreateAura
-			buffs.PostUpdateIcon = TukuiDB.PostUpdateAura
-			self.Buffs = buffs
-			
-		elseif C["unitframes"].focusdebuffs == true and unit == "focus" then
+		if (unit == "targettarget" and C["unitframes"].totdebuffs == true) or (unit == "focus" and C["unitframes"].focusdebuffs == true) then	
 			local debuffs = CreateFrame("Frame", nil, power)
-			debuffs:Height(26)
-			debuffs:Width(T.Focus)
-			debuffs.size = debuffs:GetHeight()
-			debuffs.spacing = 2
-			debuffs.num = 6
-			debuffs:Point("BOTTOMLEFT", health, "TOPLEFT", -1, 1)
-			debuffs.initialAnchor = "TOPLEFT"
+			debuffs.num = 5
+			debuffs:SetWidth(T.Focus)
+			debuffs.spacing = T.Scale(1*T.raidscale)
+			debuffs.size = ((T.Focus - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)*T.raidscale
+			debuffs:SetHeight(debuffs.size)
+			debuffs:Point("TOP", power, "BOTTOM", 0, -4*T.raidscale)	
+			debuffs.initialAnchor = 'BOTTOMRIGHT'
 			debuffs["growth-y"] = "UP"
+			debuffs["growth-x"] = "LEFT"
 			debuffs.PostCreateIcon = T.PostCreateAura
 			debuffs.PostUpdateIcon = T.PostUpdateAura
+			debuffs.CustomFilter = T.AuraFilter
 			self.Debuffs = debuffs
 		end
 		
@@ -1056,8 +1006,8 @@ local function Shared(self, unit)
 		-- power
 		local power = CreateFrame('StatusBar', nil, self)
 		power:Height(20/2)
-		power:SetPoint("TOPLEFT", healthB, "BOTTOMLEFT", T.Scale(2), -T.buttonspacing * 2)
-		power:SetPoint("TOPRIGHT", healthB, "BOTTOMRIGHT", T.Scale(-2), -T.buttonspacing * 2)
+		power:SetPoint("TOPLEFT", healthB, "BOTTOMLEFT", T.Scale(2), T.Scale(-6))
+		power:SetPoint("TOPRIGHT", healthB, "BOTTOMRIGHT", T.Scale(-2), T.Scale(-6))
 		power:SetStatusBarTexture(normTex)
 		self.Power = power
 		
@@ -1125,7 +1075,7 @@ local function Shared(self, unit)
 		
 		-- names
 		local Name = health:CreateFontString(nil, "OVERLAY")
-		Name:SetPoint("CENTER", health, "CENTER", 0, 0)
+		Name:SetPoint("LEFT", health, "LEFT", 6, 0)
 		Name:SetJustifyH("CENTER")
 		Name:SetFont(font, fonts, fontf)
 		Name.frequentUpdates = 0.2		
@@ -1135,37 +1085,55 @@ local function Shared(self, unit)
 		
 		if (unit and unit:find("boss%d")) then
 			-- alt power bar
-			local AltPowerBar = CreateFrame("StatusBar", nil, self.Health)
-			AltPowerBar:SetFrameLevel(self.Health:GetFrameLevel() + 1)
-			AltPowerBar:Height(20/3)
-			AltPowerBar:SetStatusBarTexture(C.media.normTex)
+			local AltPowerBar = CreateFrame("StatusBar", nil, self.Power)
+			AltPowerBar:SetFrameLevel(self.Power:GetFrameLevel() + 1)
+			AltPowerBar:SetStatusBarTexture(normTex)
 			AltPowerBar:GetStatusBarTexture():SetHorizTile(false)
 			AltPowerBar:SetStatusBarColor(1, 0, 0)
 
-			AltPowerBar:SetPoint("LEFT")
-			AltPowerBar:SetPoint("RIGHT")
-			AltPowerBar:SetPoint("TOP", self.Health, "TOP", 0, T.Scale(11)) -- (T.buttonsize-4) + (T.buttonspacing * 2))
+			AltPowerBar:SetPoint("TOPLEFT", T.mult, -T.mult)
+			AltPowerBar:SetPoint("TOPRIGHT", -T.mult, T.mult)
 			AltPowerBar:SetTemplate("Default", true)
-			AltPowerBar:CreateShadow("Default")
 
 			self.AltPowerBar = AltPowerBar
+		end
+		
+		if (unit and unit:find("arena%d") and C["unitframes"].arenabuffs == true) or (unit and unit:find("boss%d") and C["unitframes"].bossbuffs == true) then
+			local buffs = CreateFrame("Frame", nil, health)	
 			
-			-- create buff at left of unit if they are boss units
-			local buffs = CreateFrame("Frame", nil, health)
-			buffs:SetHeight(T.buttonsize-4)
+			buffs.num = 7
 			buffs:SetWidth(T.Boss)
-			buffs.size = (T.buttonsize-4)
-			buffs.spacing = 2
-			buffs.num = 8
-			buffs:SetPoint("BOTTOMLEFT", health, "TOPLEFT", T.Scale(-0.5), T.Scale(13))
+			buffs.spacing = T.Scale(1*T.raidscale)
+			buffs.size = ((T.Boss - (buffs.spacing*(buffs.num - 1))) / buffs.num)*T.raidscale
+			buffs:SetHeight(buffs.size)
+			buffs:SetPoint("BOTTOMLEFT", health, "TOPLEFT", -2, T.Scale(5)) -- was 13
 			buffs.initialAnchor = "TOPLEFT"
 			buffs["growth-y"] = "UP"
 			buffs.PostCreateIcon = T.PostCreateAura
 			buffs.PostUpdateIcon = T.PostUpdateAura
-			self.Buffs = buffs
 			
-			-- because it appear that sometime elements are not correct.
-			self:HookScript("OnShow", T.updateAllElements)
+			if (unit and unit:find('arena%d')) then
+				buffs.CustomFilter = T.AuraFilter
+			end
+			self.Buffs = buffs
+		end
+		
+		if (unit and unit:find("arena%d") and C["unitframes"].arenadebuffs == true) or (unit and unit:find("boss%d") and C["unitframes"].bossdebuffs == true) then
+			local debuffs = CreateFrame("Frame", nil, self)
+			
+			debuffs.num = 3
+			debuffs:SetWidth(T.Boss)
+			debuffs.spacing = T.Scale(1*T.raidscale)
+			debuffs.size = 20*1.5
+			debuffs:Point("TOPLEFT", self, "TOPRIGHT", 4, 0)
+			debuffs:SetHeight(debuffs.size)
+			debuffs.initialAnchor = 'LEFT'
+			debuffs["growth-y"] = "UP"	
+			debuffs["growth-x"] = "RIGHT"
+			debuffs.PostCreateIcon = T.PostCreateAura
+			debuffs.PostUpdateIcon = T.PostUpdateAura
+			debuffs.CustomFilter = T.AuraFilter
+			self.Debuffs = debuffs	
 		end
 
 		-- trinket feature via trinket plugin
@@ -1186,29 +1154,14 @@ local function Shared(self, unit)
 			Trinket:SetFrameLevel(1)
 			Trinket.trinketUseAnnounce = true
 			self.Trinket = Trinket
-			
-			-- create debuff for arena units
-			local debuffs = CreateFrame("Frame", nil, health)
-			debuffs:SetHeight(T.buttonsize-4)
-			debuffs:SetWidth(T.Boss)
-			debuffs.size = (T.buttonsize-4)
-			debuffs.spacing = 2
-			debuffs.num = 8
-			debuffs:SetPoint("BOTTOMLEFT", health, "TOPLEFT", T.Scale(-0.5), T.Scale(5))
-			debuffs.initialAnchor = "TOPLEFT"
-			debuffs["growth-y"] = "UP"
-			debuffs.PostCreateIcon = T.PostCreateAura
-			debuffs.PostUpdateIcon = T.PostUpdateAura
-			self.Debuffs = debuffs
 		end
 		
 		-- boss & arena frames cast bar!
-		local castbar = CreateFrame("StatusBar", self:GetName().."CastBar", self)
-		castbar:SetPoint("LEFT")
-		castbar:SetPoint("RIGHT")
-		castbar:SetPoint("BOTTOM", 0, -(20 * 2) - (T.buttonspacing * 2))
+		local castbar = CreateFrame("StatusBar", self:GetName().."CastBar", power)
+		castbar:SetPoint("TOPLEFT", power, "BOTTOMLEFT", 0, -7)
+		castbar:SetPoint("TOPRIGHT", power, "BOTTOMRIGHT", 0, -7)
 		
-		castbar:SetHeight(20)
+		castbar:Height(20 / 1.5)
 		castbar:SetStatusBarTexture(normTex)
 		castbar:SetFrameLevel(6)
 		
@@ -1239,9 +1192,10 @@ local function Shared(self, unit)
 		castbar.button:Width(castbar:GetHeight()+4)
 		castbar.button:Point("RIGHT", castbar, "LEFT",-4, 0)
 		castbar.button:SetTemplate("Default", true)
+		castbar.button:CreateShadow("Default")
 		castbar.button:SetBackdropColor(unpack(C["media"].backdropcolor))
 		castbar.icon = castbar.button:CreateTexture(nil, "ARTWORK")
-		castbar.icon:Point("TOPLEFT", castbar.button, T.Scale(2), T.Scale(-2))
+		castbar.icon:Point("TOPLEFT", castbar.button, 2, -2)
 		castbar.icon:Point("BOTTOMRIGHT", castbar.button, -2, 2)
 		castbar.icon:SetTexCoord(0.08, 0.92, 0.08, .92)
 
@@ -1255,56 +1209,7 @@ local function Shared(self, unit)
 	------------------------------------------------------------------------
 	
 	if(self:GetParent():GetName():match"TukuiMainTank" or self:GetParent():GetName():match"TukuiMainAssist") then
-		-- Right-click focus on maintank or mainassist units
-		self:SetAttribute("type2", "focus")
-		
-		local health = CreateFrame('StatusBar', nil, self)
-		health:Height(20 / 2)
-		health:SetPoint("TOPLEFT", T.mult, -T.mult)
-		health:SetPoint("TOPRIGHT", -T.mult, T.mult)
-		health:SetStatusBarTexture(normTex)
-		self.Health = health
-		
-		local healthBg = health:CreateTexture(nil, "BORDER")
-		healthBg:SetAllPoints()
-		healthBg:SetTexture(unpack(C["unitframes"].healthBgColor))
-		self.Health.bg = healthBg
-
-		local healthB = CreateFrame("Frame", nil, health)
-		healthB:CreatePanel("Default", true, (100 / 2) + 2, (20 / 2) + 4, "TOP", healthBg, "TOP", 0, space)
-		healthB:SetFrameLevel(health:GetFrameLevel() - 1)
-		self.Health.border = healthB
-		
-		health.frequentUpdates = true
-		if C["unitframes"].showsmooth == true then
-			health.Smooth = true
-		end
-		
-		local Name = health:CreateFontString(nil, "OVERLAY")
-		Name:SetPoint("CENTER", health, "CENTER")
-		Name:SetFont(font, fonts, fontf)
-		Name:SetShadowOffset(1, -1)
-		
-		self.Name = Name
-		
-		if C["unitframes"].unicolor == false then
-			health.colorTapping = true
-			health.colorDisconnected = true
-			health.colorReaction = true
-			health.colorClass = true
-			healthBg.multiplier = 0.2
-			
-			self:Tag(Name, '[Tukui:nameshort]')
-		else
-			health.colorTapping = false
-			health.colorDisconnected = false
-			health.colorClass = false
-			health.colorReaction = false
-			health:SetStatusBarColor(unpack(C["unitframes"].healthColor))
-			health.bg:SetVertexColor(unpack(C["unitframes"].healthBgColor))
-			
-			self:Tag(Name, '[Tukui:getnamecolor][Tukui:nameshort]')
-		end
+		-- not finished
 	end
 	
 	return self
@@ -1347,15 +1252,15 @@ f:SetScript("OnEvent", function(self, event, addon)
 		if T.lowversion then
 			player:Point("TOP", UIParent, "BOTTOM", -96 , 220)
 			target:Point("TOP", UIParent, "BOTTOM", 96, 220)
-			tot:Point("TOPRIGHT", TukuiTarget, "BOTTOMRIGHT", 0, -15)
-			pet:Point("TOPLEFT", TukuiPlayer, "BOTTOMLEFT", 0, -15)
+			tot:Point("TOPRIGHT", TukuiTarget, "BOTTOMRIGHT", 0, -5)
+			pet:Point("TOPLEFT", TukuiPlayer, "BOTTOMLEFT", 0, -5)
 
 			focus:Point("TOP", UIParent, "BOTTOM", 0, 133)
 		else
 			player:Point("TOP", UIParent, "BOTTOM", -225 , 235)
 			target:Point("TOP", UIParent, "BOTTOM", 225, 235)
-			tot:Point("TOPRIGHT", TukuiTarget, "BOTTOMRIGHT", 0, -15)
-			pet:Point("TOPLEFT", TukuiPlayer, "BOTTOMLEFT", 0, -15)
+			tot:Point("TOPRIGHT", TukuiTarget, "BOTTOMRIGHT", 0, -5)
+			pet:Point("TOPLEFT", TukuiPlayer, "BOTTOMLEFT", 0, -5)
 
 			focus:Point("TOP", UIParent, "BOTTOM", 0, 230)
 		end
@@ -1365,17 +1270,17 @@ f:SetScript("OnEvent", function(self, event, addon)
 		if T.lowversion then
 			player:Point("TOP", UIParent, "BOTTOM", -315 , 230)
 			target:Point("TOP", UIParent, "BOTTOM", 315, 230)
-			tot:Point("TOPRIGHT", TukuiTarget, "BOTTOMRIGHT", 0, -15)
-			pet:Point("TOPLEFT", TukuiPlayer, "BOTTOMLEFT", 0, -15)
+			tot:Point("TOPRIGHT", TukuiTarget, "BOTTOMRIGHT", 0, -5)
+			pet:Point("TOPLEFT", TukuiPlayer, "BOTTOMLEFT", 0, -5)
 			
-			focus:Point("BOTTOMRIGHT", TukuiChatLeft, "TOPRIGHT", 0, 135)
+			focus:Point("BOTTOMRIGHT", TukuiChatLeft, "TOPRIGHT", 0, 150)
 		else
 			player:Point("TOP", UIParent, "BOTTOM", -325 , 230)
 			target:Point("TOP", UIParent, "BOTTOM", 325, 230)
-			tot:Point("TOPRIGHT", TukuiTarget, "BOTTOMRIGHT", 0, -15)
-			pet:Point("TOPLEFT", TukuiPlayer, "BOTTOMLEFT", 0, -15)
+			tot:Point("TOPRIGHT", TukuiTarget, "BOTTOMRIGHT", 0, -5)
+			pet:Point("TOPLEFT", TukuiPlayer, "BOTTOMLEFT", 0, -5)
 
-			focus:Point("BOTTOMRIGHT", TukuiChatLeft, "TOPRIGHT", 0, 135)
+			focus:Point("BOTTOMRIGHT", TukuiChatLeft, "TOPRIGHT", 0, 150)
 		end
 	end
 end)
@@ -1386,9 +1291,9 @@ if C.arena.unitframes then
 	for i = 1, 5 do
 		arena[i] = oUF:Spawn("arena"..i, "TukuiArena"..i)
 		if i == 1 then
-			arena[i]:SetPoint("BOTTOMLEFT", TukuiChatRight, "TOPLEFT", 0, 135)
+			arena[i]:SetPoint("BOTTOMLEFT", TukuiChatRight, "TOPLEFT", 50, 175)
 		else
-			arena[i]:SetPoint("BOTTOM", arena[i-1], "TOP", 0, T.Scale(70))
+			arena[i]:SetPoint("BOTTOM", arena[i-1], "TOP", 0, T.Scale(80))
 		end
 		arena[i]:Size(T.Boss, 20*1.5)
 	end
@@ -1409,9 +1314,9 @@ if C["unitframes"].showboss then
 	for i = 1, MAX_BOSS_FRAMES do
 		boss[i] = oUF:Spawn("boss"..i, "TukuiBoss"..i)
 		if i == 1 then
-			boss[i]:SetPoint("BOTTOMLEFT", TukuiChatRight, "TOPLEFT", 0, 135)
+			boss[i]:SetPoint("BOTTOMLEFT", TukuiChatRight, "TOPLEFT", 50, 175)
 		else
-			boss[i]:SetPoint('BOTTOM', boss[i-1], 'TOP', 0, T.Scale(85))             
+			boss[i]:SetPoint('BOTTOM', boss[i-1], 'TOP', 0, T.Scale(80))             
 		end
 		boss[i]:Size(T.Boss, 20*1.5)
 	end

@@ -18,8 +18,8 @@ T.InfoLeftRightWidth = 376
 
 if not TukuiSaved then
 	TukuiSaved = {	
-		["bottomrows"] = 2,
-		["rightbars"] = 0,
+		["bottomrows"] = 1,
+		["rightbars"] = 1,
 		["splitbars"] = true,
 		["actionbarsLocked"] = false,
 	}

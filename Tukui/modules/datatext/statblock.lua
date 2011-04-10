@@ -5,10 +5,10 @@ if C["datatext"].statblock ~= true then return end
 ----- [[     Panels     ]] -----
 
 local stat = CreateFrame("Frame")
-local width = (350 / 4) - 3
+local width = (380 / 4) - 3
 
 
-for i = 1, 4 do
+for i = 1, 3 do
 	stat[i] = CreateFrame("Frame", "TukuiStat"..i, UIParent)
 	stat[i]:CreatePanel("Default", width, 20, "CENTER")
 	stat[i]:SetFrameLevel(1)
@@ -217,177 +217,318 @@ stat[1]:SetScript("OnEnter", function(self)
 end)
 stat[1]:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
------ [[     Memory     ]] -----
+----- [[   Fps | MS | MB   ]] -----
 
-local colorme = string.format("%02x%02x%02x", 1*255, 1*255, 1*255)
+local bandwidthString = "%.2f Mbps"
+local percentageString = "%.2f%%"
+local homeLatencyString = "%d ms"
+local kiloByteString = "%d kb"
+local megaByteString = "%.2f mb"
 
-local function formatMem(memory, color)
-	if color then
-		statColor = { "|cff"..colorme, "|r" }
-	else
-		statColor = { "", "" }
-	end
-
-	local mb, kb = (T.cStart .. "mb|r"), (T.cStart .. "kb|r")
-	
+local function formatMem(memory)
 	local mult = 10^1
 	if memory > 999 then
-		local mem = floor((memory/1024) * mult + 0.5) / mult
-		if mem % 1 == 0 then
-			return mem..string.format(".0 %s" .. mb .. "%s", unpack(statColor))
-		else
-			return mem..string.format(" %s" .. mb .. "%s", unpack(statColor))
-		end
+		local mem = ((memory/1024) * mult) / mult
+		return string.format(megaByteString, mem)
 	else
-		local mem = floor(memory * mult + 0.5) / mult
-			if mem % 1 == 0 then
-				return mem..string.format(".0 %s" .. kb .. "%s", unpack(statColor))
-			else
-				return mem..string.format(" %s" .. kb .. "%s", unpack(statColor))
-			end
+		local mem = (memory * mult) / mult
+		return string.format(kiloByteString, mem)
 	end
 end
 
-local Total, Mem, MEMORY_TEXT, LATENCY_TEXT, Memory
+local memoryTable = {}
 
-local function RefreshMem(self)
-	Memory = {}
+local function RebuildAddonList(self)
+	local addOnCount = GetNumAddOns()
+	if (addOnCount == #memoryTable) or self.tooltip == true then return end
 
-	UpdateAddOnMemoryUsage()
-	Total = 0
-	for i = 1, GetNumAddOns() do
-		Mem = GetAddOnMemoryUsage(i)
-		Memory[i] = { select(2, GetAddOnInfo(i)), Mem, IsAddOnLoaded(i) }
-		Total = Total + Mem
+	-- Number of loaded addons changed, create new memoryTable for all addons
+	memoryTable = {}
+	for i = 1, addOnCount do
+		memoryTable[i] = { i, select(2, GetAddOnInfo(i)), 0, IsAddOnLoaded(i) }
 	end
+	--self:SetAllPoints(stat[2])
+end
 
-	MEMORY_TEXT = formatMem(Total, true)
-	table.sort(Memory, function(a, b)
+local function UpdateMemory()
+	-- Update the memory usages of the addons
+	UpdateAddOnMemoryUsage()
+	-- Load memory usage in table
+	local addOnMem = 0
+	local totalMemory = 0
+	for i = 1, #memoryTable do
+		addOnMem = GetAddOnMemoryUsage(memoryTable[i][1])
+		memoryTable[i][3] = addOnMem
+		totalMemory = totalMemory + addOnMem
+	end
+	-- Sort the table to put the largest addon on top
+	table.sort(memoryTable, function(a, b)
 		if a and b then
-			return a[2] > b[2]
+			return a[3] > b[3]
 		end
 	end)
-
+	
+	return totalMemory
 end
 
-local int, int10 = 10, 1
-local function MemUpdate(self, t)
+local int, int2 = 6, 5
+local statusColors = {
+	"|cff0CD809",
+	"|cffE8DA0F",
+	"|cffFF9000",
+	"|cffD80909"
+}
+
+local function FpsUpdate(self, t)
 	int = int - t
-	int10 = int10 - t
+	int2 = int2 - t
+	
 	if int < 0 then
-		RefreshMem(self)
+		RebuildAddonList(self)
 		int = 10
 	end
-	if int10 < 0 then
-		local memC
-
-		if Total > 5000 then
-			memC = format("|cffCC3333 %s|r ", MEMORY_TEXT)
-		elseif Total > 2500 then
-			memC = format("|cffFDD842 %s|r ", MEMORY_TEXT)
-		else
-			memC = format("|cff32DC46 %s|r ", MEMORY_TEXT)
+	if int2 < 0 then
+		local framerate = floor(GetFramerate())
+		local fpscolor = 4
+		local latency = select(3, GetNetStats()) 
+		local latencycolor = 4
+					
+		if latency < 150 then
+			latencycolor = 1
+		elseif latency >= 150 and latency < 300 then
+			latencycolor = 2
+		elseif latency >= 300 and latency < 500 then
+			latencycolor = 3
 		end
-
-		stat[2].text:SetText(memC)
-		int10 = 1
+		if framerate >= 30 then
+			fpscolor = 1
+		elseif framerate >= 20 and framerate < 30 then
+			fpscolor = 2
+		elseif framerate >= 10 and framerate < 20 then
+			fpscolor = 3
+		end
+		local displayFormat = string.join("", T.cStart.."FPS: ", statusColors[fpscolor], "%d|r"..T.cStart.." MS: ", statusColors[latencycolor], "%d|r")
+		stat[2].text:SetFormattedText(displayFormat, framerate, select(3, GetNetStats()))
+		int2 = 1
 	end
 end
-
-stat[2]:SetScript("OnMouseDown", function() collectgarbage("collect") MemUpdate(stat[2], 20) end)
-stat[2]:SetScript("OnUpdate", MemUpdate) 
-
-stat[2]:SetScript("OnEnter", function()
-	if not InCombatLockdown() then
-		-- local bandwidth = GetAvailableBandwidth()
-		GameTooltip:SetOwner(stat[2], "ANCHOR_BOTTOMRIGHT", -stat[2]:GetWidth(), T.Scale(-3))
-		-- GameTooltip:ClearLines()
-		-- if bandwidth ~= 0 then
-			-- GameTooltip:AddDoubleLine(T.cStart .. tukuilocal.datatext_bandwidth,format("%s ".. T.cStart .. "Mbps",bandwidth), _, _, _, 1, 1, 1)
-			-- GameTooltip:AddDoubleLine(T.cStart .. tukuilocal.datatext_download,format("%s%%", floor(GetDownloadedPercentage()*100+0.5)), _, _, _, 1, 1, 1)
-			-- GameTooltip:AddLine' ' 
-		-- end
-		GameTooltip:AddDoubleLine(T.cStart .. tukuilocal.datatext_totalmemusage, formatMem(Total), _, _, _, 1, 1, 1)
-		GameTooltip:AddLine' '
-		for i = 1, #Memory do
-			if Memory[i][3] then 
-				local red = Memory[i][2]/Total*2
-				local green = 1 - red
-				GameTooltip:AddDoubleLine(Memory[i][1], formatMem(Memory[i][2], false), 1, 1, 1, red, green+1, 0)						
-			end
-		end
-		GameTooltip:Show()
+stat[2]:SetScript("OnMouseDown", function () collectgarbage("collect") FpsUpdate(Stat, 20) end)
+stat[2]:SetScript("OnEnter", function(self)
+	local bandwidth = GetAvailableBandwidth()
+	local home_latency = select(4, GetNetStats()) 
+	--local anchor, panel, xoff, yoff = T.DataTextTooltipAnchor(Text)
+	--GameTooltip:SetOwner(panel, anchor, xoff, yoff)
+	GameTooltip:SetOwner(stat[2], "ANCHOR_BOTTOMRIGHT", -stat[2]:GetWidth(), -3)
+	GameTooltip:ClearLines()
+	
+	GameTooltip:AddDoubleLine(L.datatext_homelatency, string.format(homeLatencyString, home_latency), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+	
+	if bandwidth ~= 0 then
+		GameTooltip:AddDoubleLine(L.datatext_bandwidth , string.format(bandwidthString, bandwidth),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+		GameTooltip:AddDoubleLine(L.datatext_download , string.format(percentageString, GetDownloadedPercentage() *100),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
+		GameTooltip:AddLine(" ")
 	end
+	local totalMemory = UpdateMemory()
+	GameTooltip:AddDoubleLine(L.datatext_totalmemusage, formatMem(totalMemory), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+	GameTooltip:AddLine(" ")
+	for i = 1, #memoryTable do
+		if (memoryTable[i][4]) then
+			local red = memoryTable[i][3] / totalMemory
+			local green = 1 - red
+			GameTooltip:AddDoubleLine(memoryTable[i][2], formatMem(memoryTable[i][3]), 1, 1, 1, red, green + .5, 0)
+		end						
+	end
+	GameTooltip:Show()
 end)
 stat[2]:SetScript("OnLeave", function() GameTooltip:Hide() end)
-MemUpdate(stat[2], 20)
+stat[2]:SetScript("OnUpdate", FpsUpdate) 
+FpsUpdate(Stat, 6)
 
------ [[     Fps     ]] -----
+----- [[   Game Menu   ]] -----
 
-local int2 = 1
-local function FpsUpdate(self, t)
-	int2 = int2 - t
-	if int2 < 0 then
-		local fps = floor(GetFramerate())
-		local color_fps
-		
-		-- stat[3].bar:SetMinMaxValues(0, 180)
-		-- stat[3].bar:SetValue(fps)
 
-		if fps >= 50 then
-			color_fps = "|cff32DC46"..floor(GetFramerate()).."|r"
-			-- stat[3].bar:SetStatusBarColor(.3, .9, .3)
-		elseif fps >= 25 then
-			color_fps = "|cffFDD842"..floor(GetFramerate()).."|r"
-			-- stat[3].bar:SetStatusBarColor(.8, .7, .4)
-		elseif fps >= 0 then
-			color_fps = "|cffCC3333"..floor(GetFramerate()).."|r"
-			-- stat[3].bar:SetStatusBarColor(.9, .3, .3)
-		end
-		
-		stat[3].text:SetText(T.cStart .. "FPS " .. color_fps)
-		
-		int2 = 1
-	end	
+local function OnEvent(self, event, ...)
+	stat[3].text:SetText(T.cStart..MAINMENU_BUTTON)
+	--self:SetAllPoints(stat[3])
 end
-stat[3]:SetScript("OnUpdate", FpsUpdate)
-FpsUpdate(stat[3], 10)
 
------ [[     Latency     ]] -----
+local function OpenMenu()
+	local menuFrame = CreateFrame("Frame", "TukuiDataTextMicroMenu", UIParent, "UIDropDownMenuTemplate")
+	local menuList = {
+		{text = CHARACTER_BUTTON,
+		func = function() ToggleCharacter("PaperDollFrame") end},
+		{text = SPELLBOOK_ABILITIES_BUTTON,
+		func = function() ToggleFrame(SpellBookFrame) end},
+		{text = TALENTS_BUTTON,
+		func = function() if not PlayerTalentFrame then LoadAddOn("Blizzard_TalentUI") end if not GlyphFrame then LoadAddOn("Blizzard_GlyphUI") end PlayerTalentFrame_Toggle() end},
+		{text = ACHIEVEMENT_BUTTON,
+		func = function() ToggleAchievementFrame() end},
+		{text = QUESTLOG_BUTTON,
+		func = function() ToggleFrame(QuestLogFrame) end},
+		{text = SOCIAL_BUTTON,
+		func = function() ToggleFriendsFrame(1) end},
+		{text = PLAYER_V_PLAYER,
+		func = function() ToggleFrame(PVPFrame) end},
+		{text = ACHIEVEMENTS_GUILD_TAB,
+		func = function() if IsInGuild() then if not GuildFrame then LoadAddOn("Blizzard_GuildUI") end GuildFrame_Toggle() end end},
+		{text = LFG_TITLE,
+		func = function() ToggleFrame(LFDParentFrame) end},
+		{text = LOOKING_FOR_RAID,
+		func = function() ToggleFrame(LFRParentFrame) end},
+		{text = HELP_BUTTON,
+		func = function() ToggleHelpFrame() end},
+		{text = CALENDAR_VIEW_EVENT,
+		func = function()
+		if(not CalendarFrame) then LoadAddOn("Blizzard_Calendar") end
+			Calendar_Toggle()
+		end},
+	}
 
-local int3 = 1
-local function LatencyUpdate(self, t)
-	int3 = int3 - t
-	if int3 < 0 then
-		local _, _, ms = GetNetStats()
-		local color_ms
-		
-		if ms >= 300 then
-			color_ms = "|cffCC3333"..select(4, GetNetStats()).."|r"
-		elseif ms >= 200 then
-			color_ms = "|cffFDD842"..select(4, GetNetStats()).."|r"
-		elseif ms >= 0 then
-			color_ms = "|cff32DC46"..select(4, GetNetStats()).."|r"
-		end
-
-		stat[4].text:SetText(T.cStart .. "MS " .. color_ms)
-
-		int3 = 1
-	end	
+	EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
 end
-stat[4]:SetScript("OnUpdate", LatencyUpdate)
-LatencyUpdate(stat[4], 10)
+stat[3]:RegisterEvent("PLAYER_LOGIN")
+stat[3]:SetScript("OnEvent", OnEvent)
+stat[3]:SetScript("OnMouseDown", function() OpenMenu() end)
 
-stat[4]:SetScript("OnEnter", function(self)
-	if not InCombatLockdown() then
-		local _, _, latencyHome, latencyWorld = GetNetStats()
-		local latency = format(MAINMENUBAR_LATENCY_LABEL, latencyHome, latencyWorld)
-		GameTooltip:SetOwner(stat[4], "ANCHOR_BOTTOMRIGHT", -stat[4]:GetWidth(), -3)
-		GameTooltip:ClearLines()
-		GameTooltip:AddLine(latency)
-		GameTooltip:Show()
+----- [[   Mark Bar   ]] -----
+
+local function ButtonEnter(self)
+	local color = RAID_CLASS_COLORS[T.myclass]
+	self:SetBackdropBorderColor(color.r, color.g, color.b)
+end
+ 
+local function ButtonLeave(self)
+	self:SetBackdropBorderColor(unpack(C["media"].bordercolor))
+end
+
+local MarkBarBG = CreateFrame("Frame", "MarkBarBackground", UIParent)
+MarkBarBG:CreatePanel("Default", T.Scale(T.buttonsize) * 4 + T.Scale(15), T.Scale(T.buttonsize) * 3 + T.Scale(2), "BOTTOMLEFT", TukuiInfoRight, "TOPLEFT", 0, T.Scale(3))
+MarkBarBG:SetFrameLevel(0)
+MarkBarBG:ClearAllPoints()
+MarkBarBG:SetPoint("TOPLEFT", stat[3], "TOPRIGHT", T.Scale(8), 0)
+MarkBarBG:Hide()
+
+local icon = CreateFrame("Button", "Icon", MarkBarBG)
+local mark = CreateFrame("Button", "Menu", MarkBarBG)
+for i = 1, 8 do
+	mark[i] = CreateFrame("Button", "mark"..i, MarkBarBG)
+	mark[i]:CreatePanel("Default", T.Scale(T.buttonsize), T.Scale(T.buttonsize), "LEFT", MarkBarBG, "LEFT", T.Scale(3), T.Scale(-3))
+	if i == 1 then
+		mark[i]:SetPoint("TOPLEFT", MarkBarBG, "TOPLEFT",  T.Scale(3), T.Scale(-3))
+	elseif i == 5 then
+		mark[i]:SetPoint("TOP", mark[1], "BOTTOM", 0, T.Scale(-3))
+	else
+		mark[i]:SetPoint("LEFT", mark[i-1], "RIGHT", T.Scale(3), 0)
+	end
+	mark[i]:EnableMouse(true)
+	mark[i]:SetScript("OnEnter", ButtonEnter)
+	mark[i]:SetScript("OnLeave", ButtonLeave)
+	mark[i]:SetScript("OnMouseUp", function() SetRaidTarget("target", i) end)
+	
+	icon[i] = CreateFrame("Button", "icon"..i, MarkBarBG)
+	icon[i]:SetNormalTexture("Interface\\TargetingFrame\\UI-RaidTargetingIcons")
+	icon[i]:Size(25, 25)
+	icon[i]:Point("CENTER", mark[i])
+	
+	-- Set up each button
+	if i == 1 then 
+		icon[i]:GetNormalTexture():SetTexCoord(0,0.25,0,0.25)
+	elseif i == 2 then
+		icon[i]:GetNormalTexture():SetTexCoord(0.25,0.5,0,0.25)
+	elseif i == 3 then
+		icon[i]:GetNormalTexture():SetTexCoord(0.5,0.75,0,0.25)
+	elseif i == 4 then
+		icon[i]:GetNormalTexture():SetTexCoord(0.75,1,0,0.25)
+	elseif i == 5 then
+		icon[i]:GetNormalTexture():SetTexCoord(0,0.25,0.25,0.5)
+	elseif i == 6 then
+		icon[i]:GetNormalTexture():SetTexCoord(0.25,0.5,0.25,0.5)
+	elseif i == 7 then
+		icon[i]:GetNormalTexture():SetTexCoord(0.5,0.75,0.25,0.5)
+	elseif i == 8 then
+		icon[i]:GetNormalTexture():SetTexCoord(0.75,1,0.25,0.5)
+	end
+end
+
+-- Create Button for clear target
+local ClearTargetButton = CreateFrame("Button", "ClearTargetButton", MarkBarBackground)
+ClearTargetButton:CreatePanel("Default", (T.Scale(T.buttonsize) * 4) + 9, 20, "TOPLEFT", mark[5], "BOTTOMLEFT", 0, T.Scale(-3))
+ClearTargetButton:SetScript("OnEnter", ButtonEnter)
+ClearTargetButton:SetScript("OnLeave", ButtonLeave)
+ClearTargetButton:SetScript("OnMouseUp", function() SetRaidTarget("target", 0) end)
+ClearTargetButton:SetFrameStrata("HIGH")
+
+ClearTargetButtonText = T.SetFontString(ClearTargetButton, C["media"].dfont, C["datatext"].fsize, "OUTLINE")
+ClearTargetButtonText:SetText(L.MarkBar_button_Clear)
+ClearTargetButtonText:SetPoint("CENTER")
+ClearTargetButtonText:SetJustifyH("CENTER", 1, 0)
+
+--Create toggle button
+local ToggleButton = CreateFrame("Frame", "ToggleButton", UIParent)
+ToggleButton:CreatePanel("Default", width, 20, "CENTER", UIParent, "CENTER", 0, 0)
+ToggleButton:ClearAllPoints()
+ToggleButton:SetPoint("TOPLEFT", stat[3], "TOPRIGHT", T.Scale(8), 0)
+ToggleButton:EnableMouse(true)
+ToggleButton:SetFrameStrata("HIGH")
+ToggleButton:SetScript("OnEnter", ButtonEnter)
+ToggleButton:SetScript("OnLeave", ButtonLeave)
+
+local ToggleButtonText = T.SetFontString(ToggleButton, C["media"].dfont, C["datatext"].fsize, "OUTLINE")
+ToggleButtonText:SetText(T.cStart..L.MarkBar_button_MarkBar)
+ToggleButtonText:SetPoint("CENTER", ToggleButton, "CENTER")
+
+--Create close button
+local CloseButton = CreateFrame("Frame", "CloseButton", MarkBarBackground)
+CloseButton:CreatePanel("Default", 15, 15, "TOPLEFT", MarkBarBackground, "TOPRIGHT", T.Scale(3), 0)
+CloseButton:EnableMouse(true)
+CloseButton:SetScript("OnEnter", ButtonEnter)
+CloseButton:SetScript("OnLeave", ButtonLeave)
+
+local CloseButtonText = T.SetFontString(CloseButton, C["media"].dfont, C["datatext"].fsize, "OUTLINE")
+CloseButtonText:SetText("x")
+CloseButtonText:SetPoint("CENTER", CloseButton, "CENTER")
+
+ToggleButton:SetScript("OnMouseDown", function()
+	if MarkBarBackground:IsShown() then
+		MarkBarBackground:Hide()
+	else
+		MarkBarBackground:Show()
+		ToggleButton:Hide()
 	end
 end)
-stat[4]:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+CloseButton:SetScript("OnMouseDown", function()
+	if MarkBarBackground:IsShown() then
+		MarkBarBackground:Hide()
+		ToggleButton:Show()
+	else
+		ToggleButton:Show()
+	end
+end)
 
 
+--Check if we are Raid Leader or Raid Officer / Party
+local function CheckRaidStatus()
+	local inInstance, instanceType = IsInInstance()
+	local partyMembers = GetNumPartyMembers()
+ 
+	if not UnitInRaid("player") and partyMembers >= 1 then return true
+	elseif UnitIsRaidOfficer("player") then return true
+	elseif not inInstance or instanceType == "pvp" or instanceType == "arena" then return false
+	end
+end
+
+--Automatically show/hide the frame if we have Raid Leader or Raid Officer or in Party
+local LeadershipCheck = CreateFrame("Frame")
+LeadershipCheck:RegisterEvent("RAID_ROSTER_UPDATE")
+LeadershipCheck:RegisterEvent("PARTY_MEMBERS_CHANGED")
+LeadershipCheck:RegisterEvent("PLAYER_ENTERING_WORLD")
+LeadershipCheck:SetScript("OnEvent", function(self, event)
+	if CheckRaidStatus() then
+		ToggleButton:Show()
+		MarkBarBackground:Hide()
+	else
+		ToggleButton:Hide()
+		MarkBarBackground:Hide()
+	end
+end)

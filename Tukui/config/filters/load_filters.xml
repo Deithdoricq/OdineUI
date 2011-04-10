@@ -3,4 +3,5 @@
 	<Script file="reminder.lua"/>
 	<Script file="raid.lua"/>
 	<Script file="nameplates.lua"/>
+	<Script file="misc.lua"/>
 </Ui>

@@ -28,5 +28,74 @@ if IsAddOnLoaded("Tukui_Config") and OUIDB then
 				end
 			end
 		end
+	end
+	
+	--Raid Debuffs
+	do
+		local list = T.RaidDebuffs
+		T.debuffids = {}
+		for spell, value in pairs(list) do
+			if value == true then
+				tinsert(T.debuffids, spell)
+			end
+		end
+		
+		if path and path["spellfilter"] and path["spellfilter"]["RaidDebuffs"] then
+			for spell, value in pairs(path["spellfilter"]["RaidDebuffs"]) do
+				if value == true then
+					tinsert(T.debuffids, spell)
+				end			
+			end
+		end
+	end
+	
+	--Error Messages
+	do
+		local list = T.ErrorList
+		if path and path["spellfilter"] and path["spellfilter"]["ErrorList"] then
+			for name, value in pairs(path["spellfilter"]["ErrorList"]) do
+				T.ErrorList[name] = value			
+			end
+		end	
+	end
+	
+	--DebuffWhiteList
+	do
+		local list = T.DebuffWhiteList
+		if path and path["spellfilter"] and path["spellfilter"]["DebuffWhiteList"] then
+			for spell, value in pairs(path["spellfilter"]["DebuffWhiteList"]) do
+				T.DebuffWhiteList[spell] = value			
+			end
+		end			
+	end
+	
+	--Target PVP Only
+	do
+		local list = T.TargetPVPOnly
+		if path and path["spellfilter"] and path["spellfilter"]["TargetPVPOnly"] then
+			for spell, value in pairs(path["spellfilter"]["TargetPVPOnly"]) do
+				T.TargetPVPOnly[spell] = value			
+			end
+		end		
+	end
+	
+	--ArenaBuffs
+	do
+		local list = T.ArenaBuffWhiteList
+		if path and path["spellfilter"] and path["spellfilter"]["ArenaBuffWhiteList"] then
+			for spell, value in pairs(path["spellfilter"]["ArenaBuffWhiteList"]) do
+				T.ArenaBuffWhiteList[spell] = value			
+			end
+		end			
+	end
+	
+	--Nameplate Filter
+	do
+		local list = T.PlateBlacklist
+		if path and path["spellfilter"] and path["spellfilter"]["PlateBlacklist"] then
+			for name, value in pairs(path["spellfilter"]["PlateBlacklist"]) do
+				T.PlateBlacklist[name] = value			
+			end
+		end	
 	end	
 end

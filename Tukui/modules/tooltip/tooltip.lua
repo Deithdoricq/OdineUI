@@ -395,6 +395,8 @@ local BorderColor = function(self)
 	local tappedbyme = unit and UnitIsTappedByPlayer(unit)
 	local connected = unit and UnitIsConnected(unit)
 	local dead = unit and UnitIsDead(unit)
+	
+	if C["unitframes"].enable ~= true then return end -- cant do this if unitframes disabled (tables not loaded)
 
 	if player then
 		local class = select(2, UnitClass(unit))

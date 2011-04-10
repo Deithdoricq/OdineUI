@@ -2,7 +2,7 @@ local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, vari
 if T.level == 85 then return end
 
 local space = 0
-local font, fonts, fontf = C["media"].dfont, C["datatext"].fsize - 2, "OUTLINE"
+local font, fonts, fontf = C["media"].font, 10, "OUTLINE"
 local dtext = C["datatext"].bar_text
 
 if not dtext then

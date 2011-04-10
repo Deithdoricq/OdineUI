@@ -3,17 +3,17 @@ local T, C, L, DB = unpack(select(2, ...)) -- Import: T - functions, constants, 
 if not IsAddOnLoaded("TinyDPS") or C["addonskins"].tinydps == false then return end
 
 local TinyDPS = CreateFrame("Frame")
-TinyDPS:RegisterEvent('ADDON_LOADED')
+TinyDPS:RegisterEvent("ADDON_LOADED")
 TinyDPS:SetScript("OnEvent", function(self, event, addon)
 	if not addon == "TinyDPS" then return end
 
 	if tdps then
 		tdps.width = TukuiMinimap:GetWidth()
 		tdps.spacing = 2
-		tdps.barHeight = 16 --T.buttonsize - 14
+		tdps.barHeight = 14
 		tdpsFont.name = C["media"].font
 		tdpsFont.size = 10
-		tdpsFont.outline = "OUTLINE"
+		tdpsFont.outline = "NONE"
 	end
 	
 	-- need 2 anchors for some reason, ask the author of TinyDPS why -_-"
@@ -28,5 +28,5 @@ TinyDPS:SetScript("OnEvent", function(self, event, addon)
 		tdpsStatusBar:SetStatusBarTexture(C["media"].normTex)
 	end
 	
-	self:UnregisterEvent('ADDON_LOADED')
+	self:UnregisterEvent("ADDON_LOADED")
 end)

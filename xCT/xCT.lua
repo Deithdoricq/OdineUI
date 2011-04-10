@@ -535,17 +535,17 @@ for i=1,numf do
 	f:SetClampRectInsets(0,0,ct.fontsize,0)
 	if(i==1)then
 		f:SetJustifyH(ct.justify_1)
-		f:SetPoint("CENTER", -275, 45)
+		f:SetPoint("CENTER", -275, 115)
 	elseif(i==2)then
 		f:SetJustifyH(ct.justify_2)
-		f:SetPoint("CENTER", 275, 45)
+		f:SetPoint("CENTER", 275, 115)
 	elseif(i==3)then
 		f:SetJustifyH(ct.justify_3)
 		f:SetWidth(256)
 		f:SetPoint("CENTER",0,192)
 	else
 		f:SetJustifyH(ct.justify_4)
-		f:SetPoint("CENTER",400,0)
+		f:SetPoint("CENTER",470,0)
 		local a,_,c=f:GetFont()
 		if (ct.damagefontsize=="auto")then
 			if ct.icons then

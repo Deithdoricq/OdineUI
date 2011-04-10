@@ -190,6 +190,7 @@ if C["datatext"].friends and C["datatext"].friends > 0 then
 				GameTooltip:AddDoubleLine(L.datatext_friendlist, format("%s/%s",totalonline,totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
 
 				broadcast = select(3, BNGetInfo())
+				if broadcast == nil then broadcast = "" end -- hack for when battlenet is unavailable
 				if broadcast ~= "" then GameTooltip:AddLine(format("  %s |cffaaaaaa- |cffffffff%s","Broadcast:",broadcast),ttsubh.r,ttsubh.g,ttsubh.b,1) end
 
 				if online > 0 then

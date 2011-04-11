@@ -21,6 +21,7 @@ local ST_SOULBAG = 2
 local ST_SPECIAL = 3
 local ST_QUIVER = 4
 local bag_bars = 0
+local bankbag_bars = 0
 local hide_soulbag = false
 
 -- hide bags options in default interface
@@ -46,14 +47,14 @@ local function Print (x)
 	DEFAULT_CHAT_FRAME:AddMessage("|cffC495DDTukui:|r " .. x)
 end
 
-local function Stuffing_Sort(args)
+local function Stuffing_Sort(args, bank)
 	if not args then
 		args = ""
 	end
 
 	Stuffing.itmax = 0
-	Stuffing:SetBagsForSorting(args)
-	Stuffing:SortBags()
+	Stuffing:SetBagsForSorting(args, bank)
+	Stuffing:SortBags(bank)
 end
 
 local resetAndClear = function (self)
@@ -392,6 +393,16 @@ Stuffing_DDMenu.HideMenu = function()
 	end
 end
 
+local Stuffing_DDMenu2 = CreateFrame("Frame", "Stuffing_DropDownMenu")
+Stuffing_DDMenu2.displayMode = "MENU"
+Stuffing_DDMenu2.info = {}
+Stuffing_DDMenu2.HideMenu = function()
+	if UIDROPDOWNMENU_OPEN_MENU == Stuffing_DDMenu2 then
+		CloseDropDownMenus()
+	end
+end
+
+
 function Stuffing:CreateBagFrame(w)
 	local n = "Tukui"  .. w
 	local f = CreateFrame ("Frame", n, UIParent)
@@ -415,25 +426,86 @@ function Stuffing:CreateBagFrame(w)
 	f.b_close:SetWidth(T.Scale(32))
 	f.b_close:SetHeight(T.Scale(32))
 	f.b_close:SetPoint("TOPRIGHT", T.Scale(-3), T.Scale(-3))
-	f.b_close:SetScript("OnClick", function(self, btn)
-		if self:GetParent():GetName() == "TukuiBags" and btn == "RightButton" then
-			if Stuffing_DDMenu.initialize ~= Stuffing.Menu then
-				CloseDropDownMenus()
-				Stuffing_DDMenu.initialize = Stuffing.Menu
+	if w ~= "Bank" then
+		f.b_close:SetScript("OnClick", function(self, btn)
+			if btn == "RightButton" then
+				if Stuffing_DDMenu.initialize ~= Stuffing.Menu then
+					CloseDropDownMenus()
+					Stuffing_DDMenu.initialize = Stuffing.Menu
+				end
+				ToggleDropDownMenu(1, nil, Stuffing_DDMenu, self:GetName(), 0, 0)
+				return
 			end
-			ToggleDropDownMenu(1, nil, Stuffing_DDMenu, self:GetName(), 0, 0)
-			return
-		end
-		self:GetParent():Hide()
-	end)
+			self:GetParent():Hide()
+		end)
+	else
+		f.b_close:SetScript("OnClick", function(self, btn)
+			if btn == "RightButton" then
+				if Stuffing_DDMenu2.initialize ~= Stuffing.Menu2 then
+					CloseDropDownMenus()
+					Stuffing_DDMenu2.initialize = Stuffing.Menu2
+				end
+				ToggleDropDownMenu(1, nil, Stuffing_DDMenu2, self:GetName(), 0, 0)
+				return
+			end
+			self:GetParent():Hide()
+		end)	
+	end
 	f.b_close:RegisterForClicks("AnyUp")
 	f.b_close:GetNormalTexture():SetDesaturated(1)
+	f.b_close:HookScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
+		GameTooltip:ClearLines()
+		GameTooltip:AddDoubleLine(L.bags_leftclick, CLOSE, 1,1,1)
+		GameTooltip:AddDoubleLine(L.bags_rightclick, OPTIONS_MENU, 1,1,1)
+		GameTooltip:Show()
+	end)
+
+	f.b_close:HookScript("OnLeave", function()
+		GameTooltip:Hide()
+	end)
+	--Create Buy Bags Button
+	if w == "Bank" then
+		f.b_purchase = CreateFrame("Button", "Stuffing_PurchaseButton"..w, f)
+		f.b_purchase:Size(80, 20)
+		f.b_purchase:Point("TOPLEFT", 10, -10)
+		f.b_purchase:RegisterForClicks("AnyUp")
+		f.b_purchase:SetTemplate("Default", true)
+		f.b_purchase:SetScript("OnEnter", function(self)
+			self:SetBackdropBorderColor(unpack(C["media"].bordercolor))			
+		end)
+		f.b_purchase:SetScript("OnLeave", function(self)
+			self:SetBackdropBorderColor(unpack(C["media"].bordercolor))
+		end)
+		
+		f.b_purchase:SetScript("OnClick", function(self, btn)
+			local _, full = GetNumBankSlots()
+			if not full then
+				StaticPopup_Show("BUY_BANK_SLOT")
+			else
+				StaticPopup_Show("CANNOT_BUY_BANK_SLOT")
+			end
+		end)
+		f.b_purchase:FontString("text", C["media"].font, 12)
+		f.b_purchase.text:SetPoint("CENTER")
+		f.b_purchase.text:SetText("Purchase")
+		f.b_purchase:SetFontString(f.b_purchase.text)
+	end
 
 	-- create the bags frame
 	local fb = CreateFrame ("Frame", n .. "BagsFrame", f)
 	fb:SetPoint("BOTTOMLEFT", f, "TOPLEFT", 0, T.Scale(2))
 	fb:SetFrameStrata("DIALOG")
 	f.bags_frame = fb
+	
+	local fb2 = CreateFrame ("Frame", n .. "BagsBankFrame", f)
+	fb2:SetPoint("BOTTOMLEFT", f, "TOPLEFT", 0, T.Scale(2))
+	fb2:SetFrameStrata("DIALOG")
+	fb2:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
+	fb2:SetScript("OnEvent", function(self, event) 
+		Stuffing:Layout(true)
+	end)	
+	f.bagsbank_frame = fb2
 
 	return f
 end
@@ -589,31 +661,16 @@ function Stuffing:Layout(lb)
 	end
 
 	f:SetClampedToScreen(1)
-	f:SetBackdrop({
-		bgFile = C["media"].blank,
-		edgeFile = C["media"].blank,
-		edgeSize = T.mult,
-		insets = {left = -T.mult, right = -T.mult, top = -T.mult, bottom = -T.mult}
-	})
-	f:SetBackdropColor(unpack(C["media"].backdropfadecolor))
-	f:SetBackdropBorderColor(unpack(C["media"].bordercolor))
-
+	f:SetTemplate("Transparent")
+	
 
 	-- bag frame stuff
 	local fb = f.bags_frame
-	if bag_bars == 1 then
+	if bag_bars == 1 and not lb then
 		fb:SetClampedToScreen(1)
-		fb:SetBackdrop({
-			bgFile = C["media"].blank,
-			edgeFile = C["media"].blank,
-			edgeSize = T.mult,
-			insets = {left = -T.mult, right = -T.mult, top = -T.mult, bottom = -T.mult}
-		})
-		fb:SetBackdropColor(unpack(C["media"].backdropfadecolor))
-		fb:SetBackdropBorderColor(unpack(C["media"].bordercolor))
+		fb:SetTemplate("Transparent")
 
 		local bsize = 30
-		if lb then bsize = 37 end
 
 		local w = 2 * 12
 		w = w + ((#bs - 1) * bsize)
@@ -622,18 +679,37 @@ function Stuffing:Layout(lb)
 		fb:SetHeight(T.Scale(2 * 12 + bsize))
 		fb:SetWidth(T.Scale(w))
 		fb:Show()
-	else
+	elseif not lb then
 		fb:Hide()
 	end
 
+	if lb then
+		fb = f.bagsbank_frame
+	end
+	
+	if bankbag_bars == 1 and lb then
+		fb:SetClampedToScreen(1)
+		fb:SetTemplate("Transparent")
+
+		local bsize = 30
+
+		local w = 2 * 12
+		w = w + ((#bs - 1) * bsize)
+		w = w + (12 * (#bs - 2))
+
+		fb:Height(2 * 12 + bsize)
+		fb:Width(w)
+		fb:Show()	
+	elseif lb then
+		fb:Hide()	
+	end
 
 
 	local idx = 0
-	for _, v in ipairs(bs) do
-		if (not lb and v <= 3 ) or (lb and v ~= -1) then
+	local numSlots, full = GetNumBankSlots()
+	for i, v in ipairs(bs) do
+		if (not lb and v <= 3 ) or (lb and v ~= -1 and numSlots >= 1) then
 			local bsize = 30
-			if lb then bsize = 37 end
-
 			local b = self:BagFrameSlotNew(v, fb)
 
 			local xoff = 12
@@ -643,9 +719,9 @@ function Stuffing:Layout(lb)
 
 			b.frame:ClearAllPoints()
 			b.frame:SetPoint("LEFT", fb, "LEFT", T.Scale(xoff), 0)
+			b.frame:Size(bsize)
 			b.frame:Show()
-
-
+			
 			local t = _G[b.frame:GetName().."IconTexture"]
 			b.frame:SetPushedTexture("")
 			b.frame:SetNormalTexture("")
@@ -657,6 +733,10 @@ function Stuffing:Layout(lb)
 			b.frame:StyleButton()			
 			
 			idx = idx + 1
+			
+			if lb and not full and i > numSlots then
+				break
+			end
 		end
 	end
 
@@ -767,7 +847,7 @@ function Stuffing:Layout(lb)
 end
 
 
-function Stuffing:SetBagsForSorting(c)
+function Stuffing:SetBagsForSorting(c, bank)
 	Stuffing_Open()
 
 	self.sortBags = {}
@@ -778,7 +858,7 @@ function Stuffing:SetBagsForSorting(c)
 		if s == "c" then
 			self.sortBags = {}
 		elseif s == "d" then
-			if not self.bankFrame or not self.bankFrame:IsShown() then
+			if not bank then
 				for _, i in ipairs(bags_BACKPACK) do
 					if self.bags[i] and self.bags[i].bagType == ST_NORMAL then
 						table.insert(self.sortBags, i)
@@ -792,7 +872,7 @@ function Stuffing:SetBagsForSorting(c)
 				end
 			end
 		elseif s == "p" then
-			if not self.bankFrame or not self.bankFrame:IsShown() then
+			if not bank then
 				for _, i in ipairs(bags_BACKPACK) do
 					if self.bags[i] and self.bags[i].bagType == ST_SPECIAL then
 						table.insert(self.sortBags, i)
@@ -823,48 +903,6 @@ function Stuffing:SetBagsForSorting(c)
 end
 
 
--- slash command handler
-local function StuffingSlashCmd(Cmd)
-	local cmd, args = strsplit(" ", Cmd:lower(), 2)
-
-	if cmd == "config" then
-		Stuffing_OpenConfig()
-	elseif cmd == "sort" then
-		Stuffing_Sort(args)
-	elseif cmd == "psort" then
-		Stuffing_Sort("c/p")
-	elseif cmd == "stack" then
-		Stuffing:SetBagsForSorting(args)
-		Stuffing:Restack()
-	elseif cmd == "test" then
-		Stuffing:SetBagsForSorting(args)
-	elseif cmd == "purchase" then
-		-- XXX
-		if Stuffing.bankFrame and Stuffing.bankFrame:IsShown() then
-			local cnt, full = GetNumBankSlots()
-			if full then
-				Print(L.bags_noslots)
-				return
-			end
-
-			if args == "yes" then
-				PurchaseSlot()
-				return
-			end
-
-			Print(string.format(L.bags_costs, GetBankSlotCost() / 10000))
-			Print(L.bags_buyslots)
-		else
-			Print(L.bags_openbank)
-		end
-	else
-		Print("sort - " .. L.bags_sort)
-		Print("stack - " .. L.bags_stack)
-		Print("purchase - " .. L.bags_buybankslot)
-	end
-end
-
-
 function Stuffing:ADDON_LOADED(addon)
 	if addon ~= "Tukui" then
 		return nil
@@ -878,9 +916,6 @@ function Stuffing:ADDON_LOADED(addon)
 	self:RegisterEvent("PLAYERBANKSLOTS_CHANGED")
 
 	self:RegisterEvent("BAG_CLOSED")
-
-	SlashCmdList["STUFFING"] = StuffingSlashCmd
-	SLASH_STUFFING1 = "/bags"
 
 	self:InitBags()
 	
@@ -904,9 +939,8 @@ function Stuffing:PLAYER_ENTERING_WORLD()
 	local keybackdrop = CreateFrame("Frame", nil, ContainerFrame1)
 	keybackdrop:SetPoint("TOPLEFT", T.Scale(9), T.Scale(-40))
 	keybackdrop:SetPoint("BOTTOMLEFT", 0, 0)
-	keybackdrop:SetSize(T.Scale(179), T.Scale(215))
-	keybackdrop:SetTemplate("Default")
-	keybackdrop:SetBackdropColor(unpack(C["media"].backdropfadecolor))
+	keybackdrop:Size(179, 215)
+	keybackdrop:SetTemplate("Transparent")
 	ContainerFrame1CloseButton:Hide()
 	ContainerFrame1Portrait:Hide()
 	ContainerFrame1Name:Hide()
@@ -1150,35 +1184,7 @@ end
 
 
 function Stuffing:SortBags()
-	if (UnitAffectingCombat("player")) then return end
-	
-	local free
-	local total = 0
-	local bagtypeforfree
-	
-	if StuffingFrameBank and StuffingFrameBank:IsShown() then
-		for i = 5, 11 do
-			free, bagtypeforfree = GetContainerNumFreeSlots(i)
-			if bagtypeforfree == 0 then			
-				total = free + total
-			end
-		end
-		
-		total = select(1, GetContainerNumFreeSlots(-1)) + total
-	else
-		for i = 0, 4 do
-			free, bagtypeforfree = GetContainerNumFreeSlots(i)
-			if bagtypeforfree == 0 then			
-				total = free + total
-			end
-		end
-	end
-
-	if total == 0 then
-		print("|cffff0000"..ERROR_CAPS.." - "..ERR_INV_FULL.."|r")
-		return	
-	end
-	
+	if (UnitAffectingCombat("player")) then return end;
 	local bs = self.sortBags
 	if #bs < 1 then
 		Print (L.bags_nothingsort)
@@ -1369,13 +1375,30 @@ function Stuffing.Menu(self, level)
 	UIDropDownMenu_AddButton(info, level)
 
 	wipe(info)
-	info.text = L.bags_sortspecial
+	info.text = L.bags_stackmenu
 	info.notCheckable = 1
 	info.func = function()
 		Stuffing:SetBagsForSorting("d")
 		Stuffing:Restack()
 	end
 	UIDropDownMenu_AddButton(info, level)
+	
+	wipe(info)
+	info.text = L.bags_sortspecial
+	info.notCheckable = 1
+	info.func = function()
+		Stuffing_Sort("c/p")
+	end
+	UIDropDownMenu_AddButton(info, level)	
+
+	wipe(info)
+	info.text = L.bags_stackspecial
+	info.notCheckable = 1
+	info.func = function()
+		Stuffing:SetBagsForSorting("c/p")
+		Stuffing:Restack()
+	end
+	UIDropDownMenu_AddButton(info, level)	
 
 	wipe(info)
 	info.text = L.bags_showbags
@@ -1390,10 +1413,6 @@ function Stuffing.Menu(self, level)
 			bag_bars = 1
 		end
 		Stuffing:Layout()
-		if Stuffing.bankFrame and Stuffing.bankFrame:IsShown() then
-			Stuffing:Layout(true)
-		end
-
 	end
 	UIDropDownMenu_AddButton(info, level)
 	
@@ -1414,6 +1433,83 @@ function Stuffing.Menu(self, level)
 	end
 	
 	
+	UIDropDownMenu_AddButton(info, level)
+
+	wipe(info)
+	info.disabled = nil
+	info.notCheckable = 1
+	info.text = CLOSE
+	info.func = self.HideMenu
+	info.tooltipTitle = CLOSE
+	UIDropDownMenu_AddButton(info, level)
+end
+
+function Stuffing.Menu2(self, level)
+	if not level then
+		return
+	end
+
+	local info = self.info
+
+	wipe(info)
+
+	if level ~= 1 then
+		return
+	end
+
+	wipe(info)
+	info.text = L.bags_sortmenu
+	info.notCheckable = 1
+	info.func = function()
+		Stuffing_Sort("d", true)
+	end
+	UIDropDownMenu_AddButton(info, level)
+
+	wipe(info)
+	info.text = L.bags_stackmenu
+	info.notCheckable = 1
+	info.func = function()
+		Stuffing:SetBagsForSorting("d", true)
+		Stuffing:Restack()
+	end
+	UIDropDownMenu_AddButton(info, level)
+	
+	wipe(info)
+	info.text = L.bags_sortspecial
+	info.notCheckable = 1
+	info.func = function()
+		Stuffing_Sort("c/p", true)
+	end
+	UIDropDownMenu_AddButton(info, level)	
+
+	wipe(info)
+	info.text = L.bags_stackspecial
+	info.notCheckable = 1
+	info.func = function()
+		Stuffing:SetBagsForSorting("c/p", true)
+		Stuffing:Restack()
+	end
+	UIDropDownMenu_AddButton(info, level)
+	
+	wipe(info)
+	info.text = L.bags_showbags
+	info.checked = function()
+		return bankbag_bars == 1
+	end
+	
+	info.func = function()
+		local numSlots, full = GetNumBankSlots()
+		if numSlots >= 1 then
+			if bankbag_bars == 1 then
+				bankbag_bars = 0
+			else
+				bankbag_bars = 1
+			end
+			Stuffing:Layout(true)
+		else
+			StaticPopup_Show("NO_BANK_BAGS")
+		end
+	end
 	UIDropDownMenu_AddButton(info, level)
 
 	wipe(info)

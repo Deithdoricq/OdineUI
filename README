@@ -1,3 +1,6 @@
+V6.0b
+* /bags command no longer neccessary, all commadns built into bags now (purchase, sort)
+
 V6.0 - [04/10/2011]
 * updated stat block code condensed one block, and moved markbar to spawn there instead
 * updated latency code to show bandwidth usage when patch 4.1 goes live

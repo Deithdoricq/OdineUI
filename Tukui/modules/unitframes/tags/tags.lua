@@ -185,8 +185,8 @@ end
 oUF.TagEvents['Tukui:afk'] = 'PLAYER_FLAGS_CHANGED', 'UNIT_CONNECTION'
 oUF.Tags['Tukui:afk'] = function(unit)
 	if UnitIsAFK(unit) then
-		return " |cffff0000A|r"
+		return " |cffff0000[A]|r"
 	elseif not UnitIsConnected(unit) then
-		return " |cffff0000O|r"
+		return " |cffff0000[O]|r"
 	end
 end

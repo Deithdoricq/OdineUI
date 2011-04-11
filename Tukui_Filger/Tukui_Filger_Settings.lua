@@ -728,6 +728,8 @@ ns.Filger_Spells = {
 
 			-- Bone Shield
 			{ spellID = 49222, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
+			-- Icebound Fortitude
+			{ spellID = 48792, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Anti-Magic Shield
 			{ spellID = 48707, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Vampiric Blood

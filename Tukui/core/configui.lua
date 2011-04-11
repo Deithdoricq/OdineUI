@@ -3,10 +3,7 @@
 ----------------------------------------------------------------------------
 local T, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
-local myPlayerRealm = GetCVar("realmName")
-local myPlayerName  = UnitName("player")
-
-
+--Convert default database
 for group,options in pairs(DB) do
 	if not C[group] then C[group] = {} end
 	for option, value in pairs(options) do
@@ -14,88 +11,43 @@ for group,options in pairs(DB) do
 	end
 end
 
-
 if IsAddOnLoaded("Tukui_Config") and OUIDB then
-	local profile = OUIDB["profileKeys"][myPlayerName.." - "..myPlayerRealm]
-	local path = OUIDB["profiles"][profile]
-	if path then
-		for group,options in pairs(path) do
-			if C[group] then
-				for option, value in pairs(options) do
-					if C[group][option] ~= nil then
-						C[group][option] = value
-					end
-				end
+	local OUI = LibStub("AceAddon-3.0"):GetAddon("OUI")
+	OUI:Load()
+
+	--Load settings from OUI database
+	for group, options in pairs(OUI.db.profile) do
+		if C[group] then
+			for option, value in pairs(options) do
+				C[group][option] = value
 			end
 		end
 	end
 	
 	--Raid Debuffs
-	do
-		local list = T.RaidDebuffs
-		T.debuffids = {}
-		for spell, value in pairs(list) do
-			if value == true then
-				tinsert(T.debuffids, spell)
-			end
-		end
-		
-		if path and path["spellfilter"] and path["spellfilter"]["RaidDebuffs"] then
-			for spell, value in pairs(path["spellfilter"]["RaidDebuffs"]) do
-				if value == true then
-					tinsert(T.debuffids, spell)
-				end			
-			end
-		end
-	end
+	T.RaidDebuffs = OUI.db.profile.spellfilter.RaidDebuffs
 	
-	--Error Messages
-	do
-		local list = T.ErrorList
-		if path and path["spellfilter"] and path["spellfilter"]["ErrorList"] then
-			for name, value in pairs(path["spellfilter"]["ErrorList"]) do
-				T.ErrorList[name] = value			
-			end
-		end	
-	end
+	--Debuff Blacklist
+	T.DebuffBlacklist = OUI.db.profile.spellfilter.DebuffBlacklist
 	
-	--DebuffWhiteList
-	do
-		local list = T.DebuffWhiteList
-		if path and path["spellfilter"] and path["spellfilter"]["DebuffWhiteList"] then
-			for spell, value in pairs(path["spellfilter"]["DebuffWhiteList"]) do
-				T.DebuffWhiteList[spell] = value			
-			end
-		end			
-	end
+	--Target PvP
+	T.TargetPVPOnly = OUI.db.profile.spellfilter.TargetPVPOnly
 	
-	--Target PVP Only
-	do
-		local list = T.TargetPVPOnly
-		if path and path["spellfilter"] and path["spellfilter"]["TargetPVPOnly"] then
-			for spell, value in pairs(path["spellfilter"]["TargetPVPOnly"]) do
-				T.TargetPVPOnly[spell] = value			
-			end
-		end		
-	end
+	--Debuff Whitelist
+	T.DebuffWhiteList = OUI.db.profile.spellfilter.DebuffWhiteList
 	
-	--ArenaBuffs
-	do
-		local list = T.ArenaBuffWhiteList
-		if path and path["spellfilter"] and path["spellfilter"]["ArenaBuffWhiteList"] then
-			for spell, value in pairs(path["spellfilter"]["ArenaBuffWhiteList"]) do
-				T.ArenaBuffWhiteList[spell] = value			
-			end
-		end			
-	end
+	--Arena Buffs
+	T.ArenaBuffWhiteList = OUI.db.profile.spellfilter.ArenaBuffWhiteList
 	
 	--Nameplate Filter
-	do
-		local list = T.PlateBlacklist
-		if path and path["spellfilter"] and path["spellfilter"]["PlateBlacklist"] then
-			for name, value in pairs(path["spellfilter"]["PlateBlacklist"]) do
-				T.PlateBlacklist[name] = value			
-			end
-		end	
-	end	
+	T.PlateBlacklist = OUI.db.profile.spellfilter.PlateBlacklist
+	
+	--HealerBuffIDs
+	T.HealerBuffIDs = OUI.db.profile.spellfilter.HealerBuffIDs
+	
+	--DPSBuffIDs
+	T.DPSBuffIDs = OUI.db.profile.spellfilter.DPSBuffIDs
+	
+	--PetBuffIDs
+	T.PetBuffs = OUI.db.profile.spellfilter.PetBuffs
 end

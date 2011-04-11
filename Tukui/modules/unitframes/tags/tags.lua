@@ -171,32 +171,6 @@ oUF.Tags['Tukui:name_medium'] = function(unit)
 	end
 end
 
-oUF.TagEvents["Tukui:masterlooter"] = "PARTY_LOOT_METHOD_CHANGED PARTY_MEMBERS_CHANGED"
-oUF.Tags["Tukui:masterlooter"] = function(unit)
-	local typeLoot, partyID, raidID = GetLootMethod()
-	if (typeLoot == "master") then
-		if (raidID) then
-			if (raidID == 0) then
-				return (unit == "player") and " |cffe45050[M]|r"
-			else
-				return (unit == "raid"..raidID) and " |cffe45050[M]|r"
-			end
-		elseif (partyID) then
-			if (partyID == 0) then
-				return (unit == "player") and " |cffe45050[M]|r"
-			else
-				return (unit == "party"..partyID) and " |cffe45050[M]|r"
-			end
-		end
-	end
-end
-
-oUF.TagEvents["Tukui:leader"] = "PARTY_LEADER_CHANGED"
-oUF.Tags["Tukui:leader"] = function(unit)
-	if UnitIsPartyLeader(unit) then
-		return "|cffe45050[L]|r "
-	end
-end
 
 oUF.TagEvents['Tukui:dead'] = 'UNIT_HEALTH'
 oUF.Tags['Tukui:dead'] = function(unit)
@@ -211,8 +185,8 @@ end
 oUF.TagEvents['Tukui:afk'] = 'PLAYER_FLAGS_CHANGED', 'UNIT_CONNECTION'
 oUF.Tags['Tukui:afk'] = function(unit)
 	if UnitIsAFK(unit) then
-		return " |cffff0000[A]|r"
+		return " |cffff0000A|r"
 	elseif not UnitIsConnected(unit) then
-		return " |cffff0000[O]|r"
+		return " |cffff0000O|r"
 	end
 end

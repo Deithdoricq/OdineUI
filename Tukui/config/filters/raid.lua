@@ -5,34 +5,6 @@ local function SpellName(id)
 	return name
 end
 
-T.buffids = {
-	PRIEST = {
-		{6788, "TOPLEFT", {1, 0, 0}, true}, -- Weakened Soul
-		{33076, "TOPRIGHT", {0.2, 0.7, 0.2}}, -- Prayer of Mending
-		{139, "BOTTOMLEFT", {0.4, 0.7, 0.2}}, -- Renew
-		{17, "BOTTOMRIGHT", {0.81, 0.85, 0.1}, true}, -- Power Word: Shield
-	},
-	DRUID = {
-		{774, "TOPLEFT", {0.8, 0.4, 0.8}}, -- Rejuvenation
-		{8936, "TOPRIGHT", {0.2, 0.8, 0.2}}, -- Regrowth
-		{33763, "BOTTOMLEFT", {0.4, 0.8, 0.2}}, -- Lifebloom
-		{48438, "BOTTOMRIGHT", {0.8, 0.4, 0}}, -- Wild Growth
-	},
-	PALADIN = {
-		{53563, "TOPLEFT", {0.7, 0.3, 0.7}}, -- Beacon of Light
-	},
-	SHAMAN = {
-		{61295, "TOPLEFT", {0.7, 0.3, 0.7}}, -- Riptide 
-		{51945, "TOPRIGHT", {0.2, 0.7, 0.2}}, -- Earthliving
-		{16177, "BOTTOMLEFT", {0.4, 0.7, 0.2}}, -- Ancestral Fortitude
-		{974, "BOTTOMRIGHT", {0.7, 0.4, 0}, true}, -- Earth Shield
-	},
-	ALL = {
-		{14253, "RIGHT", {0, 1, 0}}, -- Abolish Poison
-		{23333, "LEFT", {1, 0, 0}}, -- Warsong flag xD
-	},
-}
-
 --RAID DEBUFFS
 T.RaidDebuffs = {
 	

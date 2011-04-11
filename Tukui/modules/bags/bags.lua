@@ -934,7 +934,7 @@ end
 
 function Stuffing:PLAYER_ENTERING_WORLD()
 	-- setting key ring bag
-	-- this is just a reskin of Blizzard key bag to fit Elvui
+	-- reskin keyring
 
 	local keybackdrop = CreateFrame("Frame", nil, ContainerFrame1)
 	keybackdrop:SetPoint("TOPLEFT", T.Scale(9), T.Scale(-40))

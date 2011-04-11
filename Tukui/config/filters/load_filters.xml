@@ -4,4 +4,5 @@
 	<Script file="raid.lua"/>
 	<Script file="nameplates.lua"/>
 	<Script file="misc.lua"/>
+	<Script file="buffwatch.lua"/>
 </Ui>

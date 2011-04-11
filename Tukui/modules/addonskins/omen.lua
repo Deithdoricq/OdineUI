@@ -60,11 +60,11 @@ end
 
 -- Option Overrides
 Omen.db.profile.Bar.Spacing = 1
-Omen.db.profile.Bar.Texture = "Elvui Norm"
-Omen.db.profile.Bar.Font = "Elvui Font"
+Omen.db.profile.Bar.Texture = "Tukui Norm"
+Omen.db.profile.Bar.Font = "Tukui Font"
 Omen.db.profile.Bar.Height = 18
-Omen.db.profile.TitleBar.Font = "Elvui Font"
-Omen.db.profile.Background.Texture = "Elvui Blank"
+Omen.db.profile.TitleBar.Font = "Tukui Font"
+Omen.db.profile.Background.Texture = "Tukui Blank"
 
 -- Force updates
 Omen:UpdateBarTextureSettings()

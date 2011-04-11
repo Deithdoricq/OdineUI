@@ -143,6 +143,7 @@ L.unitframes_ouf_starfirespell = "Starfire"
 
 L.tooltip_count = "Count"
 
+
 L.actionbars_locked = "Actionbars |cffe45050Locked|r"
 L.actionbars_unlocked = "Actionbars |cff50e468Unlocked|r"
 
@@ -193,6 +194,8 @@ L.core_uihelp8 = "|cffFF0000/resetui|r - Reset Tukui to default."
 L.core_uihelp9 = "|cffFF0000/rd|r - Disband raid."
 L.core_uihelp10 = "|cffFF0000/ainv|r - Enable autoinvite via keyword on whisper. You can set your own keyword by typing `/ainv myword`"
 L.core_uihelp100 = "(Scroll up for more commands ...)"
+
+L.tooltip_whotarget = "Targeted By"
 
 L.symbol_CLEAR = "Clear"
 L.symbol_SKULL = "Skull"

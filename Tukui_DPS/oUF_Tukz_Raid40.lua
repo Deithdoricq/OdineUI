@@ -62,9 +62,9 @@ local function Shared(self, unit)
 	name:Point("CENTER", health, "CENTER", 0, 1)
 	name:SetWidth(40)
 	if C["unitframes"].unicolor then
-		self:Tag(name, '[Tukui:getnamecolor][Tukui:nameshort] [Tukui:dead][Tukui:afk]')
+		self:Tag(name, '[Tukui:getnamecolor][Tukui:name_short][Tukui:dead][Tukui:afk]')
 	else
-		self:Tag(name, '[Tukui:nameshort] [Tukui:dead][Tukui:afk]')
+		self:Tag(name, '[Tukui:name_short][Tukui:dead][Tukui:afk]')
 	end
 	self.Name = name
 	

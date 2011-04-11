@@ -1,5 +1,13 @@
-V6.0b
+V6.0b - [04/11/2011]
 * /bags command no longer neccessary, all commadns built into bags now (purchase, sort)
+* added option to configure raid buffs (dps and healer layouts) ingame through filters config section
+* added some procs/buffs for deathknights in filger config section
+* fixed tags for dps layouts
+* added option to hideshapeshift unless mousedover
+
+WIP: [CURRENTLY IN TESTING]
+* add support for reminder buffs
+* less reloadui stuff.. tends to get annoying i know trust me!
 
 V6.0 - [04/10/2011]
 * updated stat block code condensed one block, and moved markbar to spawn there instead

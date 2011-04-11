@@ -67,6 +67,7 @@ DB["unitframes"] = {
 		["raidunitdebuffwatch"] = true,                     -- track important spell to watch in pve for grid mode.
 		["healcomm"] = true,                               -- enable healprediction support.
 		["debuffHighlightFilter"] = false,					-- filter debuff border coloring
+		["buffindicatorsize"] = 6,							-- size of the buff indicator on raid/party frames
 
 		-- Heal
 		["healthvertical"] = false,
@@ -105,6 +106,7 @@ DB["actionbar"] = {
 	["enable"] = true,                                  -- enable tukui action bars
 	["hotkey"] = true,                                 -- enable hotkey display because it was a lot requested
 	["hideshapeshift"] = false,                         -- hide shapeshift or totembar because it was a lot requested.
+	["shapeshiftmouseover"] = false,					-- hide shapeshift or totembar unless moused over.
 	["showgrid"] = true,                                -- show grid on empty button
 	["buttonsize"] = 29,                                -- normal buttons size 27
 	["petbuttonsize"] = 29,                             -- pet & stance buttons size
@@ -200,7 +202,7 @@ DB["tooltip"] = {
 	["hidebuttons"] = false,                            -- always hide action bar buttons tooltip.
 	["hideuf"] = false,                                 -- hide tooltip on unitframes
 	["cursor"] = false,                                 -- tooltip via cursor only
-	["whotarget"] = false,								-- show who is targeting you (raid/party only)
+	["whotarget"] = true,								-- show who is targeting you (raid/party only)
 }
 
 DB["merchant"] = {

@@ -1,7 +1,6 @@
 local OUI = LibStub("AceAddon-3.0"):NewAddon("OUI", "AceConsole-3.0", "AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("OUI", false)
 local LSM = LibStub("LibSharedMedia-3.0")
-local AceConfigDialog = LibStub("AceConfigDialog-3.0")
 local db
 local defaults
 
@@ -39,6 +38,9 @@ function OUI:LoadDefaults()
 				PlateBlacklist = T["PlateBlacklist"],
 				TargetPVPOnly = T["TargetPVPOnly"],
 				ArenaBuffWhiteList = T["ArenaBuffWhiteList"],
+				HealerBuffIDs = T["HealerBuffIDs"],
+				DPSBuffIDs = T["DPSBuffIDs"],
+				PetBuffs = T["PetBuffs"],
 			},
 		},
 	}
@@ -46,22 +48,10 @@ function OUI:LoadDefaults()
 end
 
 function OUI:OnInitialize()
-	self:RegisterEvent("PLAYER_LOGIN")
-	
 	OUI:RegisterChatCommand("oui", "ShowConfig")
 	OUI:RegisterChatCommand("odineui", "ShowConfig")
 	
 	self.OnInitialize = nil
-	
-	StaticPopupDialogs["RELOAD_UI"] = {
-		text = "You must reload your UI",
-		button1 = ACCEPT,
-		button2 = CANCEL,
-		OnAccept = function() ReloadUI() end,
-		timeout = 0,
-		whileDead = 1,
-	}
-
 end
 
 function OUI:ShowConfig(arg)
@@ -69,12 +59,11 @@ function OUI:ShowConfig(arg)
 	InterfaceOptionsFrame_OpenToCategory(self.optionsFrames.OUI)
 end
 
-function OUI:PLAYER_LOGIN()
+function OUI:Load()
 	self:LoadDefaults()
 
 	self.db = LibStub("AceDB-3.0"):New("OUIDB", defaults) -- PerChar
-	--self.db = LibStub("AceDB-3.0"):New("OUIDB", defaults, true) -- Default Profile
-	
+
 	self.db.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
 	self.db.RegisterCallback(self, "OnProfileCopied", "OnProfileChanged")
 	self.db.RegisterCallback(self, "OnProfileReset", "OnProfileChanged")
@@ -122,43 +111,123 @@ end
 function OUI.GenerateOptionsInternal()
 	local T, C, _, DB = unpack(Tukui)
 	
-	-- Filter related code by Elv
+	StaticPopupDialogs["RELOAD_UI"] = {
+		text = "You must reload your UI",
+		button1 = ACCEPT,
+		button2 = CANCEL,
+		OnAccept = function() ReloadUI() end,
+		timeout = 0,
+		whileDead = 1,
+	}
+	
+	local RaidBuffs = {
+		["HealerBuffIDs"] = true,
+		["DPSBuffIDs"] = true,
+		["PetBuffs"] = true
+	}
+	
+	-- Credit to Elv all filter related code by him.. simply mod to fit my edit!
 	local function CreateFilterTable(tab)
 		local spelltable = db.spellfilter[tab]
 		if not spelltable then error("db.spellfilter could not find value 'tab'") return {} end
 		local newtable = {}
 		
-		local ORDER = 1
-		if tab == "RaidDebuffs" then --RaidDebuffs require a reloadui
-			for spell, value in pairs(spelltable) do
-				if db.spellfilter[tab][spell] ~= nil then
-					newtable[spell] = {
-						order = ORDER,
-						name = spell,
-						type = "toggle",
-						get = function(info) if db.spellfilter[tab][spell] then return true else return false end end,
-						set = function(info, value) db.spellfilter[tab][spell] = value; T[tab] = db.spellfilter[tab]; StaticPopup_Show("RELOAD_UI") end,
+		if RaidBuffs[tab] then
+			if not spelltable[T.myclass] then spelltable[T.myclass] = {} end
+			newtable["SelectSpell"] = {
+				name = "Select Spell",
+				type = "select",
+				order = 1,
+				values = {},
+				set = function(info, value) 
+					db.spellfilter[ info[#info] ] = value;
+					local config = LibStub("AceConfigRegistry-3.0"):GetOptionsTable("OUI", "dialog", "MyLib-1.2")
+					local curfilter = db.spellfilter.FilterPicker
+		
+					config.args.spellfilter.args.SpellListTable.args = CreateFilterTable(curfilter)
+				end,
+			}
+			
+			for i, spell in pairs(spelltable[T.myclass]) do
+				local id = spell["id"]
+				
+				newtable["SelectSpell"]["values"][id] = GetSpellInfo(id)
+				
+				if id == db.spellfilter["SelectSpell"] then
+					newtable["SpellGroup"] = {
+						order = 2,
+						type = "group",
+						name = GetSpellInfo(id).." ("..id..")",
+						guiInline = true,				
+						args = {
+							Enabled = {
+								type = "toggle",
+								order = 1,
+								name = "Enabled",
+								get = function(info) return db.spellfilter[tab][T.myclass][i]["enabled"] end,
+								set = function(info, value) db.spellfilter[tab][T.myclass][i]["enabled"] = value; StaticPopup_Show("RELOAD_UI") end,										
+							},
+							Position = {
+								type = "select",
+								order = 2,
+								name = "Position",
+								desc = "Position where the buff appears on the frame",
+								get = function(info) return db.spellfilter[tab][T.myclass][i]["point"] end,
+								set = function(info, value) db.spellfilter[tab][T.myclass][i]["point"] = value; StaticPopup_Show("RELOAD_UI") end,		
+								values = {
+									["TOPLEFT"] = "TOPLEFT",
+									["TOP"] = "TOP",
+									["TOPRIGHT"] = "TOPRIGHT",
+									["LEFT"] = "LEFT",
+									["RIGHT"] = "RIGHT",
+									["BOTTOMLEFT"] = "BOTTOMLEFT",
+									["BOTTOM"] = "BOTTOM",
+									["BOTTOMRIGHT"] = "BOTTOMRIGHT",
+								},
+							},
+							anyUnit = {
+								type = "toggle",
+								order = 3,
+								name = "Any Unit",
+								desc = "Display the buff if cast by anyone?",
+								get = function(info) return db.spellfilter[tab][T.myclass][i]["anyUnit"] end,
+								set = function(info, value) db.spellfilter[tab][T.myclass][i]["anyUnit"] = value; StaticPopup_Show("RELOAD_UI") end,									
+							},
+							Color = {
+								type = "color",
+								order = 4,
+								name = "Color",
+								hasAlpha = false,
+								get = function(info)
+									local t = db.spellfilter[tab][T.myclass][i]["color"]
+									return t.r, t.g, t.b, t.a
+								end,
+								set = function(info, r, g, b)
+									db.spellfilter[tab][T.myclass][i]["color"] = {}
+									local t = db.spellfilter[tab][T.myclass][i]["color"]
+									t.r, t.g, t.b = r, g, b
+									StaticPopup_Show("RELOAD_UI")
+								end,																	
+							},					
+						},
 					}
-					ORDER = ORDER + 1
 				end
 			end
 		else
 			for spell, value in pairs(spelltable) do
 				if db.spellfilter[tab][spell] ~= nil then
 					newtable[spell] = {
-						order = ORDER,
 						name = spell,
 						type = "toggle",
 						get = function(info) if db.spellfilter[tab][spell] then return true else return false end end,
-						set = function(info, value) db.spellfilter[tab][spell] = value; T[tab] = db.spellfilter[tab] end,
+						set = function(info, value) db.spellfilter[tab][spell] = value; T[tab] = db.spellfilter[tab]; StaticPopup_Show("RELOAD_UI") end,
 					}
-					ORDER = ORDER + 1
 				end
-			end		
+			end
 		end
-				
+		
 		return newtable
-	end		
+	end
 				
 	local function GetFilterDesc()
 		if db.spellfilter.FilterPicker == "PlateBlacklist" then
@@ -175,6 +244,12 @@ function OUI.GenerateOptionsInternal()
 			return "Filter the buffs that get displayed on arena units."
 		elseif db.spellfilter.FilterPicker == "DebuffBlacklist" then
 			return "Set buffs that will never get displayed."
+		elseif db.spellfilter.FilterPicker == "HealerBuffIDs" then
+			return "These buffs are displayed on the healer raid and party layouts"
+		elseif db.spellfilter.FilterPicker == "DPSBuffIDs" then
+			return "These buffs are displayed on the DPS raid and party layouts"
+		elseif db.spellfilter.FilterPicker == "PetBuffs" then
+			return "These buffs are displayed on the pet frame"
 		else
 			return ""
 		end
@@ -184,7 +259,7 @@ function OUI.GenerateOptionsInternal()
 		if db.spellfilter.FilterPicker == "PlateBlacklist" then
 			return "Nameplate Names"
 		else
-			return "Buff/Debuff Names"
+			return "Auras"
 		end	
 	end
 	
@@ -196,7 +271,6 @@ function OUI.GenerateOptionsInternal()
 		config.args.spellfilter.args.FilterDesc.name = GetFilterDesc()
 		config.args.spellfilter.args.SpellListTable.name = GetFilterName()
 		
-		LibStub("AceConfigRegistry-3.0"):NotifyChange("OUI")
 		collectgarbage("collect")
 	end
 
@@ -689,25 +763,25 @@ function OUI.GenerateOptionsInternal()
 					},
 					healcomm = {
 						type = "toggle",
-						order = 7,
+						order = 8,
 						name = "Healcomm",
 						desc = "Toggles whether you want to display incoming heals",						
 					},
 					healthvertical = { -- healer layout only
 						type = "toggle",
-						order = 8,
+						order = 9,
 						name = "Display HP Vertically",
 						desc = "Toggles whether you want to display health vertically instead.(HEAL LAYOUT ONLY)",
 					},
 					healthdeficit = { -- healer layout only
 						type = "toggle",
-						order = 9,
+						order = 10,
 						name = "Display HP Deficit",
 						desc = "Toggles whether you want to display HP deficits instead.(HEAL LAYOUT ONLY)",
 					},
 					hidepower = { -- dps layout only
 						type = "toggle",
-						order = 10,
+						order = 11,
 						name = "Hide Power",
 						desc = "Toggles whether you want to hide Power from being displayed on raid/party frames.(DPS LAYOUT ONLY)",
 					},
@@ -715,25 +789,40 @@ function OUI.GenerateOptionsInternal()
 						name = "   ",
 						width = "full",
 						type = "description",
-						order = 10.5,
+						order = 12,
 					},
 					maintank = { 
 						type = "toggle",
-						order = 11,
+						order = 13,
 						name = "Show Main Tank",
 						desc = "Toggles Main Tank display.",
 					},
 					mainassist = { 
 						type = "toggle",
-						order = 12,
+						order = 14,
 						name = "Show Main Assist",
 						desc = "Toggles Main Assist display.",
 					},
 					showboss = {
 						type = "toggle",
-						order = 13,
+						order = 15,
 						name = "Show Boss Frames",
 						desc = "Toggles whether you want to display frames for bosses.",
+					},
+					emptyrp8 = {
+						name = "   ",
+						width = "full",
+						type = "description",
+						order = 16,
+					},
+					buffindicatorsize = {
+						type = "range",
+						order = 17,
+						name = "Raid Buff Display Size",
+						desc = "Size of the buff icon on raidframes",
+						disabled = function() return not db.unitframes.enable end,
+						type = "range",
+						min = 3, max = 9, step = 1,									
 					},
 				},
 			},
@@ -864,47 +953,60 @@ function OUI.GenerateOptionsInternal()
 						type = "toggle",
 						order = 2,
 						name = "Show Hotkeys",
-						desc = "Toggle whether you want to show keybindings on your actionbar buttons.",									
+						desc = "Toggle whether you want to show keybindings on your actionbar buttons.",
+						disabled = function() return not db.actionbar.enable end,
 					},
 					hideshapeshift = {
 						type = "toggle",
 						order = 3,
 						name = "Hide Shapeshift",
-						desc = "Toggle whether you want to show your shapeshift/totems.",									
+						desc = "Toggle whether you want to show your shapeshift/totems.",
+						disabled = function() return not db.actionbar.enable end,
+					},
+					shapeshiftmouseover = {
+						type = "toggle",
+						order = 4,
+						name = "Mouseover Shapeshift",
+						desc = "Toggle whether you want to show the shapeshift bar only when moused over.",
+						disabled = function() return (not db.actionbar.enable or db.actionbar.hideshapeshift) end,
 					},
 					showgrid = {
 						type = "toggle",
-						order = 4,
+						order = 5,
 						name = "Show Grid",
-						desc = "Toggle whether you want to show a grid on empty buttons.",									
+						desc = "Toggle whether you want to show a grid on empty buttons.",
+						disabled = function() return not db.actionbar.enable end,
 					},
 					vertical_rightbars = {
 						type = "toggle",
-						order = 5,
+						order = 6,
 						name = "Vertical rightbars",
-						desc = "Toggle whether you want to have your rightbars vertical instead of horizontal.",									
+						desc = "Toggle whether you want to have your rightbars vertical instead of horizontal.",
+						disabled = function() return not db.actionbar.enable end,
 					},
 					empty7 = {
 						name = "   ",
 						width = "full",
 						type = "description",
-						order = 6,
+						order = 7,
 					},
 					buttonsize = {
 						type = "range",
-						order = 7,
+						order = 8,
 						name = "Button Size",
 						desc = "Controls the size of actionbar buttons.",
 						type = "range",
-						min = 22, max = 32, step = 1,									
+						min = 22, max = 32, step = 1,
+						disabled = function() return not db.actionbar.enable end,
 					},
 					petbuttonsize = {
 						type = "range",
-						order = 8,
+						order = 9,
 						name = "Pet Button Size",
 						desc = "Controls the size of your pets actionbar buttons.",
 						type = "range",
-						min = 22, max = 32, step = 1,									
+						min = 22, max = 32, step = 1,
+						disabled = function() return not db.actionbar.enable end,
 					},
 					buttonspacing = {
 						type = "range",
@@ -912,7 +1014,8 @@ function OUI.GenerateOptionsInternal()
 						name = "Button Spacing",
 						desc = "Controls the spacing between buttons.",
 						type = "range",
-						min = 1, max = 7, step = 1,									
+						min = 1, max = 7, step = 1,
+						disabled = function() return not db.actionbar.enable end,
 					},
 				},
 			},
@@ -1687,7 +1790,7 @@ function OUI.GenerateOptionsInternal()
 				order = 12,
 				type = "group",
 				name = "Filters",
-				desc = "Customize certain filters",
+				desc = "Allows you to customize various buffs/debuffs and other filters.",
 				get = function(info) return db.spellfilter[ info[#info] ] end,
 				set = function(info, value) db.spellfilter[ info[#info] ] = value end,
 				args = {
@@ -1708,6 +1811,9 @@ function OUI.GenerateOptionsInternal()
 							["TargetPVPOnly"] = "Target Debuffs (PvP Only)",
 							["DebuffBlacklist"] = "Debuff Blacklist",
 							["ArenaBuffWhiteList"] = "Arena Buffs",
+							["HealerBuffIDs"] = "Raid Buffs (Healer)",
+							["DPSBuffIDs"] = "Raid Buffs (DPS)",
+							["PetBuffs"] = "Pet Buffs",
 						},						
 					},			
 					spacer = {
@@ -1723,37 +1829,68 @@ function OUI.GenerateOptionsInternal()
 					},						
 					NewName = {
 						type = 'input',
-						name = "New name",
-						desc = "Add a new name to the list.",
+						name = function() if RaidBuffs[db.spellfilter.FilterPicker] then return "New Spell ID" else return "New name" end end,
+						desc = "Add a new spell name / ID to the list.",
 						get = function(info) return "" end,
-						set = function(info, value)
-							local name_list = db.spellfilter[db.spellfilter.FilterPicker]
-							name_list[value] = true
-							UpdateSpellFilter()
-							T[name_list] = db.spellfilter[name_list]
-							if name_list == "RaidDebuffs" then
-								StaticPopup_Show("RELOAD_UI")
+						set = function(info, value)						
+							if RaidBuffs[db.spellfilter.FilterPicker] then
+								if not GetSpellInfo(value) then
+									print("Not valid spell id")
+								else
+									local num = #db.spellfilter[db.spellfilter.FilterPicker][T.myclass] + 1
+									db.spellfilter[db.spellfilter.FilterPicker][T.myclass][num] = {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = false}
+									UpdateSpellFilter()								
+									StaticPopup_Show("RELOAD_UI")
+								end
+							else
+								local name_list = db.spellfilter[db.spellfilter.FilterPicker]
+								name_list[value] = true
+								UpdateSpellFilter()
+								T[name_list] = db.spellfilter[name_list]
+								
+								if db.spellfilter.FilterPicker ~= "PlateBlacklist" then
+									StaticPopup_Show("RELOAD_UI")
+								end
 							end
 						end,
 						order = 5,
 					},
 					DeleteName = {
 						type = 'input',
-						name = "Remove name",
-						desc = "Remove a name from the list.",
+						name = function() if RaidBuffs[db.spellfilter.FilterPicker] then return "Remove ID" else return "Remove Name" end end,
+						desc = "You may only delete spells that you have added. Default spells can be disabled by unchecking the option",
 						get = function(info) return "" end,
 						set = function(info, value)
-							local name_list = db.spellfilter[db.spellfilter.FilterPicker]
-							
-							if db.spellfilter[db.spellfilter.FilterPicker][value] == nil then
-								print("Spell not found in list")
+							if RaidBuffs[db.spellfilter.FilterPicker] then
+								if not GetSpellInfo(value) then
+									print("Not valid spell id")
+								else
+									local match
+									for x, y in pairs(db.spellfilter[db.spellfilter.FilterPicker][T.myclass]) do
+										if y["id"] == tonumber(value) then
+											match = y
+											db.spellfilter[db.spellfilter.FilterPicker][T.myclass][x] = nil
+										end
+									end
+									if match == nil then
+										print("Spell not found in list")
+									else
+										UpdateSpellFilter()								
+										StaticPopup_Show("RELOAD_UI")									
+									end									
+								end								
 							else
-								name_list[value] = nil
-								UpdateSpellFilter()
-								T[name_list] = db.spellfilter[name_list]
-								
-								if name_list == "RaidDebuffs" then
-									StaticPopup_Show("RELOAD_UI")
+								local name_list = db.spellfilter[db.spellfilter.FilterPicker]
+								if db.spellfilter[db.spellfilter.FilterPicker][value] == nil then
+									print("Spell not found in list")
+								else
+									name_list[value] = nil
+									UpdateSpellFilter()
+									T[name_list] = db.spellfilter[name_list]
+									
+									if name_list == "RaidDebuffs" then
+										StaticPopup_Show("RELOAD_UI")
+									end
 								end
 							end
 						end,

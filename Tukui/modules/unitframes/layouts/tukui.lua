@@ -12,7 +12,6 @@ if not C["unitframes"].enable == true then return end
 if T.lowversion then
 	T.Player, T.Target, T.ToT, T.Pet, T.Focus, T.Boss = 200, 200, 130, 130, 130, 200
 else
-	--T.Player, T.Target, T.ToT, T.Pet, T.Focus, T.Boss = ((T.InfoLeftRightWidth / 2) + T.buttonsize), ((T.InfoLeftRightWidth / 2) + T.buttonsize), 130, 130, 130, 200
 	T.Player, T.Target, T.ToT, T.Pet, T.Focus, T.Boss = 215, 215, 130, 130, 130, 200
 end
 

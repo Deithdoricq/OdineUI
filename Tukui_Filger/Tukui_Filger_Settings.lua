@@ -730,6 +730,8 @@ ns.Filger_Spells = {
 			{ spellID = 49222, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Anti-Magic Shield
 			{ spellID = 48707, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
+			-- Vampiric Blood
+			{ spellID = 55233, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Horn of Winter
 			--{ spellID = 57330, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
 		},
@@ -889,6 +891,8 @@ ns.Filger_Spells = {
 			{ spellID = 74241, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Landslide
 			{ spellID = 74245, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
+			-- Memory of Invicibility
+			{ spellID = 92213, size = asize, unitId = "player", caster = "player", filter = "BUFF" },
 		},
 		{
 			Name = "PVE/PVP_P_DEBUFF_ICON",

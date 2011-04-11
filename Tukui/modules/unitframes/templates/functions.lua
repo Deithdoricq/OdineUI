@@ -674,15 +674,9 @@ T.countOffsets = {
 }
 
 T.CreateAuraWatchIcon = function(self, icon)
-	icon:SetTemplate("Default")
-	icon.icon:Point("TOPLEFT", 1, -1)
-	icon.icon:Point("BOTTOMRIGHT", -1, 1)
-	icon.icon:SetTexCoord(.09, .91, .09, .91)
-	icon.icon:SetDrawLayer("ARTWORK")
 	if (icon.cd) then
 		icon.cd:SetReverse()
 	end
-	icon.overlay:SetTexture()
 end
 
 T.createAuraWatch = function(self, unit)
@@ -699,59 +693,74 @@ T.createAuraWatch = function(self, unit)
 	end
 
 	local buffs = {}
-
-	if (T.buffids["ALL"]) then
-		for key, value in pairs(T.buffids["ALL"]) do
+	if IsAddOnLoaded("Tukui_DPS") then
+		if (T.DPSBuffIDs[T.myclass]) then
+			for key, value in pairs(T.DPSBuffIDs[T.myclass]) do
+				if value["enabled"] == true then
+					tinsert(buffs, value)
+				end
+			end
+		end
+	else
+		if (T.HealerBuffIDs[T.myclass]) then
+			for key, value in pairs(T.HealerBuffIDs[T.myclass]) do
+				if value["enabled"] == true then
+					tinsert(buffs, value)
+				end
+			end
+		end
+	end
+	
+	if T.PetBuffs[T.myclass] then
+		for key, value in pairs(T.PetBuffs[T.myclass]) do
 			tinsert(buffs, value)
 		end
 	end
-
-	if (T.buffids[T.myclass]) then
-		for key, value in pairs(T.buffids[T.myclass]) do
-			tinsert(buffs, value)
-		end
-	end
-
-	-- "Cornerbuffs"
+	
 	if (buffs) then
 		for key, spell in pairs(buffs) do
 			local icon = CreateFrame("Frame", nil, auras)
-			icon.spellID = spell[1]
-			icon.anyUnit = spell[4]
-			icon:SetWidth(T.Scale(6))
-			icon:SetHeight(T.Scale(6))
-			icon:SetPoint(spell[2], 0, 0)
+			icon.spellID = spell["id"]
+			icon.anyUnit = spell["anyUnit"]
+			icon:SetWidth(T.Scale(C["unitframes"].buffindicatorsize))
+			icon:SetHeight(T.Scale(C["unitframes"].buffindicatorsize))
+			icon:SetPoint(spell["point"], 0, 0)
 
 			local tex = icon:CreateTexture(nil, "OVERLAY")
 			tex:SetAllPoints(icon)
-			tex:SetTexture(C.media.blank)
-			if (spell[3]) then
-				tex:SetVertexColor(unpack(spell[3]))
+			tex:SetTexture(C["media"].blank)
+			if (spell["color"]) then
+				local color = spell["color"]
+				tex:SetVertexColor(color.r, color.g, color.b)
 			else
 				tex:SetVertexColor(0.8, 0.8, 0.8)
 			end
+			
+			local border = icon:CreateTexture(nil, "ARTWORK")
+			border:Point("TOPLEFT", -T.mult, T.mult)
+			border:Point("BOTTOMRIGHT", T.mult, -T.mult)
+			border:SetTexture(C["media"].blank)
+			border:SetVertexColor(0, 0, 0)
 
 			local count = icon:CreateFontString(nil, "OVERLAY")
-			count:SetFont(C["media"].font, 10, "OUTLINE")
-			count:SetPoint("CENTER", unpack(T.countOffsets[spell[2]]))
+			count:SetFont(C["media"].uffont, 8, "THINOUTLINE")
+			count:SetPoint("CENTER", unpack(T.countOffsets[spell["point"]]))
 			icon.count = count
 
-			auras.icons[spell[1]] = icon
+			auras.icons[spell["id"]] = icon
 		end
 	end
 	
 	self.AuraWatch = auras
 end
 
-if C["unitframes"].raidunitdebuffwatch == true then
-	local _, ns = ...
-	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs
+local _, ns = ...
+local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs
 
-	if not ORD then return end
-	
-	ORD.ShowDispelableDebuff = true
-	ORD.FilterDispellableDebuff = true
-	ORD.MatchBySpellName = true
-	
-	ORD:RegisterDebuffs(T.debuffids)
-end
+if not ORD then return end
+
+ORD.ShowDispelableDebuff = true
+ORD.FilterDispellableDebuff = true
+ORD.MatchBySpellName = true
+
+ORD:RegisterDebuffs(T.RaidDebuffs)

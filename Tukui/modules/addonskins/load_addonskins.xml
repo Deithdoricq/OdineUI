@@ -4,4 +4,5 @@
 	<Script file='recount.lua' />
 	<Script file='omen.lua' />
 	<Script file='dbm.lua' />
+	<Script file='skada.lua' />
 </Ui>

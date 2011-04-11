@@ -91,3 +91,12 @@ bar:SetScript("OnEvent", function(self, event, ...)
 		T.TukuiShiftBarUpdate()
 	end
 end)
+
+if C["actionbar"].shapeshiftmouseover == true then
+	for i=1, NUM_SHAPESHIFT_SLOTS do
+		local b = _G["ShapeshiftButton"..i]
+		b:SetAlpha(0)
+		b:HookScript("OnEnter", function() ShapeShiftMouseOver(1) end)
+		b:HookScript("OnLeave", function() ShapeShiftMouseOver(0) end)
+	end
+end

@@ -1,14 +1,19 @@
+V6.0c - [04/12/2011]
+* started working on locales for ingame config. will need help in other languages when complete!
+* fixed power bar for onyxia/nef fight
+* tweaked placement of boss frames again....
+
 V6.0b - [04/11/2011]
 * /bags command no longer neccessary, all commadns built into bags now (purchase, sort)
 * added option to configure raid buffs (dps and healer layouts) ingame through filters config section
 * added some procs/buffs for deathknights in filger config section
 * fixed tags for dps layouts
 * added option to hideshapeshift unless mousedover
-* fixed power bar for onyxia/nef fight
+
 
 WIP: [CURRENTLY IN TESTING]
 * add support for reminder buffs
-* ingame support for filger? or something classtimer based like i did in wraith.. hMMMM!?! (need clean way to track procs basically)
+* ingame support for filger? (need clean way to track procs basically)
 * less reloadui stuff.. tends to get annoying i know trust me!
 
 V6.0 - [04/10/2011]

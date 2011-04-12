@@ -95,7 +95,7 @@ function OUI:SetupOptions()
 	self.optionsFrames.Tooltip = ACD3:AddToBlizOptions("OUI", "Tooltip", "OdineUI", "tooltip")
 	self.optionsFrames.Media = ACD3:AddToBlizOptions("OUI", "Media", "OdineUI", "media")
 	self.optionsFrames.SpellFilter = ACD3:AddToBlizOptions("OUI", "Filters", "OdineUI", "spellfilter")
-	self.optionsFrames.Profiles = ACD3:AddToBlizOptions("OUIProfiles", "Profiles", "OdineUI")
+	self.optionsFrames.Profiles = ACD3:AddToBlizOptions("OUIProfiles", L["Profiles"], "OdineUI")
 	self.SetupOptions = nil
 end
 
@@ -135,7 +135,7 @@ function OUI.GenerateOptionsInternal()
 		if RaidBuffs[tab] then
 			if not spelltable[T.myclass] then spelltable[T.myclass] = {} end
 			newtable["SelectSpell"] = {
-				name = "Select Spell",
+				name = L["Select Spell"],
 				type = "select",
 				order = 1,
 				values = {},
@@ -163,15 +163,15 @@ function OUI.GenerateOptionsInternal()
 							Enabled = {
 								type = "toggle",
 								order = 1,
-								name = "Enabled",
+								name = L["Enabled"],
 								get = function(info) return db.spellfilter[tab][T.myclass][i]["enabled"] end,
 								set = function(info, value) db.spellfilter[tab][T.myclass][i]["enabled"] = value; StaticPopup_Show("RELOAD_UI") end,										
 							},
 							Position = {
 								type = "select",
 								order = 2,
-								name = "Position",
-								desc = "Position where the buff appears on the frame",
+								name = L["Position"],
+								desc = L["POS_DESC"],
 								get = function(info) return db.spellfilter[tab][T.myclass][i]["point"] end,
 								set = function(info, value) db.spellfilter[tab][T.myclass][i]["point"] = value; StaticPopup_Show("RELOAD_UI") end,		
 								values = {
@@ -188,15 +188,15 @@ function OUI.GenerateOptionsInternal()
 							anyUnit = {
 								type = "toggle",
 								order = 3,
-								name = "Any Unit",
-								desc = "Display the buff if cast by anyone?",
+								name = L["Any Unit"],
+								desc = L["ANYUNIT_DESC"],
 								get = function(info) return db.spellfilter[tab][T.myclass][i]["anyUnit"] end,
 								set = function(info, value) db.spellfilter[tab][T.myclass][i]["anyUnit"] = value; StaticPopup_Show("RELOAD_UI") end,									
 							},
 							Color = {
 								type = "color",
 								order = 4,
-								name = "Color",
+								name = L["Color"],
 								hasAlpha = false,
 								get = function(info)
 									local t = db.spellfilter[tab][T.myclass][i]["color"]
@@ -314,8 +314,8 @@ function OUI.GenerateOptionsInternal()
 					},
 					overridelowtohigh = {
 						order = 5,
-						name = "Override LOW -> HIGH",
-						desc = "This is EXPERIMENTAL! Override lower version to higher version on a lower reso setup!",
+						name = L["Override LOW -> HIGH"],
+						desc = L["OVERRIDE_DESC"],
 						type = "toggle",
 					},
 					empty5 = {
@@ -327,15 +327,15 @@ function OUI.GenerateOptionsInternal()
 					Colors = {
 						type = "group",
 						order = 7,
-						name = "Color Options",
+						name = L["Color Options"],
 						guiInline = true,
 						disabled = function() return not db.unitframes.enable end,
 						args = {
 							unicolor = {
 								type = "toggle",
 								order = 1,
-								name = "Unicolor Theme",
-								desc = "When checked allows you to choose health and bg colors below, unchecked will use class colors",
+								name = L["Unicolor Theme"],
+								desc = L["UNICOLOR_DESC"],
 								get = function() return db.unitframes.unicolor end,
 								set = function(info, value) db.unitframes.unicolor = value; StaticPopup_Show("RELOAD_UI") end,
 							},
@@ -348,8 +348,8 @@ function OUI.GenerateOptionsInternal()
 							healthColor = {
 								type = "color",
 								order = 2,
-								name = "Healthbar Color",
-								desc = "Allows you to select a custom color for health bars",
+								name = L["Healthbar Color"],
+								desc = L["HBAR_DESC"],
 								disabled = function() return not db.unitframes.unicolor end,
 								get = function(info)
 									local r, g, b = unpack(db.unitframes[ info[#info] ])
@@ -364,8 +364,8 @@ function OUI.GenerateOptionsInternal()
 							healthBgColor = {
 								type = "color",
 								order = 3,
-								name = "Healthbar BG Color",
-								desc = "Allows you to select a custom color for health bars BG",
+								name = L["Healthbar BG Color"],
+								desc = L["HBARBG_DESC"],
 								disabled = function() return not db.unitframes.unicolor end,
 								get = function(info)
 									local r, g, b = unpack(db.unitframes[ info[#info] ])
@@ -1612,39 +1612,39 @@ function OUI.GenerateOptionsInternal()
 			media = {
 				order = 11,
 				type = "group",
-				name = "Media",
-				desc = "Customize display settings",
+				name = L["Media"],
+				desc = L["MEDIA_DESC"],
 				get = function(info) return db.media[ info[#info] ] end,
 				set = function(info, value) db.media[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
 				args = {
 					Fonts = {
 						type = "group",
 						order = 1,
-						name = "Fonts",
+						name = L["Fonts"],
 						guiInline = true,
 						args = {
 							font = {
 								type = "select",
 								dialogControl = 'LSM30_Font',
 								order = 1,
-								name = "Font",
-								desc = "The font that the core of the UI will use",
+								name = L["General Font"],
+								desc = L["GFONT_DESC"],
 								values = AceGUIWidgetLSMlists.font,	
 							},
 							uffont = {
 								type = "select",
 								dialogControl = 'LSM30_Font',
 								order = 2,
-								name = "UnitFrame Font",
-								desc = "The font that unitframes will use",
+								name = L["UnitFrame Font"],
+								desc = L["UFFONT_DESC"],
 								values = AceGUIWidgetLSMlists.font,	
 							},
 							dmgfont = {
 								type = "select",
 								dialogControl = 'LSM30_Font',
 								order = 3,
-								name = "Combat Text Font",
-								desc = "The font that combat text will use. WARNING: This requires a game restart after changing this option.",
+								name = L["Combat Font"],
+								desc = L["COMFONT_DESC"],
 								values = AceGUIWidgetLSMlists.font,						
 							},
 							empty8 = {
@@ -1657,15 +1657,15 @@ function OUI.GenerateOptionsInternal()
 								type = "select",
 								dialogControl = 'LSM30_Font',
 								order = 4,
-								name = "Chat Font",
-								desc = "The font that chatframes will use",
+								name = L["Chat Font"],
+								desc = L["CHTFONT_DESC"],
 								values = AceGUIWidgetLSMlists.font,
 							},
 							ct_fsize = {
 								order = 5,
 								type = "range",
-								name = "Chat Font Size",
-								desc = "Change the size of your chat font.",
+								name = L["Chat Font Size"],
+								desc = L["CHTSIZE_DESC"],
 								min = 1, max = 20, step = 1,
 								get = function() return db.chat.fsize end,
 								set = function(info, value) db.chat.fsize = value; StaticPopup_Show("RELOAD_UI") end,
@@ -1674,15 +1674,15 @@ function OUI.GenerateOptionsInternal()
 								type = "select",
 								dialogControl = 'LSM30_Font',
 								order = 6,
-								name = "Datatext Font",
-								desc = "The font that datatexts will use",
+								name = L["Datatext Font"],
+								desc = L["DTFONT_DESC"],
 								values = AceGUIWidgetLSMlists.font,						
 							},
 							dt_fsize = {
 								order = 7,
 								type = "range",
-								name = "Datatext Font Size",
-								desc = "Change the size of your datatext font.",
+								name = L["Datatext Font Size"],
+								desc = L["DTSIZE_DESC"],
 								min = 1, max = 20, step = 1,
 								get = function() return db.datatext.fsize end,
 								set = function(info, value) db.datatext.fsize = value; StaticPopup_Show("RELOAD_UI") end,
@@ -1692,28 +1692,28 @@ function OUI.GenerateOptionsInternal()
 					Textures = {
 						type = "group",
 						order = 2,
-						name = "Textures",
+						name = L["Textures"],
 						guiInline = true,
 						args = {
 							normTex = {
 								type = "select", dialogControl = 'LSM30_Statusbar',
 								order = 1,
-								name = "Default Texture",
-								desc = "Texture that gets used on just about everything",
+								name = L["Default Texture"],
+								desc = L["DTEX_DESC"],
 								values = AceGUIWidgetLSMlists.statusbar,								
 							},
 							glowTex = {
 								type = "select", dialogControl = 'LSM30_Border',
 								order = 2,
-								name = "Glow Border",
-								desc = "Shadow Effect",
+								name = L["Glow Border"],
+								desc = L["GTEX_DESC"],
 								values = AceGUIWidgetLSMlists.border,								
 							},
 							blank = {
 								type = "select", dialogControl = 'LSM30_Background',
 								order = 3,
-								name = "Backdrop Texture",
-								desc = "Used on almost all frames",
+								name = L["Backdrop Texture"],
+								desc = L["BTEX_DESC"],
 								values = AceGUIWidgetLSMlists.background,							
 							},
 						},
@@ -1721,21 +1721,21 @@ function OUI.GenerateOptionsInternal()
 					Sounds = {
 						type = "group",
 						order = 3,
-						name = "Sounds",
+						name = L["Sounds"],
 						guiInline = true,					
 						args = {
 							whisper = {
 								type = "select", dialogControl = 'LSM30_Sound',
 								order = 1,
-								name = "Whisper Sound",
-								desc = "Sound that is played when recieving a whisper",
+								name = L["Whisper Sound"],
+								desc = L["WHISOUND_DESC"],
 								values = AceGUIWidgetLSMlists.sound,								
 							},			
 							warning = {
 								type = "select", dialogControl = 'LSM30_Sound',
 								order = 2,
-								name = "Warning Sound",
-								desc = "Sound that is played when you don't have a buff active",
+								name = L["Warning Sound"],
+								desc = L["WARSOUND_DESC"],
 								values = AceGUIWidgetLSMlists.sound,								
 							},							
 						},
@@ -1743,14 +1743,14 @@ function OUI.GenerateOptionsInternal()
 					GenColors = {
 						type = "group",
 						order = 4,
-						name = "Colors",
+						name = L["Colors"],
 						guiInline = true,
 						args = {
 							bordercolor = {
 								type = "color",
 								order = 1,
-								name = "Border Color",
-								desc = "Main Frame's Border Color",
+								name = L["Border Color"],
+								desc = L["BCOLOR_DESC"],
 								hasAlpha = false,
 								get = function() return unpack(db.media.bordercolor) end,
 								set = function(_,r,g,b,a)
@@ -1761,8 +1761,8 @@ function OUI.GenerateOptionsInternal()
 							backdropcolor = {
 								type = "color",
 								order = 2,
-								name = "Backdrop Color",
-								desc = "Main Frame's Backdrop Color",
+								name = L["Backdrop Color"],
+								desc = L["BDROP_DESC"],
 								hasAlpha = false,
 								get = function() return unpack(db.media.backdropcolor) end,
 								set = function(_,r,g,b,a)
@@ -1773,8 +1773,8 @@ function OUI.GenerateOptionsInternal()
 							altbordercolor = {
 								type = "color",
 								order = 3,
-								name = "Alt Border Color",
-								desc = "Main Frame's Alternate Border Color",
+								name = L["Alt Border Color"],
+								desc = L["ABDROP_DESC"],
 								hasAlpha = false,
 								get = function() return unpack(db.media.altbordercolor) end,
 								set = function(_,r,g,b,a)
@@ -1797,8 +1797,8 @@ function OUI.GenerateOptionsInternal()
 					FilterPicker = {
 						order = 2,
 						type = "select",
-						name = "Choose Filter",
-						desc = "Choose the filter you want to modify.",
+						name = L["Choose Filter"],
+						desc = L["CFILTER_DESC"],
 						set = function(info, value) 
 							db.spellfilter[ info[#info] ] = value 
 							UpdateSpellFilter()
@@ -1829,8 +1829,8 @@ function OUI.GenerateOptionsInternal()
 					},						
 					NewName = {
 						type = 'input',
-						name = function() if RaidBuffs[db.spellfilter.FilterPicker] then return "New Spell ID" else return "New name" end end,
-						desc = "Add a new spell name / ID to the list.",
+						name = function() if RaidBuffs[db.spellfilter.FilterPicker] then return L["New Spell ID"] else return L["New name"] end end,
+						desc = L["Add a new spell name / ID to the list."],
 						get = function(info) return "" end,
 						set = function(info, value)						
 							if RaidBuffs[db.spellfilter.FilterPicker] then
@@ -1857,7 +1857,7 @@ function OUI.GenerateOptionsInternal()
 					},
 					DeleteName = {
 						type = 'input',
-						name = function() if RaidBuffs[db.spellfilter.FilterPicker] then return "Remove ID" else return "Remove Name" end end,
+						name = function() if RaidBuffs[db.spellfilter.FilterPicker] then return L["Remove ID"] else return L["Remove Name"] end end,
 						desc = "You may only delete spells that you have added. Default spells can be disabled by unchecking the option",
 						get = function(info) return "" end,
 						set = function(info, value)

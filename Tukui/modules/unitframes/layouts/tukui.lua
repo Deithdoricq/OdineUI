@@ -1289,7 +1289,7 @@ if C.arena.unitframes then
 	for i = 1, 5 do
 		arena[i] = oUF:Spawn("arena"..i, "TukuiArena"..i)
 		if i == 1 then
-			arena[i]:SetPoint("BOTTOMLEFT", TukuiChatRight, "TOPLEFT", 50, 175)
+			arena[i]:SetPoint("BOTTOMLEFT", TukuiChatRight, "TOPLEFT", 10, 150)
 		else
 			arena[i]:SetPoint("BOTTOM", arena[i-1], "TOP", 0, T.Scale(80))
 		end
@@ -1312,7 +1312,7 @@ if C["unitframes"].showboss then
 	for i = 1, MAX_BOSS_FRAMES do
 		boss[i] = oUF:Spawn("boss"..i, "TukuiBoss"..i)
 		if i == 1 then
-			boss[i]:SetPoint("BOTTOMLEFT", TukuiChatRight, "TOPLEFT", 50, 175)
+			boss[i]:SetPoint("BOTTOMLEFT", TukuiChatRight, "TOPLEFT", 10, 150)
 		else
 			boss[i]:SetPoint('BOTTOM', boss[i-1], 'TOP', 0, T.Scale(80))             
 		end

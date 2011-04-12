@@ -1022,7 +1022,7 @@ local function Shared(self, unit)
 		powerB:SetPoint("BOTTOMRIGHT", T.Scale(2), T.Scale(-2))
 		powerB:SetTemplate("Default", true)
 		powerB:CreateShadow("Default")
-		self.Power.border = powerB	
+		self.Power.border = powerB
 		
 		health.value = T.SetFontString(health, font, fonts, fontf)
 		
@@ -1082,18 +1082,17 @@ local function Shared(self, unit)
 		self:Tag(Name, '[Tukui:getnamecolor][Tukui:namelong]')
 		self.Name = Name
 		
-		if (unit and unit:find("boss%d")) then
+		if (unit and unit:find("boss%d")) then			
 			-- alt power bar
 			local AltPowerBar = CreateFrame("StatusBar", nil, self.Power)
-			AltPowerBar:SetFrameLevel(self.Power:GetFrameLevel() + 1)
+			AltPowerBar:SetFrameLevel(self.Health:GetFrameLevel() + 4)
+			AltPowerBar:Height(10)
+			AltPowerBar:SetWidth(T.Boss)
 			AltPowerBar:SetStatusBarTexture(normTex)
 			AltPowerBar:GetStatusBarTexture():SetHorizTile(false)
 			AltPowerBar:SetStatusBarColor(1, 0, 0)
-
-			AltPowerBar:SetPoint("TOPLEFT", T.mult, -T.mult)
-			AltPowerBar:SetPoint("TOPRIGHT", -T.mult, T.mult)
-			AltPowerBar:SetTemplate("Default", true)
-
+			AltPowerBar:SetPoint("LEFT", self.Power, "TOPLEFT", 0, -6)
+			AltPowerBar:SetPoint("RIGHT", self.Power, "TOPRIGHT", 0, -6)
 			self.AltPowerBar = AltPowerBar
 		end
 		

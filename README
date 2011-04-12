@@ -4,9 +4,11 @@ V6.0b - [04/11/2011]
 * added some procs/buffs for deathknights in filger config section
 * fixed tags for dps layouts
 * added option to hideshapeshift unless mousedover
+* fixed power bar for onyxia/nef fight
 
 WIP: [CURRENTLY IN TESTING]
 * add support for reminder buffs
+* ingame support for filger? or something classtimer based like i did in wraith.. hMMMM!?! (need clean way to track procs basically)
 * less reloadui stuff.. tends to get annoying i know trust me!
 
 V6.0 - [04/10/2011]

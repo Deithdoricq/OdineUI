@@ -109,6 +109,7 @@
 	<Include file="modules\unitframes\templates\tankassist.xml"/>
 	<Script file="modules\unitframes\tags\tags.lua"/>
 	<Script file="core\movers.lua"/>
+	<Script file="modules\misc\classtimers.lua"/>
 	<Script file="modules\unitframes\layouts\tukui.lua"/>
 	<Script file="modules\misc\altpowerbar.lua"/>
 	<Script file="modules\misc\threatbar.lua"/>

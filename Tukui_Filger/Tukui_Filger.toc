@@ -6,7 +6,7 @@
 ## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki
 ## Version: 2.26
 ## RequiredDeps: Tukui
-## OptionalDeps: Tukui_Dps_Layout, Tukui_Heal_Layout
+## OptionalDeps: Tukui_DPS, Tukui_Heal
 
 Tukui_Filger_Settings.lua
 Tukui_Filger.lua

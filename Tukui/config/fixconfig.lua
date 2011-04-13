@@ -3,6 +3,18 @@ local T, C, L, DB = unpack(select(2, ...)) -- Import: T - functions, constants, 
 local LSM = LibStub("LibSharedMedia-3.0")
 if LSM == nil then return end
 
+T.UnpackColors = function(color)
+	if not color.r then color.r = 0 end
+	if not color.g then color.g = 0 end
+	if not color.b then color.b = 0 end
+	
+	if color.a then
+		return color.r, color.g, color.b, color.a
+	else
+		return color.r, color.g, color.b
+	end
+end
+
 ----------------------------------------------------------------
 -- DO NOT EDIT ANYTHING BELOW
 ----------------------------------------------------------------
@@ -21,3 +33,10 @@ C["media"].blank = LSM:Fetch("background", C["media"].blank)
 
 C["media"].whisper = LSM:Fetch("sound", C["media"].whisper)
 C["media"].warning = LSM:Fetch("sound", C["media"].warning)
+
+C["classtimer"].buffcolor = {T.UnpackColors(C["classtimer"].buffcolor)}
+C["classtimer"].debuffcolor = {T.UnpackColors(C["classtimer"].debuffcolor)}
+C["classtimer"].proccolor = {T.UnpackColors(C["classtimer"].proccolor)}
+
+C["classtimer"].gen_font = LSM:Fetch("font", C["classtimer"].gen_font)
+C["classtimer"].stack_font = LSM:Fetch("font", C["classtimer"].stack_font)

@@ -77,6 +77,25 @@ L["Backdrop Color"] = true
 L["Alt Border Color"] = true
 	L["ABDROP_DESC"] = "Main Frame's Alternate Border Color"
 	
+-- Class timers
+L["Class Timers"] = true
+	L["CLASSTIMER_DESC"] = "Adjust settings for classtimers"
+	L["Enable Class Timers"] = true
+	L["Bar Height"] = true
+		L["Controls the height of the bar"] = true
+	L["Bar Spacing"] = true
+		L["Controls the spacing in between bars"] = true
+	L["Icon Position"] = true
+		L["0 = Left\n1 = Right\n2 = Outside Left\n3 = Outside Right"] = true
+	L["Layout"]	 = true
+		L["LAYOUT_DESC"] = "1 - Both player and target auras in one frame right above player frame\n2 - Player and target auras separated into two frames above player frame\n3 - Player, target and trinket auras separated into three frames above player frame\n4 - Player and trinket auras are shown above player frame and target auras are shown above target frame\n 5 - Everything above player frame, no target debuffs."
+	L["Spark"] = true
+		L["Display spark"] = true
+	L["Cast Seperator"] = true
+	L["Buff"] = true
+	L["Debuff"] = true
+	L["Proc"] = true
+	
 	
 	
 -- Spellfilters
@@ -87,11 +106,20 @@ L["Position"] = true
 L["Any Unit"] = true
 	L["ANYUNIT_DESC"] = "Display the buff if cast by anyone?"
 L["Color"] = true
-
+L["Procs"] = true
 L["Choose Filter"] = true
 	L["CFILTER_DESC"] = "Choose the filter you want to modify."
+L["Choose the filter you want to modify."] = true
 L["New Spell ID"] = true
 L["New name"] = true
 L["Remove ID"] = true
 L["Remove Name"] = true
 L["Add a new spell name / ID to the list."] = true
+L["Display the buff if cast by anyone?"] = true
+L["Only display on this type of unit"] = true
+L["Show Ticks"] = true
+L["Unit Type"] = true
+L["All"] = true
+L["Friendly"] = true
+L["Enemy"] = true
+L["Fill only if you want to see line on bar that indicates if its safe to start casting spell and not clip the last tick, also note that this can be different from aura id."] = true

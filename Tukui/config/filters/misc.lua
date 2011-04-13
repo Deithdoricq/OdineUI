@@ -1,5 +1,4 @@
 local T, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
-local asize = 35 - 3.35
 
 T.ErrorList = {
 	[INVENTORY_FULL] = true,

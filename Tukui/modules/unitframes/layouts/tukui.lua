@@ -9,6 +9,7 @@ local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, vari
 
 if not C["unitframes"].enable == true then return end
 
+
 if T.lowversion then
 	T.Player, T.Target, T.ToT, T.Pet, T.Focus, T.Boss = 200, 200, 130, 130, 130, 200
 else
@@ -1391,6 +1392,8 @@ SLASH_TestUI1 = "/testui"
 
 -- this is just a fake party to hide Blizzard frame if no Tukui raid layout are loaded.
 local party = oUF:SpawnHeader("oUF_noParty", nil, "party", "showParty", true)
+
+T.LoadClassTimers(TukuiPlayer, TukuiTarget)
 
 ------------------------------------------------------------------------
 -- Right-Click on unit frames menu. 

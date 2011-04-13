@@ -27,6 +27,7 @@ function OUI:LoadDefaults()
 			invite = DB["invite"],
 			buffreminder = DB["buffreminder"],
 			addonskins = DB["addonskins"],
+			classtimer = DB["classtimer"],
 			media = DB["media"],
 			error = DB["error"],
 			spellfilter = {
@@ -41,6 +42,8 @@ function OUI:LoadDefaults()
 				HealerBuffIDs = T["HealerBuffIDs"],
 				DPSBuffIDs = T["DPSBuffIDs"],
 				PetBuffs = T["PetBuffs"],
+				TRINKET_FILTER = TRINKET_FILTER,
+				CLASS_FILTERS = CLASS_FILTERS
 			},
 		},
 	}
@@ -94,6 +97,7 @@ function OUI:SetupOptions()
 	self.optionsFrames.Misc = ACD3:AddToBlizOptions("OUI", "Misc", "OdineUI", "misc")
 	self.optionsFrames.Tooltip = ACD3:AddToBlizOptions("OUI", "Tooltip", "OdineUI", "tooltip")
 	self.optionsFrames.Media = ACD3:AddToBlizOptions("OUI", "Media", "OdineUI", "media")
+	self.optionsFrames.Classtimer = ACD3:AddToBlizOptions("OUI", "Class Timers", "OdineUI", "classtimer")
 	self.optionsFrames.SpellFilter = ACD3:AddToBlizOptions("OUI", "Filters", "OdineUI", "spellfilter")
 	self.optionsFrames.Profiles = ACD3:AddToBlizOptions("OUIProfiles", L["Profiles"], "OdineUI")
 	self.SetupOptions = nil
@@ -126,13 +130,207 @@ function OUI.GenerateOptionsInternal()
 		["PetBuffs"] = true
 	}
 	
+	local ClassTimerShared = {
+		["TRINKET_FILTER"] = true,
+	}
+	
+	local ClassTimer = {
+		["CLASS_FILTERS"] = true
+	}
+	
 	-- Credit to Elv all filter related code by him.. simply mod to fit my edit!
 	local function CreateFilterTable(tab)
 		local spelltable = db.spellfilter[tab]
 		if not spelltable then error("db.spellfilter could not find value 'tab'") return {} end
 		local newtable = {}
 		
-		if RaidBuffs[tab] then
+		if ClassTimer[tab] then
+			newtable["SelectSpellFilter"] = {
+				name = L["Choose Filter"],
+				desc = L["Choose the filter you want to modify."],
+				type = "select",
+				order = 1,
+				values = {
+					["target"] = TARGET,
+					["player"] = PLAYER,
+					["procs"] = L["Procs"],
+				},
+				set = function(info, value) 
+					db.spellfilter[ info[#info] ] = value;
+					local config = LibStub("AceConfigRegistry-3.0"):GetOptionsTable("OUI", "dialog", "MyLib-1.2")
+					local curfilter = db.spellfilter.FilterPicker
+		
+					config.args.spellfilter.args.SpellListTable.args = CreateFilterTable(curfilter)
+				end,
+			}
+			local curfilter = db.spellfilter["SelectSpellFilter"]
+			if curfilter ~= nil then
+				newtable["SelectSpell"] = {
+					name = L["Select Spell"],
+					type = "select",
+					order = 2,
+					values = {},
+					set = function(info, value) 
+						db.spellfilter[ info[#info] ] = value;
+						local config = LibStub("AceConfigRegistry-3.0"):GetOptionsTable("OUI", "dialog", "MyLib-1.2")
+						local curfilter = db.spellfilter.FilterPicker
+			
+						config.args.spellfilter.args.SpellListTable.args = CreateFilterTable(curfilter)
+					end,
+				}
+				
+				if not spelltable[T.myclass] then spelltable[T.myclass] = {} end
+				
+				for i, spell in pairs(spelltable[T.myclass][curfilter]) do
+					local id = spell["id"]
+					newtable["SelectSpell"]["values"][id] = GetSpellInfo(id)
+
+					if id == db.spellfilter["SelectSpell"] then
+						newtable["SpellGroup"] = {
+							order = 3,
+							type = "group",
+							name = GetSpellInfo(id).." ("..id..")",
+							guiInline = true,				
+							args = {
+								Enabled = {
+									type = "toggle",
+									order = 1,
+									name = L["Enabled"],
+									get = function(info) return db.spellfilter[tab][T.myclass][curfilter][i]["enabled"] end,
+									set = function(info, value) db.spellfilter[tab][T.myclass][curfilter][i]["enabled"] = value; StaticPopup_Show("RELOAD_UI") end,										
+								},
+								CastByAnyone = {
+									type = "toggle",
+									order = 2,
+									name = L["Any Unit"],
+									desc = L["Display the buff if cast by anyone?"],
+									get = function(info) return db.spellfilter[tab][T.myclass][curfilter][i]["castByAnyone"] end,
+									set = function(info, value) db.spellfilter[tab][T.myclass][curfilter][i]["castByAnyone"] = value; StaticPopup_Show("RELOAD_UI") end,									
+								},
+								Color = {
+									type = "color",
+									order = 3,
+									name = L["Color"],
+									hasAlpha = false,
+									get = function(info)
+										local t = db.spellfilter[tab][T.myclass][curfilter][i]["color"]
+										if not t then
+											t = {}
+											t.r = 0
+											t.g = 0
+											t.b = 0
+										end
+										
+										return t.r, t.g, t.b
+									end,
+									set = function(info, r, g, b)
+										db.spellfilter[tab][T.myclass][curfilter][i]["color"] = {}
+										local t = db.spellfilter[tab][T.myclass][curfilter][i]["color"]
+										t.r, t.g, t.b = r, g, b
+										StaticPopup_Show("RELOAD_UI")
+									end,							
+								},
+								UnitType = {
+									type = "select",
+									order = 4,
+									name = L["Unit Type"],
+									desc = L["Only display on this type of unit"],
+									values = {
+										[0] = L["All"],
+										[1] = L["Friendly"],
+										[2] = L["Enemy"],
+									},
+									get = function(info) if db.spellfilter[tab][T.myclass][curfilter][i]["unitType"] == nil then return 0 else return db.spellfilter[tab][T.myclass][curfilter][i]["unitType"] end end,
+									set = function(info, value) db.spellfilter[tab][T.myclass][curfilter][i]["unitType"] = value; StaticPopup_Show("RELOAD_UI") end,									
+								},
+							},
+						}					
+					end
+				end
+			end
+		elseif ClassTimerShared[tab] then
+			newtable["SelectSpell"] = {
+				name = L["Select Spell"],
+				type = "select",
+				order = 1,
+				values = {},
+				set = function(info, value) 
+					db.spellfilter[ info[#info] ] = value;
+					local config = LibStub("AceConfigRegistry-3.0"):GetOptionsTable("OUI", "dialog", "MyLib-1.2")
+					local curfilter = db.spellfilter.FilterPicker
+		
+					config.args.spellfilter.args.SpellListTable.args = CreateFilterTable(curfilter)
+				end,
+			}
+			
+			for i, spell in pairs(spelltable) do
+				local id = spell["id"]
+
+				newtable["SelectSpell"]["values"][id] = GetSpellInfo(id)
+				
+				if id == db.spellfilter["SelectSpell"] then
+					newtable["SpellGroup"] = {
+						order = 2,
+						type = "group",
+						name = GetSpellInfo(id).." ("..id..")",
+						guiInline = true,				
+						args = {
+							Enabled = {
+								type = "toggle",
+								order = 1,
+								name = L["Enabled"],
+								get = function(info) return db.spellfilter[tab][i]["enabled"] end,
+								set = function(info, value) db.spellfilter[tab][i]["enabled"] = value; StaticPopup_Show("RELOAD_UI") end,										
+							},
+							CastByAnyone = {
+								type = "toggle",
+								order = 2,
+								name = L["Any Unit"],
+								desc = L["Display the buff if cast by anyone?"],
+								get = function(info) return db.spellfilter[tab][i]["castByAnyone"] end,
+								set = function(info, value) db.spellfilter[tab][i]["castByAnyone"] = value; StaticPopup_Show("RELOAD_UI") end,									
+							},
+							Color = {
+								type = "color",
+								order = 3,
+								name = L["Color"],
+								hasAlpha = false,
+								get = function(info)
+									local t = db.spellfilter[tab][i]["color"]
+									if not t then
+										t = {}
+										t.r = 0
+										t.g = 0
+										t.b = 0
+									end
+									
+									return t.r, t.g, t.b
+								end,
+								set = function(info, r, g, b)
+									db.spellfilter[tab][i]["color"] = {}
+									local t = db.spellfilter[tab][i]["color"]
+									t.r, t.g, t.b = r, g, b
+									StaticPopup_Show("RELOAD_UI")
+								end,							
+							},
+							UnitType = {
+								type = "select",
+								order = 4,
+								name = L["Unit Type"],
+								desc = L["Only display on this type of unit"],
+								values = {
+									[0] = L["All"],
+									[1] = L["Friendly"],
+									[2] = L["Enemy"],
+								},
+								get = function(info) if db.spellfilter[tab][i]["unitType"] == nil then return 0 else return db.spellfilter[tab][i]["unitType"] end end,
+								set = function(info, value) db.spellfilter[tab][i]["unitType"] = value; StaticPopup_Show("RELOAD_UI") end,									
+							},
+						},
+					}
+				end
+			end
+		elseif RaidBuffs[tab] then
 			if not spelltable[T.myclass] then spelltable[T.myclass] = {} end
 			newtable["SelectSpell"] = {
 				name = L["Select Spell"],
@@ -250,6 +448,10 @@ function OUI.GenerateOptionsInternal()
 			return "These buffs are displayed on the DPS raid and party layouts"
 		elseif db.spellfilter.FilterPicker == "PetBuffs" then
 			return "These buffs are displayed on the pet frame"
+		elseif db.spellfilter.FilterPicker == "TRINKET_FILTER" then
+			return "These buffs are displayed no matter your class you must have a layout enabled that uses trinkets however for them to show"
+		elseif db.spellfilter.FilterPicker == "CLASS_FILTERS" then
+			return "These buffs/debuffs are displayed as a classtimer, where they get positioned is based on your layout option choice"
 		else
 			return ""
 		end
@@ -1786,8 +1988,150 @@ function OUI.GenerateOptionsInternal()
 					},	
 				},
 			},
-			spellfilter = {
+			classtimer = {
 				order = 12,
+				type = "group",
+				name = L["Class Timers"],
+				desc = L["CLASSTIMER_DESC"],
+				get = function(info) return db.classtimer[ info[#info] ] end,
+				set = function(info, value) db.classtimer[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
+				args = {
+					intro = {
+						order = 1,
+						type = "description",
+						name = L["CLASSTIMER_DESC"],
+					},
+					enable = {
+						order = 2,
+						type = "toggle",
+						name = ENABLE,
+						desc = L["Enable Class Timers"],
+					},
+					CTGroup = {
+						order = 3,
+						type = "group",
+						name = L["General Settings"],
+						guiInline = true,
+						disabled = function() return not db.classtimer.enable or (not TukuiPlayer and not TukuiTarget) or not db.unitframes.enable end,	
+						args = {
+							bar_height = {
+								type = "range",
+								order = 1,
+								name = L["Bar Height"],
+								desc = L["Controls the height of the bar"],
+								type = "range",
+								min = 9, max = 25, step = 1,								
+							},
+							bar_spacing = {
+								type = "range",
+								order = 2,
+								name = L["Bar Spacing"],
+								desc = L["Controls the spacing in between bars"],
+								type = "range",
+								min = 5, max = 10, step = 1,								
+							},
+							icon_position = {
+								type = "range",
+								order = 3,
+								name = L["Icon Position"],
+								desc = L["0 = Left\n1 = Right\n2 = Outside Left\n3 = Outside Right"],
+								type = "range",
+								min = 0, max = 3, step = 1,								
+							},
+							layout = {
+								type = "range",
+								order = 4,
+								name = L["Layout"],
+								desc = L["LAYOUT_DESC"],
+								type = "range",
+								min = 1, max = 5, step = 1,								
+							},
+							showspark = {
+								type = "toggle",
+								order = 5,
+								name = L["Spark"],
+								desc = L["Display spark"],
+							},
+							cast_suparator = {
+								type = "toggle",
+								order = 6,
+								name = L["Cast Seperator"],							
+							},
+							ColorGroup = {
+								order = 7,
+								type = "group",
+								name = L["Colors"],
+								guiInline = true,
+								disabled = function() return not db.classtimer.enable or (not TukuiTarget and not TukuiPlayer) or not db.unitframes.enable end,
+								get = function(info)
+									local t = db.classtimer[ info[#info] ]
+									return t.r, t.g, t.b, t.a
+								end,
+								set = function(info, r, g, b)
+									db.classtimer[ info[#info] ] = {}
+									local t = db.classtimer[ info[#info] ]
+									t.r, t.g, t.b = r, g, b
+									StaticPopup_Show("CFG_RELOAD")
+								end,									
+								args = {
+									buffcolor = {
+										type = "color",
+										order = 1,
+										name = L["Buff"],
+										hasAlpha = false,	
+									},
+									debuffcolor = {
+										type = "color",
+										order = 2,
+										name = L["Debuff"],
+										hasAlpha = false,	
+									},	
+									proccolor = {
+										type = "color",
+										order = 3,
+										name = L["Proc"],
+										hasAlpha = false,	
+									},											
+								},
+							},				
+						},
+					},
+					gen_font = {
+						type = "select",
+						dialogControl = 'LSM30_Font',
+						order = 8,
+						name = "General Font",
+						desc = "Font used as text inside your classtimer bars.",
+						values = AceGUIWidgetLSMlists.font,	
+					},
+					gen_size = {
+						type = "range",
+						order = 9,
+						name = "General Font Size",
+						desc = "Size used for the General Font",
+						type = "range",
+						min = 5, max = 18, step = 1,								
+					},
+					stack_font = {
+						type = "select",
+						dialogControl = 'LSM30_Font',
+						order = 10,
+						name = "Stack Font",
+						desc = "Font used as the display for stack amounts inside icons.",
+						values = AceGUIWidgetLSMlists.font,	
+					},
+					stack_size = {
+						type = "range",
+						order = 11,
+						name = "Stack Font Size",
+						desc = "Size used for the Stack Font",
+						type = "range",
+						min = 5, max = 18, step = 1,								
+					},
+				},
+			},
+			spellfilter = {
+				order = 13,
 				type = "group",
 				name = "Filters",
 				desc = "Allows you to customize various buffs/debuffs and other filters.",
@@ -1814,6 +2158,8 @@ function OUI.GenerateOptionsInternal()
 							["HealerBuffIDs"] = "Raid Buffs (Healer)",
 							["DPSBuffIDs"] = "Raid Buffs (DPS)",
 							["PetBuffs"] = "Pet Buffs",
+							["TRINKET_FILTER"] = "Trinket Procs",
+							["CLASS_FILTERS"] = "Class Timers"
 						},						
 					},			
 					spacer = {

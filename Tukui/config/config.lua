@@ -263,3 +263,24 @@ DB["media"] = {
 	["whisper"] = "Tukui Whisper",
 	["warning"] = "Tukui Warning",
 }
+
+DB["classtimer"] = {
+	["enable"] = true,
+	["bar_height"] = 16,
+	["bar_spacing"] = 4,
+	["icon_position"] = 2, -- 0 = left, 1 = right, 2 = Outside left, 3 = Outside Right
+	["layout"] = 4, --1 - both player and target auras in one frame right above player frame, 2 - player and target auras separated into two frames above player frame, 3 - player, target and trinket auras separated into three frames above player frame, 4 - player and trinket auras are shown above player frame and target auras are shown above target frame, 5 - Everything above player frame, no target debuffs.
+	["showspark"] = true,
+	["cast_suparator"] = true,
+	
+	["classcolor"] = false,
+	--["buffcolor"] = { r=.05, g=.05, b=.05 },
+	["buffcolor"] = { r = .132, g = .132, b = .132 },
+	["debuffcolor"] = { r = 0.78, g = 0.25, b = 0.25 },
+	["proccolor"] = { r = 0.84, g = 0.75, b = 0.65 },
+	
+	["gen_font"] = DB["media"].uffont,
+	["gen_size"] = 13,
+	["stack_font"] = DB["media"].font,
+	["stack_size"] = 13,
+}

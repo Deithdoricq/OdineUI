@@ -3,6 +3,7 @@ V6.0c - [04/12/2011]
 * fixed power bar for onyxia/nef fight
 * tweaked placement of boss frames again....
 * filger is no longer included as i elected to go back to classtimers style of tracking like i did in my wraith edit! (filger still functions you will need to disable classtimers in config though)
+* added dual talent support to profiles
 
 V6.0b - [04/11/2011]
 * /bags command no longer neccessary, all commadns built into bags now (purchase, sort)

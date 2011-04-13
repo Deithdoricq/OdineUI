@@ -83,7 +83,7 @@ function OUI:SetupOptions()
 	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("OUI", self.GenerateOptions)
 
 	self.profileOptions = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db);
-	LibStub("AceConfig-3.0"):RegisterOptionsTable("OUIProfiles", self.profileOptions)	
+	LibStub("AceConfig-3.0"):RegisterOptionsTable("OUIProfiles", self.profileOptions)
 
 	local ACD3 = LibStub("AceConfigDialog-3.0")
 	self.optionsFrames = {}
@@ -101,6 +101,11 @@ function OUI:SetupOptions()
 	self.optionsFrames.SpellFilter = ACD3:AddToBlizOptions("OUI", "Filters", "OdineUI", "spellfilter")
 	self.optionsFrames.Profiles = ACD3:AddToBlizOptions("OUIProfiles", L["Profiles"], "OdineUI")
 	self.SetupOptions = nil
+	
+	-- Add dual-spec support
+	local LibDualSpec = LibStub('LibDualSpec-1.0')
+	LibDualSpec:EnhanceDatabase(self.db, "OUI")
+	LibDualSpec:EnhanceOptions(self.profileOptions, self.db)
 end
 
 function OUI.GenerateOptions()
@@ -2188,7 +2193,7 @@ function OUI.GenerateOptionsInternal()
 									UpdateSpellFilter()								
 									StaticPopup_Show("RELOAD_UI")
 								end
-							else
+							else							
 								local name_list = db.spellfilter[db.spellfilter.FilterPicker]
 								name_list[value] = true
 								UpdateSpellFilter()

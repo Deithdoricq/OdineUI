@@ -94,3 +94,14 @@ local Update = function(self,t)
 	ela = .2
 end
 xcoords:HookScript("OnUpdate", Update)
+
+-- Panel Toggle Options
+xcoords:SetScript("OnMouseDown", function(self, btn)
+	if IsAddOnLoaded("Skada") then
+		if btn == 'LeftButton'  then
+			Skada:ToggleWindow()
+		else
+			Skada:Reset()
+		end
+	end
+end)

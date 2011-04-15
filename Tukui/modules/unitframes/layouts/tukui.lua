@@ -1393,7 +1393,9 @@ SLASH_TestUI1 = "/testui"
 -- this is just a fake party to hide Blizzard frame if no Tukui raid layout are loaded.
 local party = oUF:SpawnHeader("oUF_noParty", nil, "party", "showParty", true)
 
-T.LoadClassTimers(TukuiPlayer, TukuiTarget)
+if C["classtimer"].enable == true then
+	T.LoadClassTimers(TukuiPlayer, TukuiTarget)
+end
 
 ------------------------------------------------------------------------
 -- Right-Click on unit frames menu. 

@@ -103,9 +103,9 @@ function OUI:SetupOptions()
 	self.SetupOptions = nil
 	
 	-- Add dual-spec support
-	local LibDualSpec = LibStub('LibDualSpec-1.0')
-	LibDualSpec:EnhanceDatabase(self.db, "OUI")
-	LibDualSpec:EnhanceOptions(self.profileOptions, self.db)
+	--local LibDualSpec = LibStub('LibDualSpec-1.0')
+	--LibDualSpec:EnhanceDatabase(self.db, "OUI")
+	--LibDualSpec:EnhanceOptions(self.profileOptions, self.db)
 end
 
 function OUI.GenerateOptions()

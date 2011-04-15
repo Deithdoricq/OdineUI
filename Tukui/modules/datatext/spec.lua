@@ -10,7 +10,7 @@ Stat:EnableMouse(true)
 Stat:SetFrameStrata("BACKGROUND")
 Stat:SetFrameLevel(3)
 
-local Text  = TukuiInfoLeft:CreateFontString(nil, "OVERLAY")
+local Text  = TukuiDataBottom:CreateFontString(nil, "OVERLAY")
 Text:SetFont(C["media"].dfont, C["datatext"].fsize, "OUTLINE")
 T.PP(C["datatext"].spec, Text)
 

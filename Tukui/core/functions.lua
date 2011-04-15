@@ -90,6 +90,8 @@ T.DataTextTooltipAnchor = function(self)
 		anchor = "ANCHOR_TOPLEFT"
 	elseif panel == TukuiInfoRight then
 		anchor = "ANCHOR_TOPRIGHT"
+	elseif panel == TukuiDataBottom then
+		anchor = "ANCHOR_TOP"
 	end
 	
 	return anchor, panel, xoff, yoff

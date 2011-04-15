@@ -99,13 +99,8 @@ function OUI:SetupOptions()
 	self.optionsFrames.Media = ACD3:AddToBlizOptions("OUI", "Media", "OdineUI", "media")
 	self.optionsFrames.Classtimer = ACD3:AddToBlizOptions("OUI", "Class Timers", "OdineUI", "classtimer")
 	self.optionsFrames.SpellFilter = ACD3:AddToBlizOptions("OUI", "Filters", "OdineUI", "spellfilter")
-	self.optionsFrames.Profiles = ACD3:AddToBlizOptions("OUIProfiles", L["Profiles"], "OdineUI")
+	self.optionsFrames.Profiles = ACD3:AddToBlizOptions("OUIProfiles", "Profiles", "OdineUI")
 	self.SetupOptions = nil
-	
-	-- Add dual-spec support
-	--local LibDualSpec = LibStub('LibDualSpec-1.0')
-	--LibDualSpec:EnhanceDatabase(self.db, "OUI")
-	--LibDualSpec:EnhanceOptions(self.profileOptions, self.db)
 end
 
 function OUI.GenerateOptions()

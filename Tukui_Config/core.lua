@@ -51,10 +51,10 @@ function OUI:LoadDefaults()
 end
 
 function OUI:OnInitialize()
-	OUI:RegisterChatCommand("oui", "ShowConfig")
-	OUI:RegisterChatCommand("odineui", "ShowConfig")
+	--OUI:RegisterChatCommand("oui", "ShowConfig")
+	--OUI:RegisterChatCommand("odineui", "ShowConfig")
 	
-	self.OnInitialize = nil
+	--self.OnInitialize = nil
 end
 
 function OUI:ShowConfig(arg)
@@ -101,6 +101,9 @@ function OUI:SetupOptions()
 	self.optionsFrames.SpellFilter = ACD3:AddToBlizOptions("OUI", "Filters", "OdineUI", "spellfilter")
 	self.optionsFrames.Profiles = ACD3:AddToBlizOptions("OUIProfiles", "Profiles", "OdineUI")
 	self.SetupOptions = nil
+	
+	OUI:RegisterChatCommand("oui", "ShowConfig")
+	OUI:RegisterChatCommand("odineui", "ShowConfig")
 end
 
 function OUI.GenerateOptions()

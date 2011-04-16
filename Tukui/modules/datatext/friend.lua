@@ -165,7 +165,7 @@ if C["datatext"].friends and C["datatext"].friends > 0 then
 	end)
 
 	Stat:SetScript("OnEnter", function(self)
-		if not InCombatLockdown() then
+		--if not InCombatLockdown() then
 			ShowFriends()
 			menuCountWhispers = 0
 			menuCountInvites = 0
@@ -190,7 +190,7 @@ if C["datatext"].friends and C["datatext"].friends > 0 then
 				GameTooltip:AddDoubleLine(L.datatext_friendlist, format("%s/%s",totalonline,totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
 
 				broadcast = select(3, BNGetInfo())
-				if broadcast == nil then broadcast = "" end -- hack for when battlenet is unavailable
+				--if broadcast == nil then broadcast = "" end -- hack for when battlenet is unavailable
 				if broadcast ~= "" then GameTooltip:AddLine(format("  %s |cffaaaaaa- |cffffffff%s","Broadcast:",broadcast),ttsubh.r,ttsubh.g,ttsubh.b,1) end
 
 				if online > 0 then
@@ -377,7 +377,7 @@ if C["datatext"].friends and C["datatext"].friends > 0 then
 			else
 				GameTooltip:Hide()
 			end
-		end
+		--end
 	end)
 
 	Stat:SetScript("OnLeave", function() GameTooltip:Hide() end)

@@ -274,12 +274,10 @@ DB["classtimer"] = {
 	["cast_suparator"] = true,
 	
 	["classcolor"] = false,
-	["buffcolor"] = { r=.05, g=.05, b=.05 },
+	["buffcolor"] = { r = .05, g = .05, b = .05 },
 	["debuffcolor"] = { r = 0.78, g = 0.25, b = 0.25 },
 	["proccolor"] = { r = 0.84, g = 0.75, b = 0.65 },
 	
-	["gen_font"] = DB["media"].uffont,
+	["gen_font"] = "Tukui UF",
 	["gen_size"] = 13,
-	["stack_font"] = DB["media"].font,
-	["stack_size"] = 13,
 }

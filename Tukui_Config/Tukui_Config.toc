@@ -7,6 +7,10 @@
 ## RequiredDeps: Tukui
 
 libs\load_ace.xml
+
 local\english.lua
+local\china.lua
+local\german.lua
+local\spanish.lua
 
 core.lua

@@ -27,8 +27,8 @@ function OUI:LoadDefaults()
 			invite = DB["invite"],
 			buffreminder = DB["buffreminder"],
 			addonskins = DB["addonskins"],
-			classtimer = DB["classtimer"],
 			media = DB["media"],
+			classtimer = DB["classtimer"],
 			error = DB["error"],
 			spellfilter = {
 				FilterPicker = "ErrorList",
@@ -51,10 +51,10 @@ function OUI:LoadDefaults()
 end
 
 function OUI:OnInitialize()
-	--OUI:RegisterChatCommand("oui", "ShowConfig")
-	--OUI:RegisterChatCommand("odineui", "ShowConfig")
+	OUI:RegisterChatCommand("oui", "ShowConfig")
+	OUI:RegisterChatCommand("odineui", "ShowConfig")
 	
-	--self.OnInitialize = nil
+	self.OnInitialize = nil
 end
 
 function OUI:ShowConfig(arg)
@@ -99,11 +99,8 @@ function OUI:SetupOptions()
 	self.optionsFrames.Media = ACD3:AddToBlizOptions("OUI", "Media", "OdineUI", "media")
 	self.optionsFrames.Classtimer = ACD3:AddToBlizOptions("OUI", "Class Timers", "OdineUI", "classtimer")
 	self.optionsFrames.SpellFilter = ACD3:AddToBlizOptions("OUI", "Filters", "OdineUI", "spellfilter")
-	self.optionsFrames.Profiles = ACD3:AddToBlizOptions("OUIProfiles", "Profiles", "OdineUI")
+	self.optionsFrames.Profiles = ACD3:AddToBlizOptions("OUIProfiles", L["Profiles"], "OdineUI")
 	self.SetupOptions = nil
-	
-	OUI:RegisterChatCommand("oui", "ShowConfig")
-	OUI:RegisterChatCommand("odineui", "ShowConfig")
 end
 
 function OUI.GenerateOptions()
@@ -2112,22 +2109,6 @@ function OUI.GenerateOptionsInternal()
 						order = 9,
 						name = "General Font Size",
 						desc = "Size used for the General Font",
-						type = "range",
-						min = 5, max = 18, step = 1,								
-					},
-					stack_font = {
-						type = "select",
-						dialogControl = 'LSM30_Font',
-						order = 10,
-						name = "Stack Font",
-						desc = "Font used as the display for stack amounts inside icons.",
-						values = AceGUIWidgetLSMlists.font,	
-					},
-					stack_size = {
-						type = "range",
-						order = 11,
-						name = "Stack Font Size",
-						desc = "Size used for the Stack Font",
 						type = "range",
 						min = 5, max = 18, step = 1,								
 					},

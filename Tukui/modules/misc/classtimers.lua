@@ -22,7 +22,7 @@ TEXT_MARGIN = 5;
 MASTER_FONT = { C["classtimer"].gen_font, C["classtimer"].gen_size, "THINOUTLINE" };
 
 -- Sets font for stack count
-STACKS_FONT = { C["classtimer"].stack_font, C["classtimer"].stack_size, "THINOUTLINE" };
+STACKS_FONT = { C["media"].font, 13, "THINOUTLINE" };
 
 
 PERMANENT_AURA_VALUE = 1;
@@ -170,6 +170,7 @@ function T.LoadClassTimers(TukuiPlayer, TukuiTarget)
 			for _, v in pairs( filter ) do
 				local clone = { };
 				
+				clone.enabled = v.enabled;
 				clone.id = v.id;
 				clone.castByAnyone = v.castByAnyone;
 				clone.color = v.color;

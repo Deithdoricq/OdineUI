@@ -11,7 +11,7 @@ for group,options in pairs(DB) do
 	end
 end
 
-if IsAddOnLoaded("Tukui_Config") and OUIDB then
+if IsAddOnLoaded("Tukui_Config") then
 	local OUI = LibStub("AceAddon-3.0"):GetAddon("OUI")
 	OUI:Load()
 

@@ -3,6 +3,7 @@ V6.0d - [04/16/2011]
 * fixed problem with classtimers when being disabled
 * some more locales updates (still ALOT todo before i can have locales in other languages)
 * fixed issue with fresh installs not allowing config to work. (DERP im dumb)
+* finished locales for unit frames section
 
 V6.0c - [04/12/2011]
 * started working on locales for ingame config. will need help in other languages when complete!

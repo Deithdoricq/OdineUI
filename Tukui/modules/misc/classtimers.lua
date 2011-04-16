@@ -1,3 +1,4 @@
+
 local T, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if C["unitframes"].enable ~= true or C["classtimer"].enable ~= true then return end
@@ -17,6 +18,7 @@ SPARK = C["classtimer"].showspark;
 CAST_SEPARATOR = C["classtimer"].cast_suparator;
 CAST_SEPARATOR_COLOR = CreateColor( 0, 0, 0, 0.5 );
 TEXT_MARGIN = 5;
+local GROUP_SPACING = 3
 
 -- Sets font for all texts
 MASTER_FONT = { C["classtimer"].gen_font, C["classtimer"].gen_size, "THINOUTLINE" };
@@ -160,8 +162,7 @@ function T.LoadClassTimers(TukuiPlayer, TukuiTarget)
 				clone.debuffColor = debuffColor;
 				
 				table.insert( self.filter, clone );
-			end
-			
+			end			
 		end
 		
 		local AddPlayerFilter = function( self, filter, defaultColor, debuffColor )
@@ -660,7 +661,6 @@ function T.LoadClassTimers(TukuiPlayer, TukuiTarget)
 			result.background = background;
 			
 			local border = CreateFrame( "Frame", nil, result, nil );
-				border:SetTemplate("Default", true)
 				border:SetPoint("TOPLEFT", T.Scale(-2), T.Scale(2))
 				border:SetPoint("BOTTOMRIGHT", T.Scale(2), T.Scale(-2))
 				if result:GetFrameLevel() - 1 > -1 then 
@@ -777,8 +777,8 @@ function T.LoadClassTimers(TukuiPlayer, TukuiTarget)
 		playerFrame:Show();
 
 		local targetFrame = CreateAuraBarFrame( targetDataSource, TukuiPlayer );
-		targetFrame:Point( "BOTTOMLEFT", playerFrame, "TOPLEFT", 0, BAR_SPACING );
-		targetFrame:Point( "BOTTOMRIGHT", playerFrame, "TOPRIGHT", 0, BAR_SPACING );
+		targetFrame:Point( "BOTTOMLEFT", playerFrame, "TOPLEFT", 0, BAR_SPACING+GROUP_SPACING );
+		targetFrame:Point( "BOTTOMRIGHT", playerFrame, "TOPRIGHT", 0, BAR_SPACING+GROUP_SPACING );
 		targetFrame:Show();
 	elseif ( LAYOUT == 3 ) then
 		local yOffset = 6;
@@ -832,14 +832,14 @@ function T.LoadClassTimers(TukuiPlayer, TukuiTarget)
 
 		local trinketFrame = CreateAuraBarFrame( trinketDataSource, TukuiPlayer );
 		trinketFrame:SetHiddenHeight( -BAR_SPACING );
-		trinketFrame:Point( "BOTTOMLEFT", playerFrame, "TOPLEFT", 0, BAR_SPACING );
-		trinketFrame:Point( "BOTTOMRIGHT", playerFrame, "TOPRIGHT", 0, BAR_SPACING );
+		trinketFrame:Point( "BOTTOMLEFT", playerFrame, "TOPLEFT", 0, BAR_SPACING+GROUP_SPACING );
+		trinketFrame:Point( "BOTTOMRIGHT", playerFrame, "TOPRIGHT", 0, BAR_SPACING+GROUP_SPACING );
 		trinketFrame:Show();
 		
 		local targetFrame = CreateAuraBarFrame( targetDataSource, TukuiPlayer );
 		targetFrame:SetHiddenHeight( -BAR_SPACING );
-		targetFrame:Point( "BOTTOMLEFT", trinketFrame, "TOPLEFT", 0, BAR_SPACING );
-		targetFrame:Point( "BOTTOMRIGHT", trinketFrame, "TOPRIGHT", 0, BAR_SPACING );
+		targetFrame:Point( "BOTTOMLEFT", trinketFrame, "TOPLEFT", 0, BAR_SPACING+GROUP_SPACING );
+		targetFrame:Point( "BOTTOMRIGHT", trinketFrame, "TOPRIGHT", 0, BAR_SPACING+GROUP_SPACING );
 		targetFrame:Show();
 	elseif ( LAYOUT == 4 ) then
 		local yOffset = 8;
@@ -891,8 +891,8 @@ function T.LoadClassTimers(TukuiPlayer, TukuiTarget)
 
 		local trinketFrame = CreateAuraBarFrame( trinketDataSource, TukuiPlayer );
 		trinketFrame:SetHiddenHeight( -BAR_SPACING );
-		trinketFrame:Point( "BOTTOMLEFT", playerFrame, "TOPLEFT", 0, BAR_SPACING );
-		trinketFrame:Point( "BOTTOMRIGHT", playerFrame, "TOPRIGHT", 0, BAR_SPACING );
+		trinketFrame:Point( "BOTTOMLEFT", playerFrame, "TOPLEFT", 0, BAR_SPACING+GROUP_SPACING );
+		trinketFrame:Point( "BOTTOMRIGHT", playerFrame, "TOPRIGHT", 0, BAR_SPACING+GROUP_SPACING );
 		trinketFrame:Show();
 		
 		local targetFrame = CreateAuraBarFrame( targetDataSource, TukuiTarget );
@@ -953,8 +953,8 @@ function T.LoadClassTimers(TukuiPlayer, TukuiTarget)
 
 		local trinketFrame = CreateAuraBarFrame( trinketDataSource, TukuiPlayer );
 		trinketFrame:SetHiddenHeight( -BAR_SPACING );
-		trinketFrame:Point( "BOTTOMLEFT", playerFrame, "TOPLEFT", 0, BAR_SPACING );
-		trinketFrame:Point( "BOTTOMRIGHT", playerFrame, "TOPRIGHT", 0, BAR_SPACING );
+		trinketFrame:Point( "BOTTOMLEFT", playerFrame, "TOPLEFT", 0, BAR_SPACING+GROUP_SPACING );
+		trinketFrame:Point( "BOTTOMRIGHT", playerFrame, "TOPRIGHT", 0, BAR_SPACING+GROUP_SPACING );
 		trinketFrame:Show();
 	else
 		error( "Undefined layout " .. tostring( LAYOUT ) );

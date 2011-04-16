@@ -10,6 +10,7 @@ function OUI:LoadDefaults()
 	defaults = {
 		profile = {
 			general = DB["general"],
+			media = DB["media"],
 			unitframes = DB["unitframes"],
 			nameplate = DB["nameplate"],
 			arena = DB["arena"],
@@ -27,7 +28,6 @@ function OUI:LoadDefaults()
 			invite = DB["invite"],
 			buffreminder = DB["buffreminder"],
 			addonskins = DB["addonskins"],
-			media = DB["media"],
 			classtimer = DB["classtimer"],
 			error = DB["error"],
 			spellfilter = {
@@ -84,22 +84,28 @@ function OUI:SetupOptions()
 
 	self.profileOptions = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db);
 	LibStub("AceConfig-3.0"):RegisterOptionsTable("OUIProfiles", self.profileOptions)
+	
+	-- Add dual-spec support
+	local LibDualSpec = LibStub('LibDualSpec-1.0')
+	LibDualSpec:EnhanceDatabase(self.db, "myAddon")
+	LibDualSpec:EnhanceOptions(self.profileOptions, self.db)
 
 	local ACD3 = LibStub("AceConfigDialog-3.0")
 	self.optionsFrames = {}
 	self.optionsFrames.OUI = ACD3:AddToBlizOptions("OUI", "OdineUI", nil, "general")
-	self.optionsFrames.Actionbar = ACD3:AddToBlizOptions("OUI", "Action Bars", "OdineUI", "actionbar")
-	self.optionsFrames.Nameplates = ACD3:AddToBlizOptions("OUI", "Nameplates", "OdineUI", "nameplate")
-	self.optionsFrames.Unitframes = ACD3:AddToBlizOptions("OUI", "Unit Frames", "OdineUI", "unitframes")
-	self.optionsFrames.Raidparty = ACD3:AddToBlizOptions("OUI", "Raid/Party Settings", "OdineUI", "raidparty")
-	self.optionsFrames.Datatext = ACD3:AddToBlizOptions("OUI", "Data Texts", "OdineUI", "datatext")
-	self.optionsFrames.Chat = ACD3:AddToBlizOptions("OUI", "Chat", "OdineUI", "chat")
-	self.optionsFrames.Misc = ACD3:AddToBlizOptions("OUI", "Misc", "OdineUI", "misc")
-	self.optionsFrames.Tooltip = ACD3:AddToBlizOptions("OUI", "Tooltip", "OdineUI", "tooltip")
-	self.optionsFrames.Media = ACD3:AddToBlizOptions("OUI", "Media", "OdineUI", "media")
-	self.optionsFrames.Classtimer = ACD3:AddToBlizOptions("OUI", "Class Timers", "OdineUI", "classtimer")
-	self.optionsFrames.SpellFilter = ACD3:AddToBlizOptions("OUI", "Filters", "OdineUI", "spellfilter")
+	self.optionsFrames.Actionbar = ACD3:AddToBlizOptions("OUI", L["Action Bars"], "OdineUI", "actionbar")
+	self.optionsFrames.Nameplates = ACD3:AddToBlizOptions("OUI", L["Nameplates"], "OdineUI", "nameplate")
+	self.optionsFrames.Unitframes = ACD3:AddToBlizOptions("OUI", L["Unit Frames"], "OdineUI", "unitframes")
+	self.optionsFrames.Raidparty = ACD3:AddToBlizOptions("OUI", L["Raid/Party Settings"], "OdineUI", "raidparty")
+	self.optionsFrames.Datatext = ACD3:AddToBlizOptions("OUI", L["Data Texts"], "OdineUI", "datatext")
+	self.optionsFrames.Chat = ACD3:AddToBlizOptions("OUI", L["Chat"], "OdineUI", "chat")
+	self.optionsFrames.Misc = ACD3:AddToBlizOptions("OUI", L["Misc"], "OdineUI", "misc")
+	self.optionsFrames.Tooltip = ACD3:AddToBlizOptions("OUI", L["Tooltip"], "OdineUI", "tooltip")
+	self.optionsFrames.Media = ACD3:AddToBlizOptions("OUI", L["Media"], "OdineUI", "media")
+	self.optionsFrames.Classtimer = ACD3:AddToBlizOptions("OUI", L["Class Timers"], "OdineUI", "classtimer")
+	self.optionsFrames.SpellFilter = ACD3:AddToBlizOptions("OUI", L["Filters"], "OdineUI", "spellfilter")
 	self.optionsFrames.Profiles = ACD3:AddToBlizOptions("OUIProfiles", L["Profiles"], "OdineUI")
+	
 	self.SetupOptions = nil
 end
 
@@ -431,7 +437,7 @@ function OUI.GenerateOptionsInternal()
 		if db.spellfilter.FilterPicker == "PlateBlacklist" then
 			return "Filter whether or not a nameplate is shown by the name of the nameplate"
 		elseif db.spellfilter.FilterPicker == "ErrorList" then
-			return "Allows you to customize which error messages will be shown."
+			return "Allows you to customize which error messages will be hidden."
 		elseif db.spellfilter.FilterPicker == "RaidDebuffs" then
 			return "These debuffs will be displayed on your raid frames in addition to any debuff that is dispellable."
 		elseif db.spellfilter.FilterPicker == "TargetPVPOnly" then
@@ -460,6 +466,8 @@ function OUI.GenerateOptionsInternal()
 	local function GetFilterName()
 		if db.spellfilter.FilterPicker == "PlateBlacklist" then
 			return "Nameplate Names"
+		elseif db.spellfilter.FilterPicker == "ErrorList" then
+			return "Error Filters"
 		else
 			return "Auras"
 		end	

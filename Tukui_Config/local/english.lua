@@ -3,6 +3,20 @@ local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
 local L = AceLocale:NewLocale("OUI", "enUS", true)
 if not L then return end
 
+-- Menu
+L["Action Bars"] = true
+L["Nameplates"] = true
+L["Unit Frames"] = true
+L["Raid/Party Settings"] = true
+L["Data Texts"] = true
+L["Chat"] = true
+L["Misc"] = true
+L["Tooltip"] = true
+L["Media"] = true
+L["Class Timers"] = true
+L["Filters"] = true
+L["Profiles"] = true
+
 -- General Section
 L["General Settings"] = true
 	L["OUI_INTRO"] = "Complete UI replacement based off Tukui. Creditz: Dajova, Elv, Eclipse, Tukz"
@@ -31,9 +45,6 @@ L["UnitFrames"] = true
 -- Name plates
 L["Nameplates"] = true
 	L["NP_DESC"] = "Configure options for nameplates"
-
---Profiles
-L["Profiles"] = true
 
 --Datatext
 L["DT_POS"] = "\n\n0 - Disabled\n1 - LEFT PANEL, LEFT\n2 - LEFT PANEL, CENTER\n3 - LEFT PANEL, RIGHT\n4 - RIGHT PANEL, LEFT\n5 - RIGHT PANEL, CENTER\n6 - RIGHT PANEL, RIGHT\n7 - MIDDLE, OUTER LEFT\n8 - MIDDLE, LEFT\n9 - MIDDLE, CENTER\n10 - MIDDLE, RIGHT\n11 - MIDDLE, OUTER RIGHT"

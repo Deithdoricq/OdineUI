@@ -1,5 +1,6 @@
 local addon, ns=...
 local T, C, L = unpack(Tukui) -- Import: T - functions, constants, variables; C - config; L - locales
+
 ns.config={
 ---------------------------------------------------------------------------------
 -- use ["option"] = true/false, to set options.

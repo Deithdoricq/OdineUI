@@ -7,6 +7,36 @@ DB["general"] = {
 	["multisampleprotect"] = true,                      -- i don't recommend this because of shitty border but, voila!
 }
 
+DB["media"] = {
+	--fonts
+	["font"] = "Tukui Font",
+	["uffont"] = "Tukui UF",
+	["dmgfont"] = "Tukui Combat",
+	["cfont"] = "Tukui Font",
+	["dfont"] = "Tukui UF",
+	
+	-- textures
+	["normTex"] = "Tukui Norm",
+	["glowTex"] = "Tukui Glow",
+	["blank"] = "Tukui Blank",
+	
+	["hTex"] = [[Interface\AddOns\Tukui\medias\textures\Glamour2]], -- texture used for health bars
+	["panTex"] = [[Interface\AddOns\Tukui\medias\textures\Glamour7]], -- texture used for datatext panels
+	
+	["striped"] = [[Interface\AddOns\Tukui\medias\textures\Striped]], -- unitframes combo points
+	["copyicon"] = [[Interface\AddOns\Tukui\medias\textures\copy]], -- copy icon
+	["buttonhover"] = [[Interface\AddOns\Tukui\medias\textures\button_hover]],
+
+	["bordercolor"] = { .05, .05, .05, 1 }, -- border color of tukui panels 
+	["backdropcolor"] = { .132, .132, .132, 1 }, -- background color of tukui panels
+	["backdropfadecolor"] = { .1, .1, .1, 0.9 }, -- same thing just different alpha
+	["altbordercolor"] = { .4, .4, .4 }, -- alternative border color, mainly for unitframes text panels.
+	
+	-- sound
+	["whisper"] = "Tukui Whisper",
+	["warning"] = "Tukui Warning",
+}
+
 DB["unitframes"] = {
 	-- Gen.
 	["enable"] = true,                                  -- do i really need to explain this?
@@ -232,36 +262,6 @@ DB["addonskins"] = {
 	["recount"] = true,									-- skins Recount 
 	["omen"] = true,									-- skins Omen
 	["skada"] = true,									-- skins skada
-}
-
-DB["media"] = {
-	--fonts
-	["font"] = "Tukui Font",
-	["uffont"] = "Tukui UF",
-	["dmgfont"] = "Tukui Combat",
-	["cfont"] = "Tukui Font",
-	["dfont"] = "Tukui UF",
-	
-	-- textures
-	["normTex"] = "Tukui Norm",
-	["glowTex"] = "Tukui Glow",
-	["blank"] = "Tukui Blank",
-	
-	["hTex"] = [[Interface\AddOns\Tukui\medias\textures\Glamour2]], -- texture used for health bars
-	["panTex"] = [[Interface\AddOns\Tukui\medias\textures\Glamour7]], -- texture used for datatext panels
-	
-	["striped"] = [[Interface\AddOns\Tukui\medias\textures\Striped]], -- unitframes combo points
-	["copyicon"] = [[Interface\AddOns\Tukui\medias\textures\copy]], -- copy icon
-	["buttonhover"] = [[Interface\AddOns\Tukui\medias\textures\button_hover]],
-
-	["bordercolor"] = { .05, .05, .05, 1 }, -- border color of tukui panels 
-	["backdropcolor"] = { .132, .132, .132, 1 }, -- background color of tukui panels
-	["backdropfadecolor"] = { .1, .1, .1, 0.9 }, -- same thing just different alpha
-	["altbordercolor"] = { .4, .4, .4 }, -- alternative border color, mainly for unitframes text panels.
-	
-	-- sound
-	["whisper"] = "Tukui Whisper",
-	["warning"] = "Tukui Warning",
 }
 
 DB["classtimer"] = {

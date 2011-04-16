@@ -1,5 +1,5 @@
 ﻿<Ui xmlns="http://www.blizzard.com/wow/ui/">
-	<Script file="libs\LibSharedMedia-3.0\LibSharedMedia-3.0.lua" />
+	<Include file="libs\load_libs.xml" />
 	<Script file="developer\reloadui.lua"/>
 	<Script file="developer\commands.lua"/>
 	<Script file="core\init.lua"/>

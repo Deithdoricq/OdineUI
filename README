@@ -1,10 +1,13 @@
+V6.0d - [04/16/2011]
+* readded dual talent support (not to helpful yet i know)
+* fixed problem with classtimers when being disabled
+* some more locales updates (still ALOT todo before i can have locales in other languages)
+
 V6.0c - [04/12/2011]
 * started working on locales for ingame config. will need help in other languages when complete!
 * fixed power bar for onyxia/nef fight
 * tweaked placement of boss frames again....
 * filger is no longer included as i elected to go back to classtimers style of tracking like i did in my wraith edit! (filger still functions you will need to disable classtimers in config though)
-* added dual talent support to profiles
-* fixed problem with classtimers when being disabled
 
 V6.0b - [04/11/2011]
 * /bags command no longer neccessary, all commadns built into bags now (purchase, sort)

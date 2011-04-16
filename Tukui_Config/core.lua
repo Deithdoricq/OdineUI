@@ -46,20 +46,7 @@ function OUI:LoadDefaults()
 				CLASS_FILTERS = CLASS_FILTERS
 			},
 		},
-	}
-	
-end
-
-function OUI:OnInitialize()
-	OUI:RegisterChatCommand("oui", "ShowConfig")
-	OUI:RegisterChatCommand("odineui", "ShowConfig")
-	
-	self.OnInitialize = nil
-end
-
-function OUI:ShowConfig(arg)
-	InterfaceOptionsFrame_OpenToCategory(self.optionsFrames.Profiles)
-	InterfaceOptionsFrame_OpenToCategory(self.optionsFrames.OUI)
+	}	
 end
 
 function OUI:Load()
@@ -86,9 +73,9 @@ function OUI:SetupOptions()
 	LibStub("AceConfig-3.0"):RegisterOptionsTable("OUIProfiles", self.profileOptions)
 	
 	-- Add dual-spec support
-	local LibDualSpec = LibStub('LibDualSpec-1.0')
-	LibDualSpec:EnhanceDatabase(self.db, "myAddon")
-	LibDualSpec:EnhanceOptions(self.profileOptions, self.db)
+	local LDS = LibStub("LibDualSpec-1.0")
+	LDS:EnhanceDatabase(self.db, "OUI")
+	LDS:EnhanceOptions(self.profileOptions, self.db)
 
 	local ACD3 = LibStub("AceConfigDialog-3.0")
 	self.optionsFrames = {}
@@ -109,6 +96,18 @@ function OUI:SetupOptions()
 	self.SetupOptions = nil
 end
 
+function OUI:ShowConfig(arg)
+	InterfaceOptionsFrame_OpenToCategory(self.optionsFrames.Profiles)
+	InterfaceOptionsFrame_OpenToCategory(self.optionsFrames.OUI)
+end
+
+function OUI:OnInitialize()
+	self:RegisterChatCommand("oui", "ShowConfig")
+	self:RegisterChatCommand("odineui", "ShowConfig")
+	
+	self.OnInitialize = nil
+end
+
 function OUI.GenerateOptions()
 	if OUI.noconfig then assert(false, OUI.noconfig) end
 	if not OUI.Options then
@@ -122,7 +121,7 @@ function OUI.GenerateOptionsInternal()
 	local T, C, _, DB = unpack(Tukui)
 	
 	StaticPopupDialogs["RELOAD_UI"] = {
-		text = "You must reload your UI",
+		text = L["RELOAD_UI"],
 		button1 = ACCEPT,
 		button2 = CANCEL,
 		OnAccept = function() ReloadUI() end,
@@ -502,13 +501,13 @@ function OUI.GenerateOptionsInternal()
 						name = L["OUI_INTRO"],
 					},
 					autoscale = {
-						order = 2,
+						order = 3,
 						name = L["Auto Scale"],
 						desc = L["GEN_ASCALE"],
 						type = "toggle",
 					},					
 					uiscale = {
-						order = 3,
+						order = 4,
 						name = L["Scale"],
 						desc = L["GEN_SCALE"],
 						disabled = function(info) return db.general.autoscale end,
@@ -517,13 +516,13 @@ function OUI.GenerateOptionsInternal()
 						isPercent = true,
 					},
 					multisampleprotect = {
-						order = 4,
+						order = 5,
 						name = L["Multisample Protection"],
 						desc = L["GEN_SAMPLE"],
 						type = "toggle",
 					},
 					overridelowtohigh = {
-						order = 5,
+						order = 6,
 						name = L["Override LOW -> HIGH"],
 						desc = L["OVERRIDE_DESC"],
 						type = "toggle",
@@ -532,11 +531,11 @@ function OUI.GenerateOptionsInternal()
 						name = "   ",
 						width = "full",
 						type = "description",
-						order = 6,
+						order = 7,
 					},
 					Colors = {
 						type = "group",
-						order = 7,
+						order = 8,
 						name = L["Color Options"],
 						guiInline = true,
 						disabled = function() return not db.unitframes.enable end,
@@ -594,20 +593,20 @@ function OUI.GenerateOptionsInternal()
 			unitframes = {
 				order = 2,
 				type = "group",
-				name = "UnitFrames",
-				desc = "Configure Settings for Unit Frames",
+				name = L["Unit Frames"],
+				desc = L["Configure Settings for Unit Frames"],
 				get = function(info) return db.unitframes[ info[#info] ] end,
 				set = function(info, value) db.unitframes[ info[#info] ] = value; StaticPopup_Show("RELOAD_UI") end,
 				args = {
 					enable = {
 						order = 2,
 						name = "Enable",
-						desc = L["UF_ENABLE"],
+						desc = L["Enable or Disable Unit Frames"],
 						type = "toggle",
 					},
 					enablearena = {
 						order = 2.5,
-						name = "Arena Frames",
+						name = L["Arena Frames"],
 						desc = "Toggle whether you want to use arena frames.",
 						type = "toggle",
 						get = function(info) return db.arena.unitframes end,
@@ -617,33 +616,33 @@ function OUI.GenerateOptionsInternal()
 					UFOptions = {
 						order = 3,
 						type = "group",
-						name = "General Options",
+						name = L["General Options"],
 						guiInline = true,
 						disabled = function() return not db.unitframes.enable end,
 						args = {
 							enemyhcolor = {
 								type = "toggle",
 								order = 1,
-								name = "Show Hostility Color",
-								desc = "Enemy target (players) color by hostility, very useful for healer.",
+								name = L["Show Hostility Color"],
+								desc = L["Enemy target (players) color by hostility, very useful for healer."],
 							},
 							charportrait = {
 								type = "toggle",
 								order = 2,
-								name = "Portraits",
-								desc = "Enable displaying character portraits on select frames",
+								name = L["Portraits"],
+								desc = L["Enable displaying character portraits on select frames"],
 							},
 							showtotalhpmp = {
 								type = "toggle",
 								order = 3,
-								name = "Total HP/MP",
-								desc = "Changes the display of info text on player and target frame with XXXX/Total if enabled.",
+								name = L["Total HP/MP"],
+								desc = L["Changes the display of info text on player and target frame with XXXX/Total if enabled."],
 							},
 							targetpowerpvponly = {
 								type = "toggle",
 								order = 4,
-								name = "Show PVP Target Mana",
-								desc = "When enabled will show pvp targets amount of mana.",
+								name = L["Show PVP Target Mana"],
+								desc = L["When enabled will show pvp targets amount of mana."],
 							},
 							showsmooth = {
 								type = "toggle",
@@ -2065,8 +2064,30 @@ function OUI.GenerateOptionsInternal()
 								order = 6,
 								name = L["Cast Seperator"],							
 							},
-							ColorGroup = {
+							emptyct5 = {
+								name = "   ",
+								width = "full",
+								type = "description",
+								order = 6.5,
+							},
+							gen_font = {
+								type = "select",
+								dialogControl = 'LSM30_Font',
 								order = 7,
+								name = "General Font",
+								desc = "Font used as text inside your classtimer bars.",
+								values = AceGUIWidgetLSMlists.font,	
+							},
+							gen_size = {
+								type = "range",
+								order = 8,
+								name = "General Font Size",
+								desc = "Size used for the General Font",
+								type = "range",
+								min = 5, max = 18, step = 1,								
+							},
+							ColorGroup = {
+								order = 9,
 								type = "group",
 								name = L["Colors"],
 								guiInline = true,
@@ -2099,26 +2120,10 @@ function OUI.GenerateOptionsInternal()
 										order = 3,
 										name = L["Proc"],
 										hasAlpha = false,	
-									},											
+									},
 								},
 							},				
 						},
-					},
-					gen_font = {
-						type = "select",
-						dialogControl = 'LSM30_Font',
-						order = 8,
-						name = "General Font",
-						desc = "Font used as text inside your classtimer bars.",
-						values = AceGUIWidgetLSMlists.font,	
-					},
-					gen_size = {
-						type = "range",
-						order = 9,
-						name = "General Font Size",
-						desc = "Size used for the General Font",
-						type = "range",
-						min = 5, max = 18, step = 1,								
 					},
 				},
 			},

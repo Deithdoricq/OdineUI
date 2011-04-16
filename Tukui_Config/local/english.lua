@@ -16,6 +16,7 @@ L["Media"] = true
 L["Class Timers"] = true
 L["Filters"] = true
 L["Profiles"] = true
+L["RELOAD_UI"] = "A setting you have changed requires a Reload UI for changes to take effect, when you are done configing hit Accept to APPLY your changes!"
 
 -- General Section
 L["General Settings"] = true
@@ -38,9 +39,19 @@ L["General Settings"] = true
 	
 		
 -- Unit Frames
-L["UnitFrames"] = true
-	L["UF_DESC"] = "Configure settings for Unit Frames"
-	L["UF_ENABLE"] = "Enable or Disable Unit Frames"
+L["Unit Frames"] = true
+	L["Configure Settings for Unit Frames"] = "Configure settings for Unit Frames"
+	L["Enable or Disable Unit Frames"] = "Enable or Disable Unit Frames"
+	L["Arena Frames"] = true
+	L["General Options"] = true
+	L["Show Hostility Color"] = true
+		L["Enemy target (players) color by hostility, very useful for healer."] = true
+	L["Portraits"] = true
+		L["Enable displaying character portraits on select frames"] = true
+	L["Total HP/MP"] = true
+		L["Changes the display of info text on player and target frame with XXXX/Total if enabled."] = true
+	L["Show PVP Target Mana"] = true
+		L["When enabled will show pvp targets amount of mana."] = true
 	
 -- Name plates
 L["Nameplates"] = true

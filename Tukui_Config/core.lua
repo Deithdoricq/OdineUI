@@ -1304,6 +1304,13 @@ function OUI.GenerateOptionsInternal()
 								name = "Enable",
 								desc = "Toggles whether you want to use built bags addon.",
 							},
+							placement = {
+								type = "select",
+								order = 2,
+								name = "Position",
+								desc = "Allows you to customize where bag windows are placed.",		
+								values = { "Over Chat Windows", "Above Chat Windows" },
+							},
 						},
 					},
 					Map = {

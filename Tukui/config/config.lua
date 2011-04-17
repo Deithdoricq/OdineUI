@@ -147,6 +147,7 @@ DB["actionbar"] = {
 
 DB["bags"] = {
 	["enable"] = true,                                  -- enable an all in one bag mod that fit tukui perfectly
+	["placement"] = 2,									-- allows you to position bag windows over chat windows or right above them! (option 1 - over chat windows, option 2 - above chat windows)
 }
 
 DB["map"] = {

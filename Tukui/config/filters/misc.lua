@@ -5,4 +5,5 @@ T.ErrorList = {
 	[NOT_ENOUGH_MANA] = true,
 	[OUT_OF_MANA] = true,
 	["Players cannot be kicked while in combat, or shortly after combat."] = true,
+	["You are already mounted! Dismount first."] = true
 }

@@ -423,7 +423,7 @@ function OUI.GenerateOptionsInternal()
 						name = spell,
 						type = "toggle",
 						get = function(info) if db.spellfilter[tab][spell] then return true else return false end end,
-						set = function(info, value) db.spellfilter[tab][spell] = value; T[tab] = db.spellfilter[tab]; StaticPopup_Show("RELOAD_UI") end,
+						set = function(info, value) db.spellfilter[tab][spell] = value; T[tab] = db.spellfilter[tab]; if db.spellfilter.FilterPicker ~= ("ErrorList" or "PlateBlacklist") then StaticPopup_Show("RELOAD_UI") end end,
 					}
 				end
 			end

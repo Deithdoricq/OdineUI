@@ -6,6 +6,7 @@ V6.0d - [04/16/2011]
 * finished locales for unit frames section
 * datatext tooltips will also hide if hidecombat option in tooltips section is enabled
 * mod profiles.lua file to display hit instead of mastery if not level 80
+* fixed bug with error filters not working properly until an addition reload ui was made!
 
 V6.0c - [04/12/2011]
 * started working on locales for ingame config. will need help in other languages when complete!

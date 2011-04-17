@@ -24,6 +24,9 @@ if IsAddOnLoaded("Tukui_Config") then
 		end
 	end
 	
+	-- Error Filters
+	T.ErrorList = OUI.db.profile.spellfilter.ErrorList
+	
 	--Raid Debuffs
 	T.RaidDebuffs = OUI.db.profile.spellfilter.RaidDebuffs
 	

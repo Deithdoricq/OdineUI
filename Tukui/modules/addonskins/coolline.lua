@@ -9,8 +9,11 @@ local db = CoolLineDB
 -- Checking for variables...
 if db then
 	-- Uncomment below to set a fixed point
-	--db.x = 0
-	--db.y = 490
+	if C["addonskins"].cl_placement == 2 then
+		db.x = 0
+		db.y = 490
+	end
+
 	db.h = T.buttonsize - 6
 	db.w = T.InfoLeftRightWidth - 6
 	db.font = "Tukui UF"
@@ -29,7 +32,10 @@ local setup = function()
 	background:SetTemplate("Default", true)
 	background:CreateShadow("Default")
 	cl.background = background
-	cl:SetAllPoints(TukuiTabsRight)
+
+	if C["addonskins"].cl_placement == 1 then
+		cl:SetAllPoints(TukuiTabsRight)
+	end
 end
 
 setup()

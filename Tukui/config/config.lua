@@ -264,6 +264,7 @@ DB["addonskins"] = {
 	["omen"] = true,									-- skins Omen
 	["skada"] = true,									-- skins skada
 	["coolline"] = true,								-- skins CoolLine
+		["cl_placement"] = 1,							-- allows you to change where CoolLine is placed
 }
 
 DB["classtimer"] = {

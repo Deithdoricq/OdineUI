@@ -45,7 +45,7 @@ local function Update(self, t)
 end
 
 Stat:SetScript("OnEnter", function(self)
-	if InCombatLockdown() then return end
+	if InCombatLockdown() or (InCombatLockdown() and C["tooltip"].hidecombat ~= true) then return end
 
 	local anchor, panel, xoff, yoff = T.DataTextTooltipAnchor(Text)
 	GameTooltip:SetOwner(panel, anchor, xoff, yoff)

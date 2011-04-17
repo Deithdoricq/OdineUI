@@ -13,9 +13,15 @@ end
 -- Name need to be case sensitive
 ----------------------------------------------------------------------------
 
-if T.myname == "Tukz" then
-	-- yeah my default config is not really like default tukui.
-	C.actionbar.hotkey = false
-	C.actionbar.hideshapeshift = true
-	C.unitframes.enemyhcolor = true
+if T.myname == "Odine" or T.myname == "Marmon" then
+	-- do something
+end
+
+----------------------------------------------------------------------------
+-- Pretty sure we dont need to display master if not level 80 LOL
+----------------------------------------------------------------------------
+
+if T.level < 80 then
+	DB["datatext"].mastery = 0
+	DB["datatext"].hit = 4
 end

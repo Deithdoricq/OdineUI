@@ -6,7 +6,26 @@ if C["datatext"].location ~= true then return end
 local location = CreateFrame("Frame", "TukuiLocation", UIParent)
 location:CreatePanel("Default", 60, 20, "TOP", UIParent, "TOP", 0, -7)
 location:SetFrameLevel(2)
---location:SetTemplate("Default", true)
+
+-- Panel Toggles
+location:SetScript("OnMouseDown", function(self, btn)
+	if IsAddOnLoaded("Skada") then
+		if btn == 'LeftButton'  then
+			Skada:ToggleWindow()
+		elseif btn == 'RightButton' then
+			Skada:Reset()
+		end
+	elseif IsAddOnLoaded("TinyDPS") then
+		if tdpsFrame:IsVisible() then
+			tdpsFrame:Hide()
+		else
+			tdpsRefresh()
+			tdpsFrame:Show()
+		end
+	elseif IsAddOnLoaded("Recount") then
+		-- do something
+	end
+end)
 
 local locationtext  = location:CreateFontString(nil, "LOW")
 locationtext:SetFont(C["media"].dfont, C["datatext"].fsize, "OUTLINE")
@@ -94,14 +113,3 @@ local Update = function(self,t)
 	ela = .2
 end
 xcoords:HookScript("OnUpdate", Update)
-
--- Panel Toggle Options
-xcoords:SetScript("OnMouseDown", function(self, btn)
-	if IsAddOnLoaded("Skada") then
-		if btn == 'LeftButton'  then
-			Skada:ToggleWindow()
-		else
-			Skada:Reset()
-		end
-	end
-end)

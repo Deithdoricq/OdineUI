@@ -177,7 +177,7 @@ if C["datatext"].guild and C["datatext"].guild > 0 then
 	Stat:RegisterEvent("PLAYER_ENTERING_WORLD")
 	Stat:RegisterEvent("CHAT_MSG_SYSTEM")
 	Stat:SetScript("OnEnter", function(self)
-		if not InCombatLockdown() or self.altdow then					
+		if (not InCombatLockdown() or self.altdow) or (InCombatLockdown() and C["tooltip"].hidecombat ~= true) then					
 
 			if IsInGuild() then			
 

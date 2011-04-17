@@ -165,7 +165,7 @@ if C["datatext"].friends and C["datatext"].friends > 0 then
 	end)
 
 	Stat:SetScript("OnEnter", function(self)
-		--if not InCombatLockdown() then
+		if not InCombatLockdown() or (InCombatLockdown() and C["tooltip"].hidecombat ~= true) then
 			ShowFriends()
 			menuCountWhispers = 0
 			menuCountInvites = 0
@@ -377,7 +377,7 @@ if C["datatext"].friends and C["datatext"].friends > 0 then
 			else
 				GameTooltip:Hide()
 			end
-		--end
+		end
 	end)
 
 	Stat:SetScript("OnLeave", function() GameTooltip:Hide() end)

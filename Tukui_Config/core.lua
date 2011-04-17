@@ -2100,7 +2100,7 @@ function OUI.GenerateOptionsInternal()
 									db.classtimer[ info[#info] ] = {}
 									local t = db.classtimer[ info[#info] ]
 									t.r, t.g, t.b = r, g, b
-									StaticPopup_Show("CFG_RELOAD")
+									StaticPopup_Show("RELOAD_UI")
 								end,									
 								args = {
 									buffcolor = {
@@ -2172,41 +2172,100 @@ function OUI.GenerateOptionsInternal()
 					},						
 					NewName = {
 						type = 'input',
-						name = function() if RaidBuffs[db.spellfilter.FilterPicker] then return L["New Spell ID"] else return L["New name"] end end,
+						name = function() if ClassTimerShared[db.spellfilter.FilterPicker] or ClassTimer[db.spellfilter.FilterPicker] or RaidBuffs[db.spellfilter.FilterPicker] then return L["New ID"] else return L["New name"] end end,
 						desc = L["Add a new spell name / ID to the list."],
 						get = function(info) return "" end,
-						set = function(info, value)						
-							if RaidBuffs[db.spellfilter.FilterPicker] then
+						set = function(info, value)
+							if ClassTimer[db.spellfilter.FilterPicker] then
 								if not GetSpellInfo(value) then
-									print("Not valid spell id")
+									print(L["Not valid spell id"])
+								elseif not db.spellfilter["SelectSpellFilter"] then
+									print(L["You must select a filter first"])
+								else
+									local curfilter = db.spellfilter["SelectSpellFilter"]
+									local num = #db.spellfilter[db.spellfilter.FilterPicker] + 1
+									db.spellfilter[db.spellfilter.FilterPicker][T.myclass][curfilter][num] = { enabled = true, id = tonumber(value), castByAnyone = false, color = nil, unitType = 0, castSpellId = nil }
+									UpdateSpellFilter()								
+									StaticPopup_Show("RELOAD_UI")
+								end									
+							elseif ClassTimerShared[db.spellfilter.FilterPicker] then
+								if not GetSpellInfo(value) then
+									print(L["Not valid spell id"])
+								else
+									local num = #db.spellfilter[db.spellfilter.FilterPicker] + 1
+									db.spellfilter[db.spellfilter.FilterPicker][num] = { enabled = true, id = tonumber(value), castByAnyone = false, color = nil, unitType = 0, castSpellId = nil }
+									UpdateSpellFilter()								
+									StaticPopup_Show("RELOAD_UI")
+								end							
+							elseif RaidBuffs[db.spellfilter.FilterPicker] then
+								if not GetSpellInfo(value) then
+									print(L["Not valid spell id"])
 								else
 									local num = #db.spellfilter[db.spellfilter.FilterPicker][T.myclass] + 1
 									db.spellfilter[db.spellfilter.FilterPicker][T.myclass][num] = {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = false}
 									UpdateSpellFilter()								
 									StaticPopup_Show("RELOAD_UI")
 								end
-							else							
+							else
 								local name_list = db.spellfilter[db.spellfilter.FilterPicker]
 								name_list[value] = true
 								UpdateSpellFilter()
-								T[name_list] = db.spellfilter[name_list]
+								E[name_list] = db.spellfilter[name_list]
 								
-								if db.spellfilter.FilterPicker ~= "PlateBlacklist" then
-									StaticPopup_Show("RELOAD_UI")
-								end
+								StaticPopup_Show("RELOAD_UI")
 							end
 						end,
 						order = 5,
 					},
 					DeleteName = {
 						type = 'input',
-						name = function() if RaidBuffs[db.spellfilter.FilterPicker] then return L["Remove ID"] else return L["Remove Name"] end end,
-						desc = "You may only delete spells that you have added. Default spells can be disabled by unchecking the option",
+						name = function() if ClassTimerShared[db.spellfilter.FilterPicker] or ClassTimer[db.spellfilter.FilterPicker] or RaidBuffs[db.spellfilter.FilterPicker] then return L["Remove ID"] else return L["Remove Name"] end end,
+						desc = L["You may only delete spells that you have added. Default spells can be disabled by unchecking the option"],
 						get = function(info) return "" end,
 						set = function(info, value)
-							if RaidBuffs[db.spellfilter.FilterPicker] then
+
+							if ClassTimer[db.spellfilter.FilterPicker] then
 								if not GetSpellInfo(value) then
-									print("Not valid spell id")
+									print(L["Not valid spell id"])
+								elseif not db.spellfilter["SelectSpellFilter"] then
+									print(L["You must select a filter first"])
+								else
+									local curfilter = db.spellfilter["SelectSpellFilter"]
+									local match
+									for x, y in pairs (db.spellfilter[db.spellfilter.FilterPicker][T.myclass][curfilter]) do
+										if y["id"] == tonumber(value) then
+											match = y
+											db.spellfilter[db.spellfilter.FilterPicker][T.myclass][curfilter][x] = nil
+										end
+									end
+									if match == nil then
+										print(L["Spell not found in list"])
+									else
+										UpdateSpellFilter()								
+										StaticPopup_Show("RELOAD_UI")									
+									end	
+								end	
+							elseif ClassTimerShared[db.spellfilter.FilterPicker] then
+								if not GetSpellInfo(value) then
+									print(L["Not valid spell id"])
+								else
+									local match
+									for x, y in pairs (db.spellfilter[db.spellfilter.FilterPicker]) do
+										if y["id"] == tonumber(value) then
+											match = y
+											db.spellfilter[db.spellfilter.FilterPicker][x] = nil
+										end
+									end
+									if match == nil then
+										print(L["Spell not found in list"])
+									else
+										UpdateSpellFilter()								
+										StaticPopup_Show("RELOAD_UI")									
+									end	
+								end	
+							elseif RaidBuffs[db.spellfilter.FilterPicker] then
+								if not GetSpellInfo(value) then
+									print(L["Not valid spell id"])
 								else
 									local match
 									for x, y in pairs(db.spellfilter[db.spellfilter.FilterPicker][T.myclass]) do
@@ -2216,7 +2275,7 @@ function OUI.GenerateOptionsInternal()
 										end
 									end
 									if match == nil then
-										print("Spell not found in list")
+										print(L["Spell not found in list"])
 									else
 										UpdateSpellFilter()								
 										StaticPopup_Show("RELOAD_UI")									
@@ -2225,11 +2284,11 @@ function OUI.GenerateOptionsInternal()
 							else
 								local name_list = db.spellfilter[db.spellfilter.FilterPicker]
 								if db.spellfilter[db.spellfilter.FilterPicker][value] == nil then
-									print("Spell not found in list")
+									print(L["Spell not found in list"])
 								else
 									name_list[value] = nil
 									UpdateSpellFilter()
-									T[name_list] = db.spellfilter[name_list]
+									E[name_list] = db.spellfilter[name_list]
 									
 									if name_list == "RaidDebuffs" then
 										StaticPopup_Show("RELOAD_UI")

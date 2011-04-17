@@ -229,9 +229,14 @@ L["Choose Filter"] = true
 L["Choose the filter you want to modify."] = true
 L["New Spell ID"] = true
 L["New name"] = true
-L["Remove ID"] = true
-L["Remove Name"] = true
-L["Add a new spell name / ID to the list."] = true
+		L["Add a new spell name / ID to the list."] = true
+	L["Remove ID"] = true
+	L["Remove Name"] = true
+		L["Remove a name or ID from the list."] = true
+	L["New ID"] = true
+	L["Not valid spell id"] = true
+L["You may only delete spells that you have added. Default spells can be disabled by unchecking the option"] = true
+	L["Spell not found in list"] = true
 L["Display the buff if cast by anyone?"] = true
 L["Only display on this type of unit"] = true
 L["Show Ticks"] = true
@@ -240,3 +245,5 @@ L["All"] = true
 L["Friendly"] = true
 L["Enemy"] = true
 L["Fill only if you want to see line on bar that indicates if its safe to start casting spell and not clip the last tick, also note that this can be different from aura id."] = true
+
+

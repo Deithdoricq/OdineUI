@@ -5,4 +5,5 @@
 	<Script file='omen.lua' />
 	<Script file='dbm.lua' />
 	<Script file='skada.lua' />
+	<Script file='coolline.lua' />
 </Ui>

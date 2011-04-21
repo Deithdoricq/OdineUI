@@ -1,4 +1,4 @@
-V6.1 - ?????
+V6.1 - [04/21/2011]
 * completely reworked chat windows (may require a /resetui for most users if looks messed up)
 * can toggle chat windows outside of combat to be hidden or shown, skada embed support added and auto functions with button at bottom right chat!
 * fixed bug where bags datatext panel wasnt class colored when it should of been

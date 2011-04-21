@@ -88,7 +88,7 @@ local RightBars = function()
 		if not C["chat"].background then
 			TukuiPetBar:Point("RIGHT", UIParent, "RIGHT", -8, 0)
 		else
-			TukuiPetBar:Point("BOTTOMRIGHT", TukuiChatRight, "TOPRIGHT", 0, 3)
+			TukuiPetBar:Point("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", 0, 3)
 		end
 	end
 
@@ -282,8 +282,8 @@ for i = 1, 6 do
 		end)
 		Toggle[i]:SetScript("OnEvent", MainBars)
 	elseif i == 2 then
-		Toggle[i]:CreatePanel("Default", T.buttonsize, TukuiTabsRight:GetHeight() - 6, "RIGHT", TukuiTabsRight, "RIGHT", -3, 0)
-		Toggle[i]:SetFrameLevel(TukuiTabsRight:GetFrameLevel() + 1)
+		Toggle[i]:CreatePanel("Default", 20, 20, "TOPRIGHT", ChatRBackground2, "TOPRIGHT", -5, 23)
+		Toggle[i]:SetFrameLevel(ChatRBackground2:GetFrameLevel() + 3)
 		
 		if C["actionbar"].vertical_rightbars then
 			ToggleText(i, ">", false, true)
@@ -337,7 +337,8 @@ for i = 1, 6 do
 	elseif i == 5 then
 		Toggle[i]:CreatePanel("Default", T.buttonsize / 2, TukuiSplitBarRight:GetHeight(), "BOTTOMLEFT", TukuiSplitBarRight, "BOTTOMRIGHT", 3, 0)
 	elseif i == 6 then
-		Toggle[i]:CreatePanel("Default", 50, TukuiInfoLeft:GetHeight(), "BOTTOMRIGHT", TukuiInfoRight, "TOPRIGHT", 0, 3)
+		Toggle[i]:CreatePanel("Default", 50, TukuiInfoLeft:GetHeight(), "BOTTOMRIGHT", TukuiInfoRight, "TOPRIGHT", -3, 8)
+		Toggle[i]:SetFrameLevel(3)
 	
 		Toggle[i]:SetScript("OnMouseDown", function()	
 			if InCombatLockdown() then return end
@@ -377,11 +378,11 @@ for i = 1, 6 do
 	
 	Toggle[i]:SetScript("OnEnter", function()
 		if InCombatLockdown() then return end
-		Toggle[i]:SetAlpha(1) -- careful odine
+		Toggle[i]:SetAlpha(1)
 	end)
 
 	Toggle[i]:SetScript("OnLeave", function()
-		Toggle[i]:SetAlpha(0) -- careful odine
+		Toggle[i]:SetAlpha(0)
 	end)
 	
 	Toggle[i]:SetScript("OnUpdate", function() 

@@ -9,23 +9,21 @@ local function install()
 	SetCVar("mapQuestDifficulty", 1)
 	SetCVar("scriptErrors", 1)
 	SetCVar("ShowClassColorInNameplate", 1)
-	SetCVar("screenshotQuality", 8)
+	SetCVar("screenshotQuality", 10)
+	SetCVar("cameraDistanceMax", 50)
+	SetCVar("cameraDistanceMaxFactor", 3.4)
 	SetCVar("chatMouseScroll", 1)
-	SetCVar("chatStyle", "im")
+	SetCVar("chatStyle", "classic")
 	SetCVar("WholeChatWindowClickable", 0)
 	SetCVar("ConversationMode", "inline")
 	SetCVar("showTutorials", 0)
 	SetCVar("showNewbieTips", 0)
-	SetCVar("Maxfps", 120)
-	
 	SetCVar("autoQuestWatch", 1)
 	SetCVar("autoQuestProgress", 1)
+	SetCVar("showLootSpam", 1)
 	SetCVar("UberTooltips", 1)
 	SetCVar("removeChatDelay", 1)
-	SetCVar("showVKeyCastbar", 1)
-	SetCVar("bloatthreat", 0)
-	SetCVar("bloattest", 0)
-	SetCVar("showArenaEnemyFrames", 0)
+	SetCVar("gxTextureCacheSize", 512)
 	
 	-- Var ok, now setting chat frames if using Tukui chats.	
 	if (C.chat.enable == true) and (not IsAddOnLoaded("Prat") or not IsAddOnLoaded("Chatter")) then					
@@ -33,44 +31,45 @@ local function install()
 		FCF_SetLocked(ChatFrame1, 1)
 		FCF_DockFrame(ChatFrame2)
 		FCF_SetLocked(ChatFrame2, 1)
-		FCF_OpenNewWindow(L.chat_general)
-		FCF_SetLocked(ChatFrame3, 1)
-		FCF_DockFrame(ChatFrame3)
 
 		FCF_OpenNewWindow(LOOT)
-		FCF_UnDockFrame(ChatFrame4)
-		FCF_SetLocked(ChatFrame4, 1)
-		ChatFrame4:Show()
-		
+		FCF_UnDockFrame(ChatFrame3)
+		FCF_SetLocked(ChatFrame3, 1)
+		ChatFrame3:Show()			
+				
 		for i = 1, NUM_CHAT_WINDOWS do
 			local frame = _G[format("ChatFrame%s", i)]
 			local chatFrameId = frame:GetID()
 			local chatName = FCF_GetChatWindowInfo(chatFrameId)
 			
-			-- set the size of chat frames
-			frame:Size(T.InfoLeftRightWidth + 1, C["chat"].height)
+			_G["ChatFrame"..i]:SetSize(T.Scale(T.InfoLeftRightWidth - 5), T.Scale(C["chat"].height))
 			
-			-- tell wow that we are using new size
-			SetChatWindowSavedDimensions(chatFrameId, T.Scale(T.InfoLeftRightWidth + 1), T.Scale(C["chat"].height))
+			-- this is the default width and height of Elvui chats.
+			SetChatWindowSavedDimensions(chatFrameId, T.Scale(T.InfoLeftRightWidth + -4), T.Scale(C["chat"].height))
 			
-			-- move general bottom left or Loot (if found) on right
+			-- move general bottom left
 			if i == 1 then
 				frame:ClearAllPoints()
-				frame:Point("BOTTOMLEFT", TukuiInfoLeft, "TOPLEFT", 0, 6)
-			elseif i == 4 and chatName == LOOT then
+				frame:SetPoint("BOTTOMLEFT", ChatLBackground, "BOTTOMLEFT", T.Scale(2), 0)
+			elseif i == 3 then
 				frame:ClearAllPoints()
-				frame:Point("BOTTOMRIGHT", TukuiInfoRight, "TOPRIGHT", 0, 6)
+				frame:SetPoint("BOTTOMLEFT", ChatRBackground, "BOTTOMLEFT", T.Scale(2), 0)			
 			end
 					
 			-- save new default position and dimension
 			FCF_SavePositionAndDimensions(frame)
 			
-			-- set default tukui font size
-			FCF_SetChatWindowFontSize(nil, frame, C["chat"].fsize)
+			-- set default Elvui font size
+			FCF_SetChatWindowFontSize(nil, frame, 12)
 			
-			-- rename windows general and combat log
-			if i == 1 then FCF_SetWindowName(frame, "G, S & W") end
-			if i == 2 then FCF_SetWindowName(frame, "Log") end
+			-- rename windows general because moved to chat #3
+			if i == 1 then
+				FCF_SetWindowName(frame, GENERAL)
+			elseif i == 2 then
+				FCF_SetWindowName(frame, GUILD_EVENT_LOG)
+			elseif i == 3 then 
+				FCF_SetWindowName(frame, LOOT.." / "..TRADE) 
+			end
 		end
 		
 		ChatFrame_RemoveAllMessageGroups(ChatFrame1)
@@ -89,9 +88,7 @@ local function install()
 		ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_SAY")
 		ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_EMOTE")
 		ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_YELL")
-		ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_WHISPER")
 		ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_BOSS_EMOTE")
-		ChatFrame_AddMessageGroup(ChatFrame1, "MONSTER_BOSS_WHISPER")
 		ChatFrame_AddMessageGroup(ChatFrame1, "PARTY")
 		ChatFrame_AddMessageGroup(ChatFrame1, "PARTY_LEADER")
 		ChatFrame_AddMessageGroup(ChatFrame1, "RAID")
@@ -110,25 +107,24 @@ local function install()
 		ChatFrame_AddMessageGroup(ChatFrame1, "ACHIEVEMENT")
 		ChatFrame_AddMessageGroup(ChatFrame1, "BN_WHISPER")
 		ChatFrame_AddMessageGroup(ChatFrame1, "BN_CONVERSATION")
-					
-		-- Setup the spam chat frame
-		ChatFrame_RemoveAllMessageGroups(ChatFrame3)
-		ChatFrame_AddChannel(ChatFrame4, L.chat_trade) -- erf, it seem we need to localize this now
-		ChatFrame_AddChannel(ChatFrame4, L.chat_general) -- erf, it seem we need to localize this now
-		ChatFrame_AddChannel(ChatFrame4, L.chat_defense) -- erf, it seem we need to localize this now
-		ChatFrame_AddChannel(ChatFrame4, L.chat_recrutment) -- erf, it seem we need to localize this now
-		ChatFrame_AddChannel(ChatFrame4, L.chat_lfg) -- erf, it seem we need to localize this now
-				
-		-- Setup the right chat
-		ChatFrame_RemoveAllMessageGroups(ChatFrame4)
-		ChatFrame_AddMessageGroup(ChatFrame4, "COMBAT_XP_GAIN")
-		ChatFrame_AddMessageGroup(ChatFrame4, "COMBAT_HONOR_GAIN")
-		ChatFrame_AddMessageGroup(ChatFrame4, "COMBAT_FACTION_CHANGE")
-		ChatFrame_AddMessageGroup(ChatFrame4, "LOOT")
-		ChatFrame_AddMessageGroup(ChatFrame4, "MONEY")
-		ChatFrame_AddChannel(ChatFrame4, L.chat_trade) 
-		ChatFrame_AddChannel(ChatFrame4, L.chat_general)
-				
+		ChatFrame_AddMessageGroup(ChatFrame1, "BN_INLINE_TOAST_ALERT")
+		
+
+		ChatFrame_RemoveAllMessageGroups(ChatFrame3)	
+		ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_FACTION_CHANGE")
+		ChatFrame_AddMessageGroup(ChatFrame3, "SKILL")
+		ChatFrame_AddMessageGroup(ChatFrame3, "LOOT")
+		ChatFrame_AddMessageGroup(ChatFrame3, "MONEY")
+		ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_XP_GAIN")
+		ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_HONOR_GAIN")
+		ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_GUILD_XP_GAIN")
+		ChatFrame_AddChannel(ChatFrame3, L.chat_trade) -- erf, it seem we need to localize this now
+		ChatFrame_AddChannel(ChatFrame3, L.chat_general) -- erf, it seem we need to localize this now
+		ChatFrame_AddChannel(ChatFrame3, L.chat_defense) -- erf, it seem we need to localize this now
+		ChatFrame_AddChannel(ChatFrame3, L.chat_recrutment) -- erf, it seem we need to localize this now
+		ChatFrame_AddChannel(ChatFrame3, L.chat_lfg) -- erf, it seem we need to localize this now
+
+		
 		-- enable classcolor automatically on login and on each character without doing /configure each time.
 		ToggleChatColorNamesByClassGroup(true, "SAY")
 		ToggleChatColorNamesByClassGroup(true, "EMOTE")
@@ -150,6 +146,12 @@ local function install()
 		ToggleChatColorNamesByClassGroup(true, "CHANNEL3")
 		ToggleChatColorNamesByClassGroup(true, "CHANNEL4")
 		ToggleChatColorNamesByClassGroup(true, "CHANNEL5")
+		ToggleChatColorNamesByClassGroup(true, "CHANNEL6")
+		ToggleChatColorNamesByClassGroup(true, "CHANNEL7")
+		ToggleChatColorNamesByClassGroup(true, "CHANNEL8")
+		ToggleChatColorNamesByClassGroup(true, "CHANNEL9")
+		ToggleChatColorNamesByClassGroup(true, "CHANNEL10")
+		ToggleChatColorNamesByClassGroup(true, "CHANNEL11")
 	end
 	
 	-- reset saved variables on char
@@ -304,13 +306,19 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 		StaticPopup_Show("TUKUIDISABLE_RAID")
 	end
 	
+	if C["unitframes"].arena == true then
+		SetCVar("showArenaEnemyFrames", 0)
+	end
+	
 	if C["nameplate"].enable == true and C["nameplate"].enhancethreat == true then
 		SetCVar("threatWarning", 3)
 	end
+
+	T.ChatLIn = true
+	T.ChatRIn = true
 	
 	print(L.core_welcome3)
 	print(L.core_welcome2)
-	
 	if IsAddOnLoaded("Tukui_Config") then
 		print(L.core_welcomeCF)
 	end

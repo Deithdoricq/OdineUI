@@ -137,12 +137,13 @@ DB["actionbar"] = {
 	["hotkey"] = true,                                 -- enable hotkey display because it was a lot requested
 	["hideshapeshift"] = false,                         -- hide shapeshift or totembar because it was a lot requested.
 	["shapeshiftmouseover"] = false,					-- hide shapeshift or totembar unless moused over.
+	--["rightbarmouseover"] = true,						-- mouseover on rightbars
 	["showgrid"] = true,                                -- show grid on empty button
 	["buttonsize"] = 29,                                -- normal buttons size 27
 	["petbuttonsize"] = 29,                             -- pet & stance buttons size
 	["stancebuttonsize"] = 29,                             -- pet & stance buttons size
 	["buttonspacing"] = 2,                              -- buttons spacing 4
-	["vertical_rightbars"] = false,						-- enables vertical rightbars
+	["vertical_rightbars"] = true,						-- enables vertical rightbars
 }
 
 DB["bags"] = {
@@ -207,8 +208,8 @@ DB["misc"] = {
 DB["chat"] = {
 	["enable"] = true,                                  -- blah
 	["whispersound"] = true,                            -- play a sound when receiving whisper
-	["height"] = 200,									-- adjust the chatframe height default: 165 odine: 215
-	["background"] = true,								-- chat frame backgrounds
+	["height"] = 150,									-- adjust the chatframe height default: 165 odine: 200
+	["background"] = true,								-- chat frame backgrounds 150
 	["fading"] = false,									-- allow chat windows to fade out
 	["justifyRight"] = false,							-- when set to true text in right chat box will be aligned towards the right side of the chat box
 	["fsize"] = 12,										-- default font size
@@ -264,7 +265,7 @@ DB["addonskins"] = {
 	["omen"] = true,									-- skins Omen
 	["skada"] = true,									-- skins skada
 	["coolline"] = true,								-- skins CoolLine
-		["cl_placement"] = 1,							-- allows you to change where CoolLine is placed
+	["embed"] = "NONE",
 }
 
 DB["classtimer"] = {

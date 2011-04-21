@@ -35,7 +35,7 @@ anchor:SetTemplate("Default", true)
 anchor:SetBackdropBorderColor(1, 0, 0, 1)
 anchor:SetMovable(true)
 if C.chat.background then
-	anchor:SetPoint("BOTTOMRIGHT", TukuiChatRight, "TOPRIGHT", 0, -TukuiInfoRight:GetHeight())
+	anchor:SetPoint("BOTTOMRIGHT", ChatRBackground, "TOPRIGHT", 0, -TukuiInfoRight:GetHeight())
 else
 	anchor:SetPoint("BOTTOMRIGHT", TukuiInfoRight)
 end
@@ -100,35 +100,36 @@ local function UpdateTooltip(self)
 				self:SetPoint("BOTTOMRIGHT", TukuiBags, "TOPRIGHT", 0, x)			
 			else
 				if not C["actionbar"].enable then
-					if not C["chat"].background then
+					if not C["chat"].background or T.ChatRightShown == false then
 						self:ClearAllPoints()
 						self:SetPoint("BOTTOMRIGHT", TukuiInfoRight, "TOPRIGHT", 0, x)
 					else
 						self:ClearAllPoints()
-						self:SetPoint("BOTTOMRIGHT", TukuiChatRight, "TOPRIGHT", 0, x)
+						self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", 0, x + T.Scale(26))
 					end
 				else
-					if not C["chat"].background then
+					if not C["chat"].background or T.ChatRightShown == false then
 						self:ClearAllPoints()
-						self:SetPoint("BOTTOMRIGHT", TukuiInfoRight, "TOPRIGHT", 0, x)
-					elseif HasPetUI() then
-						if C["actionbar"].vertical_rightbars then
-							self:ClearAllPoints()
-							self:SetPoint("BOTTOMRIGHT", TukuiPetBar, "BOTTOMLEFT", -x, 0)
+						if  C["addonskins"].embed ==  "Skada" and IsAddOnLoaded("Skada") and Skada:GetWindows()[1].bargroup:IsShown() then
+							self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", 0, x + T.Scale(26))
 						else
+							self:SetPoint("BOTTOMRIGHT", TukuiInfoRight, "TOPRIGHT", 0, x)
+						end
+					elseif HasPetUI() then
+						if not C["actionbar"].vertical_rightbars then
 							self:ClearAllPoints()
 							self:SetPoint("BOTTOMRIGHT", TukuiPetBar, "TOPRIGHT", 0, x)
 						end
 					else
 						if C["actionbar"].vertical_rightbars and TukuiSaved.rightbars > 0 then
 							self:ClearAllPoints()
-							self:SetPoint("BOTTOMRIGHT", TukuiRightBar, "BOTTOMLEFT", -x, 0)
+							self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", 0, x + T.Scale(26))
 						elseif not C["actionbar"].vertical_rightbars and TukuiSaved.rightbars > 0 then
 							self:ClearAllPoints()
 							self:SetPoint("BOTTOMRIGHT", TukuiRightBar, "TOPRIGHT", 0, x)
 						else
 							self:ClearAllPoints()
-							self:SetPoint("BOTTOMRIGHT", TukuiChatRight, "TOPRIGHT", 0, x)
+							self:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", 0, x + T.Scale(26))
 						end
 					end
 				end
@@ -139,6 +140,7 @@ local function UpdateTooltip(self)
 		end
 	end
 end
+
 
 hooksecurefunc("GameTooltip_SetDefaultAnchor", function(self, parent)
 	if C["tooltip"].cursor == true then

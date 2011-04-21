@@ -1,40 +1,12 @@
 local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
 
--- Chat Frames
-local TukuiChatLeft = CreateFrame("Frame", "TukuiChatLeft", UIParent)
-TukuiChatLeft:CreatePanel("Transparent", T.InfoLeftRightWidth, C["chat"].height, "BOTTOMLEFT", UIParent, "BOTTOMLEFT", 8, 8)
-
-local TukuiChatRight = CreateFrame("Frame", "TukuiChatRight", UIParent)
-TukuiChatRight:CreatePanel("Transparent", T.InfoLeftRightWidth, C["chat"].height, "BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -8, 8)
-
--- Chat Tabs
-local TukuiTabsLeft = CreateFrame("Frame", "TukuiTabsLeft", UIParent)
-TukuiTabsLeft:CreatePanel("Default", 1, 23, "TOPLEFT", TukuiChatLeft, "TOPLEFT", 5, -5)
-TukuiTabsLeft:Point("TOPRIGHT", TukuiChatLeft, "TOPRIGHT", -5, -5)
-TukuiTabsLeft:SetFrameLevel(TukuiChatLeft:GetFrameLevel() + 1)
-
-local TukuiTabsRight = CreateFrame("Frame", "TukuiTabsRight", UIParent)
-TukuiTabsRight:CreatePanel("Default", 1, 23, "TOPLEFT", TukuiChatRight, "TOPLEFT", 5, -5)
-TukuiTabsRight:Point("TOPRIGHT", TukuiChatRight, "TOPRIGHT", -5, -5)
-TukuiTabsRight:SetFrameLevel(TukuiChatRight:GetFrameLevel() + 1)
-
-if not C["chat"].background then
-	TukuiChatLeft:SetAlpha(0)
-	TukuiChatRight:SetAlpha(0)
-	TukuiTabsLeft:SetAlpha(0)
-	TukuiTabsRight:SetAlpha(0)
-end
-
--- Data Frames
-local TukuiInfoLeft = CreateFrame("Frame", "TukuiInfoLeft", UIParent)
-TukuiInfoLeft:CreatePanel("Default", 1, 23, "BOTTOMLEFT", TukuiChatLeft, "BOTTOMLEFT", 5, 5)
-TukuiInfoLeft:Point("BOTTOMRIGHT", TukuiChatLeft, "BOTTOMRIGHT", -5, 5)
-TukuiInfoLeft:SetFrameLevel(TukuiChatLeft:GetFrameLevel() + 1)
-
-local TukuiInfoRight = CreateFrame("Frame", "TukuiInfoRight", UIParent)
-TukuiInfoRight:CreatePanel("Default", 1, 23, "BOTTOMLEFT", TukuiChatRight, "BOTTOMLEFT", 5, 5)
-TukuiInfoRight:Point("BOTTOMRIGHT", TukuiChatRight, "BOTTOMRIGHT", -5, 5)
-TukuiInfoRight:SetFrameLevel(TukuiChatRight:GetFrameLevel() + 1)
+local f = CreateFrame("Frame", "TukuiBottomPanel", UIParent)
+f:SetHeight(23)
+f:SetWidth(UIParent:GetWidth() + (T.mult * 2))
+f:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", -T.mult, -T.mult)
+f:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", T.mult, -T.mult)
+f:SetFrameStrata("BACKGROUND")
+f:SetFrameLevel(0)
 
 -- Bottom Data Panels
 
@@ -49,6 +21,135 @@ leftsd:SetFrameLevel(2)
 local rightsd = CreateFrame("Frame", "TukuiRightSplitBarData", UIParent)
 rightsd:CreatePanel("Default", (T.buttonsize * 3 + T.buttonspacing * 4) + 2, 20, "LEFT", TukuiDataBottom, "RIGHT", T.Scale(6), 0)
 rightsd:SetFrameLevel(2)
+
+-- CHAT BACKGROUND LEFT (MOVES)
+local chatlbgdummy = CreateFrame("Frame", "ChatLBackground", UIParent)
+chatlbgdummy:SetWidth(T.InfoLeftRightWidth)
+chatlbgdummy:SetHeight(C["chat"].height+6)
+chatlbgdummy:SetPoint("BOTTOMLEFT", TukuiBottomPanel, "TOPLEFT", T.Scale(6),  T.Scale(8))
+
+-- CHAT BACKGROUND LEFT (DOESN'T MOVE THIS IS WHAT WE ATTACH FRAMES TO)
+local chatlbgdummy2 = CreateFrame("Frame", "ChatLBackground2", UIParent)
+chatlbgdummy2:SetWidth(T.InfoLeftRightWidth)
+chatlbgdummy2:SetHeight(C["chat"].height+6)
+chatlbgdummy2:SetPoint("BOTTOMLEFT", TukuiBottomPanel, "TOPLEFT", T.Scale(6),  T.Scale(8))
+
+-- CHAT BACKGROUND RIGHT (MOVES)
+local chatrbgdummy = CreateFrame("Frame", "ChatRBackground", UIParent)
+chatrbgdummy:SetWidth(T.InfoLeftRightWidth)
+chatrbgdummy:SetHeight(C["chat"].height+6)
+chatrbgdummy:SetPoint("BOTTOMRIGHT", TukuiBottomPanel, "TOPRIGHT", T.Scale(-6),  T.Scale(8))
+
+-- CHAT BACKGROUND RIGHT (DOESN'T MOVE THIS IS WHAT WE ATTACH FRAMES TO)
+local chatrbgdummy2 = CreateFrame("Frame", "ChatRBackground2", UIParent)
+chatrbgdummy2:SetWidth(T.InfoLeftRightWidth)
+chatrbgdummy2:SetHeight(C["chat"].height+6)
+chatrbgdummy2:SetPoint("BOTTOMRIGHT", TukuiBottomPanel, "TOPRIGHT", T.Scale(-6),  T.Scale(8))
+
+T.ChatRightShown = true
+if C["chat"].background == true then
+	local chatlbg = CreateFrame("Frame", "ChatLBG", ChatLBackground)
+	chatlbg:SetTemplate("Transparent")
+	chatlbg:SetAllPoints(chatlbgdummy)
+	chatlbg:SetFrameStrata("BACKGROUND")
+	
+	local chatltbg = CreateFrame("Frame", nil, chatlbg)
+	chatltbg:SetTemplate("Default", true)
+	chatltbg:SetPoint("BOTTOMLEFT", chatlbg, "TOPLEFT", 0, T.Scale(3))
+	chatltbg:SetPoint("BOTTOMRIGHT", chatlbg, "TOPRIGHT", T.Scale(0), T.Scale(3))
+	chatltbg:SetHeight(T.Scale(22))
+	chatltbg:SetFrameStrata("BACKGROUND")
+	
+	chatlbg:CreateShadow("Default")
+	chatltbg:CreateShadow("Default")
+end
+
+if C["chat"].background == true then
+	local chatrbg = CreateFrame("Frame", "ChatRBG", ChatRBackground)
+	chatrbg:SetAllPoints(chatrbgdummy)
+	chatrbg:SetTemplate("Transparent")
+	chatrbg:SetFrameStrata("BACKGROUND")
+	chatrbg:SetAlpha(0)
+
+	local chatrtbg = CreateFrame("Frame", nil, chatrbg)
+	chatrtbg:SetTemplate("Default", true)
+	chatrtbg:SetPoint("BOTTOMLEFT", chatrbg, "TOPLEFT", 0, T.Scale(3))
+	chatrtbg:SetPoint("BOTTOMRIGHT", chatrbg, "TOPRIGHT", T.Scale(0), T.Scale(3))
+	chatrtbg:SetHeight(T.Scale(22))
+	chatrtbg:SetFrameStrata("BACKGROUND")
+	chatrbg:CreateShadow("Default")
+	chatrtbg:CreateShadow("Default")
+end
+
+--INFO LEFT
+local infoleft = CreateFrame("Frame", "TukuiInfoLeft", UIParent)
+infoleft:SetFrameLevel(2)
+infoleft:SetTemplate("Default", true)
+infoleft:CreateShadow("Default")
+infoleft:SetPoint("TOPLEFT", chatlbgdummy2, "BOTTOMLEFT", T.Scale(17), T.Scale(-3))
+infoleft:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", T.Scale(-0), T.Scale(-26))
+
+--INFOLEFT L BUTTON
+local infoleftLbutton = CreateFrame("Button", "TukuiInfoLeftLButton", TukuiInfoLeft)
+infoleftLbutton:SetTemplate("Default", true)
+infoleftLbutton:CreateShadow("Default")
+infoleftLbutton:SetPoint("TOPRIGHT", infoleft, "TOPLEFT", T.Scale(-2), 0)
+infoleftLbutton:SetPoint("BOTTOMLEFT", chatlbgdummy2, "BOTTOMLEFT", 0, T.Scale(-26))
+
+infoleftLbutton:FontString(nil, C["media"].dfont, C["datatext"].fsize, "THINOUTLINE")
+infoleftLbutton.text:SetText("-")
+infoleftLbutton.text:SetPoint("CENTER")
+
+infoleftLbutton:HookScript("OnEnter", function(self)
+	GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
+	GameTooltip:ClearLines()
+	GameTooltip:AddLine("Left Click: Hide Left Chat")
+	GameTooltip:AddLine("Right Click: Hide Both Chat Windows")
+	if C["addonskins"].embed ~= "NONE" then
+		GameTooltip:AddLine('')
+		GameTooltip:AddLine("Holding SHIFT will bypass Embed Toggles")
+	end
+	GameTooltip:Show()
+end)
+
+infoleftLbutton:HookScript("OnLeave", function()
+	GameTooltip:Hide()
+end)
+
+-- INFO RIGHT
+local inforight = CreateFrame("Frame", "TukuiInfoRight", UIParent)
+inforight:SetTemplate("Default", true)
+inforight:SetFrameLevel(2)
+inforight:CreateShadow("Default")
+inforight:SetPoint("TOPLEFT", chatrbgdummy2, "BOTTOMLEFT", T.Scale(0), T.Scale(-3))
+inforight:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", T.Scale(-17), T.Scale(-26))
+
+-- RIGHT BUTTON
+local inforightRbutton = CreateFrame("Button", "TukuiInfoRightRButton", TukuiInfoRight)
+inforightRbutton:SetTemplate("Default", true)
+inforightRbutton:CreateShadow("Default")
+inforightRbutton:SetPoint("TOPLEFT", inforight, "TOPRIGHT", T.Scale(2), 0)
+inforightRbutton:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", 0, T.Scale(-26))
+
+inforightRbutton:FontString(nil, C["media"].dfont, C["datatext"].fsize, "THINOUTLINE")
+inforightRbutton.text:SetText("-")
+inforightRbutton.text:SetPoint("CENTER")
+
+inforightRbutton:HookScript("OnEnter", function(self)
+	GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
+	GameTooltip:ClearLines()
+	GameTooltip:AddLine("Left Click: Hide Right Chat")
+	GameTooltip:AddLine("Right Click: Hide Both Chat Windows")
+	if C["addonskins"].embed ~= "NONE" then
+		GameTooltip:AddLine('')
+		GameTooltip:AddLine("Holding SHIFT will bypass Embed Toggles")
+	end
+	GameTooltip:Show()
+end)
+
+inforightRbutton:HookScript("OnLeave", function()
+	GameTooltip:Hide()
+end)
 
 -- Action Bars
 if C["actionbar"].enable then
@@ -72,10 +173,10 @@ if C["actionbar"].enable then
 	TukuiSplitBarRight:CreatePanel("Default", (T.buttonsize * 3) + (T.buttonspacing * 4) + 2, TukuiBar1:GetHeight(), "BOTTOMLEFT", TukuiBar1, "BOTTOMRIGHT", 6, 0)
 
 	local TukuiRightBar = CreateFrame("Frame", "TukuiRightBar", UIParent)
-	TukuiRightBar:CreatePanel("Default", (T.buttonsize * 12 + T.buttonspacing * 13) + 2,  (T.buttonsize * 12 + T.buttonspacing * 13) + 2, "BOTTOMRIGHT", TukuiChatRight, "TOPRIGHT", 0, 3)
-	if not C["chat"].background then
-		TukuiRightBar:ClearAllPoints()
-		TukuiRightBar:Point("RIGHT", UIParent, "RIGHT", -8, -250)
+	if C["actionbar"].vertical_rightbars == true then
+		TukuiRightBar:CreatePanel("Default", (T.buttonsize * 12 + T.buttonspacing * 13) + 2,  (T.buttonsize * 12 + T.buttonspacing * 13) + 2, "BOTTOMRIGHT", ChatRBackground, "TOPRIGHT", 0, T.Scale(175))
+	else
+		TukuiRightBar:CreatePanel("Default", (T.buttonsize * 12 + T.buttonspacing * 13) + 2,  (T.buttonsize * 12 + T.buttonspacing * 13) + 2, "BOTTOMRIGHT", ChatRBackground, "TOPRIGHT", 0, T.Scale(27))
 	end
 
 	local TukuiPetBar = CreateFrame("Frame", "TukuiPetBar", UIParent)

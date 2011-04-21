@@ -6,8 +6,8 @@ if not C["actionbar"].enable == true then return end
 ---------------------------------------------------------------------------
 
 -- used for anchor totembar or shapeshiftbar
-local TukuiShift = CreateFrame("Frame", "TukuiShiftBar", TukuiChatLeft)
-TukuiShift:SetPoint("BOTTOMLEFT", TukuiChatLeft, "BOTTOMRIGHT", T.buttonspacing * 2, 0);
+local TukuiShift = CreateFrame("Frame", "TukuiShiftBar", TukuiInfoLeft)
+TukuiShift:SetPoint("BOTTOMLEFT", TukuiInfoLeft, "BOTTOMRIGHT", T.buttonspacing * 2, 0);
 TukuiShift:SetWidth((T.buttonsize * 5) + (T.buttonspacing * 4))
 TukuiShift:SetHeight(T.buttonsize)
 TukuiShift:SetFrameStrata("MEDIUM")

@@ -418,43 +418,43 @@ function Stuffing:CreateBagFrame(w)
 	local function bagUpdate(f, ...)
 		if C["bags"].placement == 1 then
 			if w == "Bank" then
-				f:SetPoint("BOTTOMLEFT", TukuiChatLeft, "BOTTOMLEFT")
+				f:SetPoint("BOTTOMLEFT", ChatLBackground2, "BOTTOMLEFT")
 			else
-				f:SetPoint("BOTTOMRIGHT", TukuiChatRight, "BOTTOMRIGHT")
+				f:SetPoint("BOTTOMRIGHT", ChatRBackground2, "BOTTOMRIGHT")
 			end
 		else
 			if w == "Bank" then
 				if not C["chat"].background then
 					f:SetPoint("BOTTOMLEFT", TukuiInfoLeft, "TOPLEFT", 0, 3)
 				else
-					f:SetPoint("BOTTOMLEFT", TukuiChatLeft, "TOPLEFT", 0, 3)
+					f:SetPoint("BOTTOMLEFT", ChatLBackground2, "TOPLEFT", 0, 3)
 				end
 			else
 				if not C["actionbar"].enable then
 					if not C["chat"].background then
 						f:SetPoint("BOTTOMLEFT", TukuiInfoRight, "TOPLEFT", 0, 3)
 					else
-						f:SetPoint("BOTTOMRIGHT", TukuiChatRight, "TOPRIGHT", 0, 3)
+						f:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", 0, 3)
 					end
 				else
 					if not C["chat"].background then
 						f:SetPoint("BOTTOMLEFT", TukuiInfoRight, "TOPLEFT", 0, 3)
 					elseif HasPetUI() then
 						if C["actionbar"].vertical_rightbars then
-							f:SetPoint("BOTTOMRIGHT", TukuiChatRight, "TOPRIGHT", 0, 3)
+							f:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", 0, 3)
 						else
 							f:SetPoint("BOTTOMRIGHT", TukuiPetBar, "TOPRIGHT", 0, 3)
 						end
 					elseif UnitHasVehicleUI("player") then
-						f:SetPoint("BOTTOMRIGHT", TukuiChatRight, "TOPRIGHT", 0, 3)
+						f:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", 0, 3)
 					else
 						if C["actionbar"].vertical_rightbars then
-							f:SetPoint("BOTTOMRIGHT", TukuiChatRight, "TOPRIGHT", 0, 3)
+							f:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", 0, 3)
 						else
 							if TukuiSaved.rightbars >= 1 then
 								f:SetPoint("BOTTOMRIGHT", TukuiRightBar, "TOPRIGHT", 0, 3)
 							else
-								f:SetPoint("BOTTOMRIGHT", TukuiChatRight, "TOPRIGHT", 0, 3)
+								f:SetPoint("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", 0, 3)
 							end
 						end
 					end

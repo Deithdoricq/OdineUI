@@ -1,5 +1,7 @@
 local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
 
+if C["datatext"].bars ~= true then return end
+
 local font, fonts, fontf = C["media"].font, 10, "OUTLINE"
 local space = 0
 local dtext = C["datatext"].bar_text

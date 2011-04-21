@@ -122,7 +122,6 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"DropDownList2Backdrop",
 			"LFDSearchStatus",
 			"AutoCompleteBox",
-			"ColorPickerFrame",
 			"ConsolidatedBuffsTooltip",
 			"ReadyCheckFrame",
 			"StackSplitFrame",
@@ -208,8 +207,7 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"GameMenuFrame", 
 			"InterfaceOptionsFrame", 
 			"AudioOptionsFrame", 
-			"VideoOptionsFrame",
-			"ColorPickerFrame"
+			"VideoOptionsFrame"
 		}
 		
 		for i = 1, getn(BlizzardHeader) do
@@ -237,8 +235,6 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 			"InterfaceOptionsFrameDefaults", 
 			"InterfaceOptionsFrameOkay", 
 			"InterfaceOptionsFrameCancel",
-			"ColorPickerOkayButton",
-			"ColorPickerCancelButton",
 			"ReadyCheckFrameYesButton",
 			"ReadyCheckFrameNoButton",
 			"StackSplitOkayButton",
@@ -262,10 +258,6 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		_G["AudioOptionsFrameOkay"]:SetPoint("RIGHT",_G["AudioOptionsFrameCancel"],"LEFT",-4,0)
 		_G["InterfaceOptionsFrameOkay"]:ClearAllPoints()
 		_G["InterfaceOptionsFrameOkay"]:SetPoint("RIGHT",_G["InterfaceOptionsFrameCancel"],"LEFT", -4,0)
-		_G["ColorPickerCancelButton"]:ClearAllPoints()
-		_G["ColorPickerOkayButton"]:ClearAllPoints()
-		_G["ColorPickerCancelButton"]:SetPoint("BOTTOMRIGHT", ColorPickerFrame, "BOTTOMRIGHT", -6, 6)
-		_G["ColorPickerOkayButton"]:SetPoint("RIGHT",_G["ColorPickerCancelButton"],"LEFT", -4,0)
 		_G["ReadyCheckFrameYesButton"]:SetParent(_G["ReadyCheckFrame"])
 		_G["ReadyCheckFrameNoButton"]:SetParent(_G["ReadyCheckFrame"]) 
 		_G["ReadyCheckFrameYesButton"]:SetPoint("RIGHT", _G["ReadyCheckFrame"], "CENTER", -1, 0)
@@ -295,8 +287,6 @@ TukuiSkin:SetScript("OnEvent", function(self, event, addon)
 		LFDDungeonReadyDialog:CreateShadow("Default")
 		SkinButton(LFDDungeonReadyDialogEnterDungeonButton)
 		SkinButton(LFDDungeonReadyDialogLeaveQueueButton)
-		SkinButton(ColorPickerOkayButton)
-		SkinButton(ColorPickerCancelButton)
 	end
 	
 	-- mac menu/option panel, made by affli.

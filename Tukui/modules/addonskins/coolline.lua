@@ -8,11 +8,9 @@ local db = CoolLineDB
 
 -- Checking for variables...
 if db then
-	-- Uncomment below to set a fixed point
-	if C["addonskins"].cl_placement == 2 then
-		db.x = 0
-		db.y = 490
-	end
+	-- Positions below info line, comment both lines below to allow for manual placement
+	db.x = 0
+	db.y = 490
 
 	db.h = T.buttonsize - 6
 	db.w = T.InfoLeftRightWidth - 6
@@ -32,10 +30,6 @@ local setup = function()
 	background:SetTemplate("Default", true)
 	background:CreateShadow("Default")
 	cl.background = background
-
-	if C["addonskins"].cl_placement == 1 then
-		cl:SetAllPoints(TukuiTabsRight)
-	end
 end
 
 setup()

@@ -16,7 +16,7 @@ for i= 1, 12 do
 	b:ClearAllPoints()
 	b:SetFrameStrata("BACKGROUND")
 	b:SetFrameLevel(15)
-	
+
 	if i == 1 then
 		if C["actionbar"].vertical_rightbars == true then
 			b:Point("TOPRIGHT", _G["MultiBarRightButton1"], "TOPLEFT", -T.buttonspacing, 0)

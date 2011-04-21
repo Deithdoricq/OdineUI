@@ -5,6 +5,7 @@ if not L then return end
 
 -- Menu
 L["Action Bars"] = true
+	L["Customize your actionbars"] = true
 L["Nameplates"] = true
 L["Unit Frames"] = true
 L["Raid/Party Settings"] = true
@@ -151,6 +152,80 @@ L["Raid/Party Settings"] = true
 -- Name plates
 L["Nameplates"] = true
 	L["NP_DESC"] = "Configure options for nameplates"
+	L["Show Health"] = true
+		L["Display health values on nameplates, this will also increase the size of the nameplate"] = true
+	L["Color health by Threat"] = true
+		L["Color the nameplate's healthbar by your current threat, Example: good threat color is used if your a tank when you have threat, opposite for DPS."] = true
+	L["Toggle Combat"] = true
+		L["Toggles the nameplates off when not in combat."] = true
+	L["Track Debuffs"] = true
+		L["Tracks your debuffs on nameplates."] = true
+	L["Track CC"] = true
+		L["Tracks CC debuffs on nameplates from you or a friendly player"] = true
+L["Colors"] = true
+	L["Good Color"] = true
+		L["This is displayed when you have threat as a tank, if you don't have threat it is displayed as a DPS/Healer"] = true
+	L["Bad Color"] = true
+		L["This is displayed when you don't have threat as a tank, if you do have threat it is displayed as a DPS/Healer"] = true
+	L["Transition Color"] = true
+		L["This color is displayed when gaining/losing threat"] = true
+		
+-- Action Bars
+L["Enable"] = true
+	L["Enable using built in actionbars."] = true
+L["Show Hotkeys"] = true
+	L["Toggle whether you want to show keybindings on your actionbar buttons."] = true
+L["Hide Shapeshift"] = true
+	L["Toggle whether you want to show your shapeshift/totems."] = true
+L["Mouseover Shapeshift"] = true
+	L["Toggle whether you want to show the shapeshift bar only when moused over."] = true
+L["Show Grid"] = true
+	L["Toggle whether you want to show a grid on empty buttons."] = true
+L["Vertical rightbars"] = true
+	L["Toggle whether you want to have your rightbars vertical instead of horizontal."] = true
+L["Mouseover Rightbar"] = true
+	L["Toggle whether you want to have your rightbars hidden unless moused over."] = true
+L["Button Size"] = true
+	L["Controls the size of actionbar buttons."] = true
+L["Pet Button Size"] = true
+	L["Controls the size of your pets actionbar buttons."] = true
+L["Button Spacing"] = true
+	L["Controls the spacing between buttons."] = true
+	
+-- Misc Settings
+
+
+	
+-- Chat Settings
+L["Chat Options"] = true
+	L["CHAT_DESC"] = "Allows you to customize settings for chat."
+	L["Toggles whether you want to use tukui chat system."] = true
+L["Whisper sound"] = true
+	L["Toggles whether you want to play a sound when you receive whispers."] = true
+L["Background"] = true
+	L["Toggles whether you want to use backgrounds for chat windows."] = true
+L["Fading"] = true
+	L["Toggles whether you want to fade out chat text when not active."] = true
+L["Justify Right"] = true
+	L["Toggles whether you want to justify text to the right in your right char box window."] = true
+L["Height"] = true
+	L["Choose the height of chat windows."] = true
+	
+-- Tooltips
+L["Tooltips"] = true
+	L["TT_DESC"] = "Allows you to customize your settings for Tooltips."
+	L["Toggles whether you want to use tukui tooltips."] = true
+L["Hide In Combat"] = true
+	L["Toggles whether you want to show tooltips while in combat."] = true
+L["Hide Actionbar Tooltips"] = true
+	L["Toggles whether you want to hide tooltips from actionbar buttons."] = true
+L["Hide Unitframe Tooltips"] = true
+	L["Toggles whether you want to hide tooltips from unitframes."] = true
+L["Cursor"] = true
+	L["When enabled allows you to have tooltips display where your mouse is."] = true
+L["Who Target"] = true
+	L["When enabled allows you to see who is targetting you while in a raid or party."] = true
+	
 
 --Datatext
 L["DT_POS"] = "\n\n0 - Disabled\n1 - LEFT PANEL, LEFT\n2 - LEFT PANEL, CENTER\n3 - LEFT PANEL, RIGHT\n4 - RIGHT PANEL, LEFT\n5 - RIGHT PANEL, CENTER\n6 - RIGHT PANEL, RIGHT\n7 - MIDDLE, OUTER LEFT\n8 - MIDDLE, LEFT\n9 - MIDDLE, CENTER\n10 - MIDDLE, RIGHT\n11 - MIDDLE, OUTER RIGHT"
@@ -212,6 +287,11 @@ L["Class Timers"] = true
 	L["Buff"] = true
 	L["Debuff"] = true
 	L["Proc"] = true
+	L["General Font"] = true
+		L["Font used for classtimers."] = true
+	L["General Font Size"] = true
+		L["Size used for the General Font"] = true
+	
 	
 	
 	
@@ -245,5 +325,3 @@ L["All"] = true
 L["Friendly"] = true
 L["Enemy"] = true
 L["Fill only if you want to see line on bar that indicates if its safe to start casting spell and not clip the last tick, also note that this can be different from aura id."] = true
-
-

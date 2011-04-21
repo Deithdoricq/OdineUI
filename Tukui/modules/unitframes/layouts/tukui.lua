@@ -1272,14 +1272,14 @@ f:SetScript("OnEvent", function(self, event, addon)
 			tot:Point("TOPRIGHT", TukuiTarget, "BOTTOMRIGHT", 0, -5)
 			pet:Point("TOPLEFT", TukuiPlayer, "BOTTOMLEFT", 0, -5)
 			
-			focus:Point("BOTTOMRIGHT", TukuiChatLeft, "TOPRIGHT", 0, 150)
+			focus:Point("BOTTOMRIGHT", ChatLBackground2, "TOPRIGHT", 0, 150)
 		else
 			player:Point("TOP", UIParent, "BOTTOM", -325 , 230)
 			target:Point("TOP", UIParent, "BOTTOM", 325, 230)
 			tot:Point("TOPRIGHT", TukuiTarget, "BOTTOMRIGHT", 0, -5)
 			pet:Point("TOPLEFT", TukuiPlayer, "BOTTOMLEFT", 0, -5)
 
-			focus:Point("BOTTOMRIGHT", TukuiChatLeft, "TOPRIGHT", 0, 150)
+			focus:Point("BOTTOMRIGHT", ChatLBackground2, "TOPRIGHT", 0, 150)
 		end
 	end
 end)
@@ -1290,7 +1290,7 @@ if C.arena.unitframes then
 	for i = 1, 5 do
 		arena[i] = oUF:Spawn("arena"..i, "TukuiArena"..i)
 		if i == 1 then
-			arena[i]:SetPoint("BOTTOMLEFT", TukuiChatRight, "TOPLEFT", 10, 150)
+			arena[i]:SetPoint("BOTTOMLEFT", ChatRBackground2, "TOPLEFT", 10, 150)
 		else
 			arena[i]:SetPoint("BOTTOM", arena[i-1], "TOP", 0, T.Scale(80))
 		end
@@ -1313,7 +1313,7 @@ if C["unitframes"].showboss then
 	for i = 1, MAX_BOSS_FRAMES do
 		boss[i] = oUF:Spawn("boss"..i, "TukuiBoss"..i)
 		if i == 1 then
-			boss[i]:SetPoint("BOTTOMLEFT", TukuiChatRight, "TOPLEFT", 10, 150)
+			boss[i]:SetPoint("BOTTOMLEFT", ChatRBackground2, "TOPLEFT", 10, 150)
 		else
 			boss[i]:SetPoint('BOTTOM', boss[i-1], 'TOP', 0, T.Scale(80))             
 		end
@@ -1334,7 +1334,7 @@ if C["unitframes"].maintank == true then
 		'point' , 'BOTTOM',
 		'template', 'oUF_TukuiMtt'
 	)
-	tank:SetPoint("BOTTOMLEFT", TukuiChatLeft, "TOPLEFT", 0, T.Scale(200))
+	tank:SetPoint("BOTTOMLEFT", ChatLBackground2, "TOPLEFT", 0, T.Scale(200))
 end
  
 -- main assist
@@ -1353,7 +1353,7 @@ if C["unitframes"].mainassist == true then
 	if C["unitframes"].maintank == true then
 		assist:SetPoint("TOPLEFT", TukuiMainTank, "BOTTOMLEFT", T.buttonspacing, T.Scale(-20*2))
 	else
-		assist:SetPoint("BOTTOMLEFT", TukuiChatLeft, "TOPLEFT", T.Scale(1), T.Scale(200))
+		assist:SetPoint("BOTTOMLEFT", ChatLBackground2, "TOPLEFT", T.Scale(1), T.Scale(200))
 	end
 end
 

@@ -1,5 +1,6 @@
 local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
 if T.level == 85 then return end
+if C["datatext"].bars ~= true then return end
 
 local space = 0
 local font, fonts, fontf = C["media"].font, 10, "OUTLINE"

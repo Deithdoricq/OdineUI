@@ -119,6 +119,7 @@
 	<Script file="modules\misc\announceint.lua"/>
 	<Script file="modules\misc\viewport.lua"/>
 	<Script file="modules\misc\autoquest.lua"/>
+	<Script file="modules\misc\colorpicker.lua"/>
 	
 	<Script file="developer\test.lua"/>
 	

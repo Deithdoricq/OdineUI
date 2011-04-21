@@ -13,15 +13,15 @@ local aggroColors = {
 }
 
 -- create the bar
-local TukuiThreatBar = CreateFrame("StatusBar", "TukuiThreatBar", TukuiTabsLeft)
-TukuiThreatBar:Point("TOPLEFT", 2, -2)
-TukuiThreatBar:Point("BOTTOMRIGHT", -2, 2)
-TukuiThreatBar:SetFrameStrata("TOOLTIP")
-TukuiThreatBar:SetFrameLevel(0)
+local TukuiThreatBar = CreateFrame("StatusBar", "TukuiThreatBar", ChatFrame1)
+TukuiThreatBar:SetHeight(T.Scale(20))
+TukuiThreatBar:SetWidth(T.Scale(T.InfoLeftRightWidth - 4))
+TukuiThreatBar:SetFrameLevel(3)
+TukuiThreatBar:SetPoint("TOPLEFT", 0, 25)
 TukuiThreatBar:SetStatusBarTexture(C.media.normTex)
 TukuiThreatBar:GetStatusBarTexture():SetHorizTile(false)
 TukuiThreatBar:SetMinMaxValues(0, 100)
-TukuiThreatBar:SetTemplate("Default")
+TukuiThreatBar:SetTemplate("Default", true)
 
 TukuiThreatBar.text = T.SetFontString(TukuiThreatBar, font, fonts, fontf)
 TukuiThreatBar.text:Point("RIGHT", TukuiThreatBar, "RIGHT", -10, 0)

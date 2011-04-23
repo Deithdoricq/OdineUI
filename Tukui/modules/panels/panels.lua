@@ -11,40 +11,40 @@ f:SetFrameLevel(0)
 -- Bottom Data Panels
 
 local dbottom = CreateFrame("Frame", "TukuiDataBottom", UIParent)
-dbottom:CreatePanel("Default", (T.buttonsize * 12 + T.buttonspacing * 13) + 2, 20, "BOTTOM", UIParent, "BOTTOM", 0, T.Scale(5))
+dbottom:CreatePanel("Default", (T.buttonsize * 12 + T.buttonspacing * 13) + 2, 23, "BOTTOM", UIParent, "BOTTOM", 0, T.Scale(8))
 dbottom:SetFrameLevel(2)
 
 local leftsd = CreateFrame("Frame", "TukuiLeftSplitBarData", UIParent)
-leftsd:CreatePanel("Default", (T.buttonsize * 3 + T.buttonspacing * 4) + 2, 20, "RIGHT", TukuiDataBottom, "LEFT", T.Scale(-6), 0)
+leftsd:CreatePanel("Default", (T.buttonsize * 3 + T.buttonspacing * 4) + 2, 23, "RIGHT", TukuiDataBottom, "LEFT", T.Scale(-6), 0)
 leftsd:SetFrameLevel(2)
 
 local rightsd = CreateFrame("Frame", "TukuiRightSplitBarData", UIParent)
-rightsd:CreatePanel("Default", (T.buttonsize * 3 + T.buttonspacing * 4) + 2, 20, "LEFT", TukuiDataBottom, "RIGHT", T.Scale(6), 0)
+rightsd:CreatePanel("Default", (T.buttonsize * 3 + T.buttonspacing * 4) + 2, 23, "LEFT", TukuiDataBottom, "RIGHT", T.Scale(6), 0)
 rightsd:SetFrameLevel(2)
 
 -- CHAT BACKGROUND LEFT (MOVES)
 local chatlbgdummy = CreateFrame("Frame", "ChatLBackground", UIParent)
 chatlbgdummy:SetWidth(T.InfoLeftRightWidth)
 chatlbgdummy:SetHeight(C["chat"].height+6)
-chatlbgdummy:SetPoint("BOTTOMLEFT", TukuiBottomPanel, "TOPLEFT", T.Scale(6),  T.Scale(8))
+chatlbgdummy:SetPoint("BOTTOMLEFT", TukuiBottomPanel, "TOPLEFT", T.Scale(6),  T.Scale(12))
 
 -- CHAT BACKGROUND LEFT (DOESN'T MOVE THIS IS WHAT WE ATTACH FRAMES TO)
 local chatlbgdummy2 = CreateFrame("Frame", "ChatLBackground2", UIParent)
 chatlbgdummy2:SetWidth(T.InfoLeftRightWidth)
 chatlbgdummy2:SetHeight(C["chat"].height+6)
-chatlbgdummy2:SetPoint("BOTTOMLEFT", TukuiBottomPanel, "TOPLEFT", T.Scale(6),  T.Scale(8))
+chatlbgdummy2:SetPoint("BOTTOMLEFT", TukuiBottomPanel, "TOPLEFT", T.Scale(6),  T.Scale(12))
 
 -- CHAT BACKGROUND RIGHT (MOVES)
 local chatrbgdummy = CreateFrame("Frame", "ChatRBackground", UIParent)
 chatrbgdummy:SetWidth(T.InfoLeftRightWidth)
 chatrbgdummy:SetHeight(C["chat"].height+6)
-chatrbgdummy:SetPoint("BOTTOMRIGHT", TukuiBottomPanel, "TOPRIGHT", T.Scale(-6),  T.Scale(8))
+chatrbgdummy:SetPoint("BOTTOMRIGHT", TukuiBottomPanel, "TOPRIGHT", T.Scale(-6),  T.Scale(16))
 
 -- CHAT BACKGROUND RIGHT (DOESN'T MOVE THIS IS WHAT WE ATTACH FRAMES TO)
 local chatrbgdummy2 = CreateFrame("Frame", "ChatRBackground2", UIParent)
 chatrbgdummy2:SetWidth(T.InfoLeftRightWidth)
 chatrbgdummy2:SetHeight(C["chat"].height+6)
-chatrbgdummy2:SetPoint("BOTTOMRIGHT", TukuiBottomPanel, "TOPRIGHT", T.Scale(-6),  T.Scale(8))
+chatrbgdummy2:SetPoint("BOTTOMRIGHT", TukuiBottomPanel, "TOPRIGHT", T.Scale(-6),  T.Scale(16))
 
 T.ChatRightShown = true
 if C["chat"].background == true then
@@ -96,6 +96,8 @@ infoleftLbutton:CreateShadow("Default")
 infoleftLbutton:SetPoint("TOPRIGHT", infoleft, "TOPLEFT", T.Scale(-2), 0)
 infoleftLbutton:SetPoint("BOTTOMLEFT", chatlbgdummy2, "BOTTOMLEFT", 0, T.Scale(-26))
 
+infoleft.shadow:SetPoint("TOPLEFT", infoleftLbutton, "TOPLEFT", T.Scale(-4), T.Scale(4))
+
 infoleftLbutton:FontString(nil, C["media"].dfont, C["datatext"].fsize, "THINOUTLINE")
 infoleftLbutton.text:SetText("-")
 infoleftLbutton.text:SetPoint("CENTER")
@@ -107,7 +109,7 @@ infoleftLbutton:HookScript("OnEnter", function(self)
 	GameTooltip:AddLine("Right Click: Hide Both Chat Windows")
 	if C["addonskins"].embed ~= "NONE" then
 		GameTooltip:AddLine('')
-		GameTooltip:AddLine("Holding SHIFT will bypass Embed Toggles")
+		GameTooltip:AddLine("Holding SHIFT will toggle your active Embed Addon")
 	end
 	GameTooltip:Show()
 end)
@@ -131,6 +133,8 @@ inforightRbutton:CreateShadow("Default")
 inforightRbutton:SetPoint("TOPLEFT", inforight, "TOPRIGHT", T.Scale(2), 0)
 inforightRbutton:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", 0, T.Scale(-26))
 
+inforight.shadow:SetPoint("BOTTOMRIGHT", inforightRbutton, "BOTTOMRIGHT", T.Scale(4), T.Scale(-4))
+
 inforightRbutton:FontString(nil, C["media"].dfont, C["datatext"].fsize, "THINOUTLINE")
 inforightRbutton.text:SetText("-")
 inforightRbutton.text:SetPoint("CENTER")
@@ -142,7 +146,7 @@ inforightRbutton:HookScript("OnEnter", function(self)
 	GameTooltip:AddLine("Right Click: Hide Both Chat Windows")
 	if C["addonskins"].embed ~= "NONE" then
 		GameTooltip:AddLine('')
-		GameTooltip:AddLine("Holding SHIFT will bypass Embed Toggles")
+		GameTooltip:AddLine("Holding SHIFT will toggle your active Embed Addon")
 	end
 	GameTooltip:Show()
 end)

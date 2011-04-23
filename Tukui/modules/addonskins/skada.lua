@@ -187,8 +187,8 @@ if C["addonskins"].embed == "Skada" then
 		ctab:CreateShadow("Default")
 		ctab:Hide()
 		
-		if Skada:GetWindows()[1].bargroup:IsShown() then
-			--Skada:ToggleWindow()
+		if IsAddOnLoaded("Skada") and Skada:GetWindows()[1].bargroup:IsShown() then
+			Skada:ToggleWindow()
 		end
 		
 		ctab.text = T.SetFontString(ctab, C["media"].dfont, C["datatext"].fsize, "OUTLINE")
@@ -196,14 +196,14 @@ if C["addonskins"].embed == "Skada" then
 		ctab.text:SetText(T.cStart.."Skada")
 		
 		ChatRBackground:HookScript("OnShow", function()
-			if not IsShiftKeyDown() then
+			if IsShiftKeyDown() then
 				Skada:SetActive(false)
 				ctab:Hide()
 			end
 		end)
 		
 		ChatRBackground:HookScript("OnHide", function()
-			if not IsShiftKeyDown() then
+			if IsShiftKeyDown() then
 				Skada:SetActive(true)
 				ctab:Show()
 			end

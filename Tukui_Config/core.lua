@@ -1567,6 +1567,18 @@ function OUI.GenerateOptionsInternal()
 						min = 100, max = 300, step = 1,
 						disabled = function() return not db.chat.enable end,
 					},
+					combathide = {
+						type = "select",
+						order = 8,
+						name = L["Toggle Chat In Combat"],
+						desc = L["When you enter combat, the selected window will be hidden."],
+						values = {
+							["NONE"] = L["None"],
+							["Left"] = L["Left"],
+							["Right"] = L["Right"],
+							["Both"] = L["Both"],
+						},
+					},
 				},
 			},
 			tooltip = {
@@ -1650,7 +1662,7 @@ function OUI.GenerateOptionsInternal()
 						type = "toggle",
 						order = 2,
 						name = "Statblock",
-						desc = "Toggles a datatext panel for fps/mb/time at top left screen.",
+						desc = "Toggles a datatext panel for fps/mb/time at top left screen. (This also disables MarkBar.)",
 					},
 					location = {
 						type = "toggle",

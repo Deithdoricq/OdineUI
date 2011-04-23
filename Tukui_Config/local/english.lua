@@ -210,6 +210,12 @@ L["Justify Right"] = true
 	L["Toggles whether you want to justify text to the right in your right char box window."] = true
 L["Height"] = true
 	L["Choose the height of chat windows."] = true
+L["Toggle Chat In Combat"] = true
+	L["When you enter combat, the selected window will be hidden."] = true
+	L["None"] = true
+	L["Left"] = true
+	L["Right"] = true
+	L["Both"] = true
 	
 -- Tooltips
 L["Tooltips"] = true

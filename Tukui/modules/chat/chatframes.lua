@@ -413,7 +413,7 @@ end)
 TukuiInfoRightRButton:SetScript("OnMouseDown", function(self, btn)
 	if T.RightChat ~= true then return end
 	if InCombatLockdown() then
-		print("Chat Windows cannot be toggled while in Combat!")
+		print(ERR_NOT_IN_COMBAT)
 		return
 	end
 	if btn == "RightButton" then
@@ -428,6 +428,62 @@ end)
 -- Animation Functions (Credit AlleyCat, Hydra)
 ------------------------------------------------------------------------
 
+local ChatCombatHider = CreateFrame("Frame")
+ChatCombatHider:RegisterEvent("PLAYER_REGEN_ENABLED")
+ChatCombatHider:RegisterEvent("PLAYER_REGEN_DISABLED")
+ChatCombatHider:SetScript("OnEvent", function(self, event)
+	if C["chat"].combathide ~= "Left" and C["chat"].combathide ~= "Right" and C["chat"].combathide ~= "Both" then self:UnregisterAllEvents() return end
+	if (C["chat"].combathide == "Right" or C["chat"].combathide == "Both") and T.RightChat ~= true then return end
+	
+	if event == "PLAYER_REGEN_DISABLED" then
+		if C["chat"].combathide == "Both" then	
+			if T.ChatRIn ~= false then
+				ChatRBackground:Hide()			
+				T.ChatRightShown = false
+				T.ChatRIn = false			
+			end
+			if T.ChatLIn ~= false then
+				ChatLBackground:Hide()	
+				T.ChatLIn = false
+			end
+		elseif C["chat"].combathide == "Right" then
+			if T.ChatRIn ~= false then
+				ChatRBackground:Hide()				
+				T.ChatRightShown = false
+				T.ChatRIn = false			
+			end		
+		elseif C["chat"].combathide == "Left" then
+			if T.ChatLIn ~= false then
+				ChatLBackground:Hide()
+				T.ChatLIn = false
+			end		
+		end
+	else
+		if C["chat"].combathide == "Both" then
+			if T.ChatRIn ~= true then
+				ChatRBackground:Show()							
+				T.ChatRightShown = true
+				T.ChatRIn = true			
+			end
+			if T.ChatLIn ~= true then
+				ChatLBackground:Show()
+				T.ChatLIn = true
+			end
+		elseif C["chat"].combathide == "Right" then
+			if T.ChatRIn ~= true then
+				ChatRBackground:Show()					
+				T.ChatRightShown = true
+				T.ChatRIn = true			
+			end		
+		elseif C["chat"].combathide == "Left" then
+			if T.ChatLIn ~= true then
+				ChatLBackground:Show()
+				T.ChatLIn = true
+			end		
+		end	
+	end
+end)
+
 T.SetUpAnimGroup = function(self)
 	self.anim = self:CreateAnimationGroup("Flash")
 	self.anim.fadein = self.anim:CreateAnimation("ALPHA", "FadeIn")
@@ -441,7 +497,7 @@ end
 
 T.Flash = function(self, duration)
 	if not self.anim then
-		E.SetUpAnimGroup(self)
+		T.SetUpAnimGroup(self)
 	end
 
 	self.anim.fadein:SetDuration(duration)

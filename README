@@ -1,3 +1,8 @@
+V6.1b - ??????
+* adjusted position of left/right datatext panels, adjust size of bottom data panel slightly.....
+* holding shift will toggle whatever your active embed addon is now instead of bypassing it.
+* Above change made to allow for easier functioning of hiding chat windows while in combat if enabled!
+
 V6.1 - [04/21/2011]
 * completely reworked chat windows (may require a /resetui for most users if looks messed up)
 * can toggle chat windows outside of combat to be hidden or shown, skada embed support added and auto functions with button at bottom right chat!
@@ -7,6 +12,9 @@ V6.1 - [04/21/2011]
 * rightbars are now set to vertical by default (can still change to horizontal in config)
 * added improved colorpicker frame by Jaslm from ColorPickerPlus
 * most of locales finished for ingame config (datatext and some misc need finishing)
+* raidicons will no longer be displayed in parties
+* tooltip placement adjusted to account for new options
+* skada will be hidden when embed active by default to prevent weird issues that require multiple chat button clicks to fix!
 
 V6.0d - [04/16/2011]
 * readded dual talent support (not to helpful yet i know)

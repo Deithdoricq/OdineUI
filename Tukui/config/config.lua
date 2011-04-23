@@ -213,6 +213,7 @@ DB["chat"] = {
 	["fading"] = false,									-- allow chat windows to fade out
 	["justifyRight"] = false,							-- when set to true text in right chat box will be aligned towards the right side of the chat box
 	["fsize"] = 12,										-- default font size
+	["combathide"] = "NONE",							-- Set to "Left", "Right", "Both", or "NONE"
 }
 
 DB["nameplate"] = {

@@ -32,6 +32,8 @@ DB["media"] = {
 	["backdropfadecolor"] = { .1, .1, .1, 0.9 }, -- same thing just different alpha
 	["altbordercolor"] = { .4, .4, .4 }, -- alternative border color, mainly for unitframes text panels.
 	
+	["txtcolor"] = { .09, .51, .81 },
+	
 	-- sound
 	["whisper"] = "Tukui Whisper",
 	["warning"] = "Tukui Warning",

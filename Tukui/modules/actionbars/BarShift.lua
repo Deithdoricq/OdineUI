@@ -6,10 +6,10 @@ if not C["actionbar"].enable == true then return end
 ---------------------------------------------------------------------------
 
 -- used for anchor totembar or shapeshiftbar
-local TukuiShift = CreateFrame("Frame", "TukuiShiftBar", TukuiInfoLeft)
-TukuiShift:SetPoint("BOTTOMLEFT", TukuiInfoLeft, "BOTTOMRIGHT", T.buttonspacing * 2, 0);
-TukuiShift:SetWidth((T.buttonsize * 5) + (T.buttonspacing * 4))
-TukuiShift:SetHeight(T.buttonsize)
+local TukuiShift = CreateFrame("Frame", "TukuiShiftBar", TukuiInfoLeftRButton)
+TukuiShift:SetPoint("BOTTOMLEFT", TukuiInfoLeftRButton, "BOTTOMRIGHT", T.buttonspacing * 2, 0);
+TukuiShift:SetWidth((T.petbuttonsize * 5) + (T.buttonspacing * 4))
+TukuiShift:SetHeight(T.petbuttonsize)
 TukuiShift:SetFrameStrata("MEDIUM")
 TukuiShift:SetMovable(true)
 TukuiShift:SetClampedToScreen(true)
@@ -59,11 +59,11 @@ bar:SetScript("OnEvent", function(self, event, ...)
 			button:ClearAllPoints()
 			button:SetParent(self)
 			if i == 1 then
-				button:Point("BOTTOMLEFT", TukuiShift, 5, 5)
+				button:SetPoint("BOTTOMLEFT", TukuiShift, 0, 0)
 			else
 				local previous = _G["ShapeshiftButton"..i-1]
-				button:Point("LEFT", previous, "RIGHT", T.buttonspacing, 0)
-			end
+				button:SetPoint("LEFT", previous, "RIGHT", T.buttonspacing, 0)
+			end		
 			local _, name = GetShapeshiftFormInfo(i)
 			if name then
 				button:Show()

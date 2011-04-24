@@ -1,6 +1,8 @@
 -- localization for enUS and enGB
 local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
 
+L.core_resowarning = "|cff1784d1Tukui:|r the current resolution you are using (%s), is not your monitor's native resolution. To fix this problem please press escape go to video settings and set your resolution to %s."
+
 L.chat_BATTLEGROUND_GET = "[BG]"
 L.chat_BATTLEGROUND_LEADER_GET = "[BG]"
 L.chat_BN_WHISPER_GET = "From"
@@ -18,6 +20,7 @@ L.chat_FLAG_DND = "[DND]"
 L.chat_FLAG_GM = "[GM]"
 L.chat_ERR_FRIEND_ONLINE_SS = "is now |cff298F00online|r"
 L.chat_ERR_FRIEND_OFFLINE_S = "is now |cffff0000offline|r"
+L.raidbufftoggler = "Raid Buff Reminder: "
 
 L.chat_general = "General"
 L.chat_trade = "Trade"

@@ -406,13 +406,10 @@ end
 function Stuffing:CreateBagFrame(w)
 	local n = "Tukui"  .. w
 	local f = CreateFrame ("Frame", n, UIParent)
-	f:SetTemplate("Transparent")
-	f:CreateShadow("Default")
-	f:CreateBorder(true, true)
 	f:EnableMouse(1)
 	f:SetMovable(1)
 	f:SetToplevel(1)
-	f:SetFrameStrata("DIALOG")
+	f:SetFrameStrata("HIGH")
 	f:SetFrameLevel(20)
 	
 	local function bagUpdate(f, ...)

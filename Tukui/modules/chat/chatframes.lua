@@ -370,61 +370,6 @@ end
 hooksecurefunc("FCF_OpenTemporaryWindow", SetupTempChat)
 
 ------------------------------------------------------------------------
--- Chat Toggle Functions
-------------------------------------------------------------------------
-
-T.ToggleSlideChatL = function()
-	if T.ChatLIn == true then
-		ChatLBackground:Hide()
-		T.ChatLIn = false
-		TukuiInfoLeftLButton.text:SetText("+")
-	else
-		ChatLBackground:Show()
-		T.ChatLIn = true
-		TukuiInfoLeftLButton.text:SetText("-")
-	end
-end
-
-T.ToggleSlideChatR = function()
-	if T.RightChat ~= true then return end
-	if T.ChatRIn == true then
-		ChatRBackground:Hide()	
-		T.ChatRIn = false
-		T.ChatRightShown = false
-		TukuiInfoRightRButton.text:SetText("+")
-	else
-		ChatRBackground:Show()
-		T.ChatRIn = true
-		T.ChatRightShown = true
-		TukuiInfoRightRButton.text:SetText("-")
-	end
-end
-
---Setup Button Scripts
-TukuiInfoLeftLButton:SetScript("OnMouseDown", function(self, btn)
-	if btn == "RightButton" then
-		T.ToggleSlideChatR()
-		T.ToggleSlideChatL()
-	else
-		T.ToggleSlideChatL()	
-	end
-end)
-
-TukuiInfoRightRButton:SetScript("OnMouseDown", function(self, btn)
-	if T.RightChat ~= true then return end
-	if InCombatLockdown() then
-		print(ERR_NOT_IN_COMBAT)
-		return
-	end
-	if btn == "RightButton" then
-		T.ToggleSlideChatR()
-		T.ToggleSlideChatL()
-	else
-		T.ToggleSlideChatR()
-	end
-end)
-
-------------------------------------------------------------------------
 -- Animation Functions (Credit AlleyCat, Hydra)
 ------------------------------------------------------------------------
 
@@ -440,22 +385,26 @@ ChatCombatHider:SetScript("OnEvent", function(self, event)
 			if T.ChatRIn ~= false then
 				ChatRBackground:Hide()			
 				T.ChatRightShown = false
-				T.ChatRIn = false			
+				T.ChatRIn = false
+				TukuiInfoRightRButton.text:SetTextColor(unpack(C["media"].txtcolor))
 			end
 			if T.ChatLIn ~= false then
 				ChatLBackground:Hide()	
 				T.ChatLIn = false
+				TukuiInfoLeftLButton.text:SetTextColor(unpack(C["media"].txtcolor))
 			end
 		elseif C["chat"].combathide == "Right" then
 			if T.ChatRIn ~= false then
 				ChatRBackground:Hide()				
 				T.ChatRightShown = false
-				T.ChatRIn = false			
+				T.ChatRIn = false
+				TukuiInfoRightRButton.text:SetTextColor(unpack(C["media"].txtcolor))
 			end		
 		elseif C["chat"].combathide == "Left" then
 			if T.ChatLIn ~= false then
 				ChatLBackground:Hide()
 				T.ChatLIn = false
+				TukuiInfoLeftLButton.text:SetTextColor(unpack(C["media"].txtcolor))
 			end		
 		end
 	else
@@ -463,53 +412,30 @@ ChatCombatHider:SetScript("OnEvent", function(self, event)
 			if T.ChatRIn ~= true then
 				ChatRBackground:Show()							
 				T.ChatRightShown = true
-				T.ChatRIn = true			
+				T.ChatRIn = true
+				TukuiInfoRightRButton.text:SetTextColor(1,1,1)
 			end
 			if T.ChatLIn ~= true then
 				ChatLBackground:Show()
 				T.ChatLIn = true
+				TukuiInfoLeftLButton.text:SetTextColor(1,1,1)
 			end
 		elseif C["chat"].combathide == "Right" then
 			if T.ChatRIn ~= true then
 				ChatRBackground:Show()					
 				T.ChatRightShown = true
-				T.ChatRIn = true			
+				T.ChatRIn = true
+				TukuiInfoRightRButton.text:SetTextColor(1,1,1)
 			end		
 		elseif C["chat"].combathide == "Left" then
 			if T.ChatLIn ~= true then
 				ChatLBackground:Show()
 				T.ChatLIn = true
+				TukuiInfoLeftLButton.text:SetTextColor(1,1,1)
 			end		
 		end	
 	end
 end)
-
-T.SetUpAnimGroup = function(self)
-	self.anim = self:CreateAnimationGroup("Flash")
-	self.anim.fadein = self.anim:CreateAnimation("ALPHA", "FadeIn")
-	self.anim.fadein:SetChange(1)
-	self.anim.fadein:SetOrder(2)
-
-	self.anim.fadeout = self.anim:CreateAnimation("ALPHA", "FadeOut")
-	self.anim.fadeout:SetChange(-1)
-	self.anim.fadeout:SetOrder(1)
-end
-
-T.Flash = function(self, duration)
-	if not self.anim then
-		T.SetUpAnimGroup(self)
-	end
-
-	self.anim.fadein:SetDuration(duration)
-	self.anim.fadeout:SetDuration(duration)
-	self.anim:Play()
-end
-
-T.StopFlash = function(self)
-	if self.anim then
-		self.anim:Finish()
-	end
-end
 
 T.SetUpAnimGroup(TukuiInfoLeft.shadow)
 T.SetUpAnimGroup(TukuiInfoRight.shadow)

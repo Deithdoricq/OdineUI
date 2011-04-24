@@ -322,6 +322,17 @@ TukuiOnLogon:SetScript("OnEvent", function(self, event)
 	if IsAddOnLoaded("Tukui_Config") then
 		print(L.core_welcomeCF)
 	end
+	
+	local maxresolution
+	for i=1, 30 do
+		if select(i, GetScreenResolutions()) ~= nil then
+			maxresolution = select(i, GetScreenResolutions())
+		end
+	end
+
+	if select(GetCurrentResolution(), GetScreenResolutions()) ~= maxresolution then
+		print(format(L.core_resowarning, select(GetCurrentResolution(), GetScreenResolutions()), maxresolution))
+	end
 end)
 
 -- collect garbage

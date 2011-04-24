@@ -1,4 +1,10 @@
-V6.1b - ??????
+V6.1c - [04/23/2011]
+* tweak/update some totem/stance bar related code
+* added more buttons to be used in near future
+* cleanup on stuff
+* fixed bug with bags frame covering loot frame
+
+V6.1b - [04/22/2011]
 * adjusted position of left/right datatext panels, adjust size of bottom data panel slightly.....
 * holding shift will toggle whatever your active embed addon is now instead of bypassing it.
 * Above change made to allow for easier functioning of hiding chat windows while in combat if enabled!

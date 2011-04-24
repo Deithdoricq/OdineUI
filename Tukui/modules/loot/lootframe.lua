@@ -193,13 +193,13 @@ addon.LOOT_OPENED = function(self, event, autoloot)
 		y = y / self:GetEffectiveScale()
 
 		self:ClearAllPoints()
-		self:Point("TOPLEFT", nil, "BOTTOMLEFT", x - 40, y + 20)
+		self:SetPoint("TOPLEFT", nil, "BOTTOMLEFT", T.Scale(x - 40), T.Scale(y + 20))
 		self:GetCenter()
 		self:Raise()
 	else
-		self:ClearAllPoints()
 		self:SetUserPlaced(false)
-		self:Point("TOPLEFT", 0, -104)		
+		self:ClearAllPoints()
+		self:SetPoint("TOPLEFT", LootFrameHolder, "TOPLEFT", 0, 0)	
 	end
 
 	local m, w, t = 0, 0, title:GetStringWidth()
@@ -213,14 +213,14 @@ addon.LOOT_OPENED = function(self, event, autoloot)
 				item = item:gsub("\n", ", ")
 			end
 
-			if(quantity > 1) then
+			if quantity and (quantity > 1) then
 				slot.count:SetText(quantity)
 				slot.count:Show()
 			else
 				slot.count:Hide()
 			end
 
-			if(quality > 1) then
+			if quality and (quality > 1) then
 				slot.drop:SetVertexColor(color.r, color.g, color.b)
 				slot.drop:Show()
 			else
@@ -229,10 +229,14 @@ addon.LOOT_OPENED = function(self, event, autoloot)
 
 			slot.quality = quality
 			slot.name:SetText(item)
-			slot.name:SetTextColor(color.r, color.g, color.b)
+			if color then
+				slot.name:SetTextColor(color.r, color.g, color.b)
+			end
 			slot.icon:SetTexture(texture)
-
-			m = math.max(m, quality)
+			
+			if quality then
+				m = math.max(m, quality)
+			end
 			w = math.max(w, slot.name:GetStringWidth())
 
 			slot:Enable()
@@ -243,7 +247,9 @@ addon.LOOT_OPENED = function(self, event, autoloot)
 		local color = ITEM_QUALITY_COLORS[0]
 
 		slot.name:SetText(L.empty)
-		slot.name:SetTextColor(color.r, color.g, color.b)
+		if color then
+			slot.name:SetTextColor(color.r, color.g, color.b)
+		end
 		slot.icon:SetTexture[[Interface\Icons\INV_Misc_Herb_AncientLichen]]
 
 		items = 1
@@ -261,7 +267,7 @@ addon.LOOT_OPENED = function(self, event, autoloot)
 
 	local color = ITEM_QUALITY_COLORS[m]
 	self:SetBackdropBorderColor(color.r, color.g, color.b, .8)
-	self:Width(math.max(w, t))
+	self:SetWidth(T.Scale(math.max(w, t)))
 end
 
 addon.LOOT_SLOT_CLEARED = function(self, event, slot)

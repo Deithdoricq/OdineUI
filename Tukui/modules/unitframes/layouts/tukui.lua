@@ -107,8 +107,8 @@ local function Shared(self, unit)
 		
 		local powerB = CreateFrame("Frame", nil, power)
 		powerB:SetFrameLevel(power:GetFrameLevel() - 1)
-		powerB:SetPoint("TOPLEFT", T.Scale(-2), T.Scale(2))
-		powerB:SetPoint("BOTTOMRIGHT", T.Scale(2), T.Scale(-2))
+		powerB:SetPoint("TOPLEFT", T.Scale(-2), T.Scale(3))
+		powerB:SetPoint("BOTTOMRIGHT", T.Scale(2), T.Scale(-3))
 		powerB:SetTemplate("Default")
 		powerB:CreateShadow("Default")
 		self.Power.border = powerB	
@@ -843,8 +843,8 @@ local function Shared(self, unit)
 		
 		local powerB = CreateFrame("Frame", nil, power)
 		powerB:SetFrameLevel(power:GetFrameLevel() - 1)
-		powerB:SetPoint("TOPLEFT", T.Scale(-2), T.Scale(2))
-		powerB:SetPoint("BOTTOMRIGHT", T.Scale(2), T.Scale(-2))
+		powerB:SetPoint("TOPLEFT", T.Scale(-2), T.Scale(3))
+		powerB:SetPoint("BOTTOMRIGHT", T.Scale(2), T.Scale(-3))
 		powerB:SetTemplate("Default")
 		powerB:CreateShadow("Default")
 		self.Power.border = powerB	
@@ -1020,8 +1020,8 @@ local function Shared(self, unit)
 		
 		local powerB = CreateFrame("Frame", nil, power)
 		powerB:SetFrameLevel(power:GetFrameLevel() - 1)
-		powerB:SetPoint("TOPLEFT", T.Scale(-2), T.Scale(2))
-		powerB:SetPoint("BOTTOMRIGHT", T.Scale(2), T.Scale(-2))
+		powerB:SetPoint("TOPLEFT", T.Scale(-2), T.Scale(3))
+		powerB:SetPoint("BOTTOMRIGHT", T.Scale(2), T.Scale(-3))
 		powerB:SetTemplate("Default", true)
 		powerB:CreateShadow("Default")
 		self.Power.border = powerB

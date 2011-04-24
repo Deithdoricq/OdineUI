@@ -2,7 +2,7 @@
 ## Title: |cffC495DDTukui|r Config
 ## Notes: Config for TukUI
 ## Author: Odine
-## Version: 6.b
+## Version: 6.1c
 ## SavedVariables: OUIDB
 ## RequiredDeps: Tukui
 

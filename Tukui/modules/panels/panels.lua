@@ -86,74 +86,95 @@ local infoleft = CreateFrame("Frame", "TukuiInfoLeft", UIParent)
 infoleft:SetFrameLevel(2)
 infoleft:SetTemplate("Default", true)
 infoleft:CreateShadow("Default")
-infoleft:SetPoint("TOPLEFT", chatlbgdummy2, "BOTTOMLEFT", T.Scale(17), T.Scale(-3))
-infoleft:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", T.Scale(-0), T.Scale(-26))
+infoleft:SetPoint("TOPLEFT", chatlbgdummy2, "BOTTOMLEFT", T.Scale(17), T.Scale(-4))
+infoleft:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", T.Scale(-17), T.Scale(-26))
 
---INFOLEFT L BUTTON
-local infoleftLbutton = CreateFrame("Button", "TukuiInfoLeftLButton", TukuiInfoLeft)
-infoleftLbutton:SetTemplate("Default", true)
-infoleftLbutton:CreateShadow("Default")
-infoleftLbutton:SetPoint("TOPRIGHT", infoleft, "TOPLEFT", T.Scale(-2), 0)
-infoleftLbutton:SetPoint("BOTTOMLEFT", chatlbgdummy2, "BOTTOMLEFT", 0, T.Scale(-26))
+	-- LEFT BUTTONS
+	local infoleftLbutton = CreateFrame("Button", "TukuiInfoLeftLButton", TukuiInfoLeft)
+	infoleftLbutton:SetTemplate("Default", true)
+	infoleftLbutton:SetPoint("TOPRIGHT", infoleft, "TOPLEFT", T.Scale(-2), 0)
+	infoleftLbutton:SetPoint("BOTTOMLEFT", chatlbgdummy2, "BOTTOMLEFT", 0, T.Scale(-26))
 
-infoleft.shadow:SetPoint("TOPLEFT", infoleftLbutton, "TOPLEFT", T.Scale(-4), T.Scale(4))
+	local infoleftRbutton = CreateFrame("Button", "TukuiInfoLeftRButton", TukuiInfoLeft)
+	infoleftRbutton:SetTemplate("Default", true)
+	infoleftRbutton:SetPoint("TOPLEFT", infoleft, "TOPRIGHT", T.Scale(2), 0)
+	infoleftRbutton:SetPoint("BOTTOMRIGHT", chatlbgdummy2, "BOTTOMRIGHT", 0, T.Scale(-26))
 
-infoleftLbutton:FontString(nil, C["media"].dfont, C["datatext"].fsize, "THINOUTLINE")
-infoleftLbutton.text:SetText("-")
-infoleftLbutton.text:SetPoint("CENTER")
+	infoleft.shadow:ClearAllPoints()
+	infoleft.shadow:SetPoint("TOPLEFT", infoleftLbutton, "TOPLEFT", T.Scale(-4), T.Scale(4))
+	infoleft.shadow:SetPoint("BOTTOMRIGHT", infoleftRbutton, "BOTTOMRIGHT", T.Scale(4), T.Scale(-4))
 
-infoleftLbutton:HookScript("OnEnter", function(self)
-	GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
-	GameTooltip:ClearLines()
-	GameTooltip:AddLine("Left Click: Hide Left Chat")
-	GameTooltip:AddLine("Right Click: Hide Both Chat Windows")
-	if C["addonskins"].embed ~= "NONE" then
-		GameTooltip:AddLine('')
-		GameTooltip:AddLine("Holding SHIFT will toggle your active Embed Addon")
-	end
-	GameTooltip:Show()
-end)
+	infoleftLbutton:FontString(nil, C["media"].dfont, C["datatext"].fsize, "THINOUTLINE")
+	infoleftLbutton.text:SetText("-")
+	infoleftLbutton.text:SetPoint("CENTER")
 
-infoleftLbutton:HookScript("OnLeave", function()
-	GameTooltip:Hide()
-end)
+	infoleftRbutton:FontString(nil, C["media"].dfont, C["datatext"].fsize, "THINOUTLINE")
+	infoleftRbutton.text:SetText("L")
+	infoleftRbutton.text:SetPoint("CENTER")
+
+	infoleftLbutton:HookScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
+		GameTooltip:ClearLines()
+		GameTooltip:AddLine("Left Click: Hide Left Chat")
+		GameTooltip:AddLine("Right Click: Hide Both Chat Windows")
+		if C["addonskins"].embed ~= "NONE" then
+			GameTooltip:AddLine('')
+			GameTooltip:AddLine("Holding SHIFT will toggle your active Embed Addon")
+		end
+		GameTooltip:Show()
+	end)
+
+	infoleftLbutton:HookScript("OnLeave", function()
+		GameTooltip:Hide()
+	end)
 
 -- INFO RIGHT
 local inforight = CreateFrame("Frame", "TukuiInfoRight", UIParent)
 inforight:SetTemplate("Default", true)
 inforight:SetFrameLevel(2)
 inforight:CreateShadow("Default")
-inforight:SetPoint("TOPLEFT", chatrbgdummy2, "BOTTOMLEFT", T.Scale(0), T.Scale(-3))
+inforight:SetPoint("TOPLEFT", chatrbgdummy2, "BOTTOMLEFT", T.Scale(17), T.Scale(-3))
 inforight:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", T.Scale(-17), T.Scale(-26))
 
--- RIGHT BUTTON
-local inforightRbutton = CreateFrame("Button", "TukuiInfoRightRButton", TukuiInfoRight)
-inforightRbutton:SetTemplate("Default", true)
-inforightRbutton:CreateShadow("Default")
-inforightRbutton:SetPoint("TOPLEFT", inforight, "TOPRIGHT", T.Scale(2), 0)
-inforightRbutton:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", 0, T.Scale(-26))
+	-- RIGHT BUTTONS
+	local inforightLbutton = CreateFrame("Button", "TukuiInfoRightLButton", TukuiInfoRight)
+	inforightLbutton:SetTemplate("Default", true)
+	inforightLbutton:SetPoint("TOPRIGHT", inforight, "TOPLEFT", T.Scale(-2), 0)
+	inforightLbutton:SetPoint("BOTTOMLEFT", chatrbgdummy2, "BOTTOMLEFT", 0, T.Scale(-26))
+	
+	local inforightRbutton = CreateFrame("Button", "TukuiInfoRightRButton", TukuiInfoRight)
+	inforightRbutton:SetTemplate("Default", true)
+	inforightRbutton:SetPoint("TOPLEFT", inforight, "TOPRIGHT", T.Scale(2), 0)
+	inforightRbutton:SetPoint("BOTTOMRIGHT", chatrbgdummy2, "BOTTOMRIGHT", 0, T.Scale(-26))
 
-inforight.shadow:SetPoint("BOTTOMRIGHT", inforightRbutton, "BOTTOMRIGHT", T.Scale(4), T.Scale(-4))
+	inforight.shadow:ClearAllPoints()
+	inforight.shadow:SetPoint("TOPLEFT", inforightLbutton, "TOPLEFT", T.Scale(-4), T.Scale(4))
+	inforight.shadow:SetPoint("BOTTOMRIGHT", inforightRbutton, "BOTTOMRIGHT", T.Scale(4), T.Scale(-4))
+	
+	inforightLbutton:FontString(nil, C["media"].dfont, C["datatext"].fsize, "THINOUTLINE")
+	inforightLbutton.text:SetText("R")
+	inforightLbutton.text:SetPoint("CENTER")
 
-inforightRbutton:FontString(nil, C["media"].dfont, C["datatext"].fsize, "THINOUTLINE")
-inforightRbutton.text:SetText("-")
-inforightRbutton.text:SetPoint("CENTER")
+	inforightRbutton:FontString(nil, C["media"].dfont, C["datatext"].fsize, "THINOUTLINE")
+	inforightRbutton.text:SetText("-")
+	inforightRbutton.text:SetPoint("CENTER")
 
-inforightRbutton:HookScript("OnEnter", function(self)
-	GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
-	GameTooltip:ClearLines()
-	GameTooltip:AddLine("Left Click: Hide Right Chat")
-	GameTooltip:AddLine("Right Click: Hide Both Chat Windows")
-	if C["addonskins"].embed ~= "NONE" then
-		GameTooltip:AddLine('')
-		GameTooltip:AddLine("Holding SHIFT will toggle your active Embed Addon")
-	end
-	GameTooltip:Show()
-end)
+	inforightRbutton:HookScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
+		GameTooltip:ClearLines()
+		GameTooltip:AddLine("Left Click: Hide Right Chat")
+		GameTooltip:AddLine("Right Click: Hide Both Chat Windows")
+		if C["addonskins"].embed ~= "NONE" then
+			GameTooltip:AddLine('')
+			GameTooltip:AddLine("Holding SHIFT will toggle your active Embed Addon")
+		end
+		GameTooltip:Show()
+	end)
 
-inforightRbutton:HookScript("OnLeave", function()
-	GameTooltip:Hide()
-end)
+	inforightRbutton:HookScript("OnLeave", function()
+		GameTooltip:Hide()
+	end)
+
 
 -- Action Bars
 if C["actionbar"].enable then

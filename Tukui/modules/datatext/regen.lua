@@ -16,7 +16,8 @@ T.PP(C["datatext"].regen, Text)
 
 local _G = getfenv(0)
 local format = string.format
-local displayManaRegen = string.join("", T.cStart, "%s", "|r%.2f (%.2f)")
+--local displayManaRegen = string.join("", T.cStart, "%s", "|r%.2f (%.2f)")
+local displayManaRegen = string.join("", T.cStart, "%s", "|r%.2f")
 
 -- initial delay for update (let the ui load)
 local int = 5
@@ -26,7 +27,8 @@ local function Update(self, t)
 
 	local baseMR, castingMR = GetManaRegen()
 
-	Text:SetFormattedText(displayManaRegen, "MANA: ", baseMR, castingMR)
+	--Text:SetFormattedText(displayManaRegen, "MANA: ", baseMR, castingMR)
+	Text:SetFormattedText(displayManaRegen, "MANA: ", baseMR)
 	int = 2
 end
 

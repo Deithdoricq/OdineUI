@@ -20,7 +20,6 @@ L.chat_FLAG_DND = "[DND]"
 L.chat_FLAG_GM = "[GM]"
 L.chat_ERR_FRIEND_ONLINE_SS = "is now |cff298F00online|r"
 L.chat_ERR_FRIEND_OFFLINE_S = "is now |cffff0000offline|r"
-L.raidbufftoggler = "Raid Buff Reminder: "
 
 L.chat_general = "General"
 L.chat_trade = "Trade"

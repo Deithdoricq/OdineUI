@@ -1,3 +1,9 @@
+V6.1d - [04/25/2011]
+* extra buttons added are now being used :)
+* right chat left button will toggle your embed if active
+* left chat right button will toggle /moveui now
+* actionbars are now moved from within /moveui or clicking the button to toggle it!
+
 V6.1c - [04/23/2011]
 * tweak/update some totem/stance bar related code
 * added more buttons to be used in near future

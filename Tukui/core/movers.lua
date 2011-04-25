@@ -163,11 +163,62 @@ local function moving()
 	
 	if T.MoveUnitFrames then T.MoveUnitFrames() end
 	
-	if enable then enable = false else enable = true end
+	if enable then
+		enable = false
+		T.UILocked = false
+		TukuiInfoLeftRButton.text:SetTextColor(unpack(C["media"].txtcolor))
+	else
+		enable = true
+		T.UILocked = true
+		TukuiInfoLeftRButton.text:SetTextColor(1,1,1)
+	end
 end
 SLASH_MOVING1 = "/mtukui"
 SLASH_MOVING2 = "/moveui"
 SlashCmdList["MOVING"] = moving
+
+TukuiInfoLeftRButton:SetScript("OnMouseDown", function(self)
+	if InCombatLockdown() then return end
+	
+	moving()
+
+	if TukuiInfoLeftRButton.hovered == true then
+		local locked = false
+		GameTooltip:ClearLines()
+		
+		if enable == true then
+			GameTooltip:AddDoubleLine("User Interface", UNLOCK,1,1,1,unpack(C["media"].txtcolor))
+			TukuiInfoLeftRButton.text:SetTextColor(1,1,1)
+		else
+			GameTooltip:AddDoubleLine("User Interface", LOCK,1,1,1,unpack(C["media"].txtcolor))
+			TukuiInfoLeftRButton.text:SetTextColor(unpack(C["media"].txtcolor))
+		end
+	end
+	GameTooltip:Show()
+end)
+
+TukuiInfoLeftRButton:SetScript("OnEnter", function(self)
+	TukuiInfoLeftRButton.hovered = true
+	if InCombatLockdown() then return end
+	GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, T.Scale(6));
+	GameTooltip:ClearAllPoints()
+	GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, T.mult)
+	GameTooltip:ClearLines()
+	
+	if enable == true then
+		GameTooltip:AddDoubleLine("User Interface", UNLOCK,1,1,1,unpack(C["media"].txtcolor))
+		TukuiInfoLeftRButton.text:SetTextColor(1,1,1)
+	else
+		GameTooltip:AddDoubleLine("User Interface", LOCK,1,1,1,unpack(C["media"].txtcolor))
+		TukuiInfoLeftRButton.text:SetTextColor(unpack(C["media"].txtcolor))
+	end
+	GameTooltip:Show()
+end)
+
+TukuiInfoLeftRButton:SetScript("OnLeave", function(self)
+	TukuiInfoLeftRButton.hovered = false
+	GameTooltip:Hide()
+end)
 
 local protection = CreateFrame("Frame")
 protection:RegisterEvent("PLAYER_REGEN_DISABLED")

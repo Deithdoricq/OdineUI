@@ -170,10 +170,63 @@ if C["addonskins"].embed == "Skada" then
 		self = nil
 		
 		EmbedSkada()
-	end)	
+	end)
+	
+	local ctab = CreateFrame("Frame", "TukuiAddonBar", ChatRBackground2)
+	ctab:SetHeight(T.Scale(22))
+	ctab:SetWidth(T.Scale(T.InfoLeftRightWidth))
+	ctab:SetFrameLevel(3)	
+	ctab:SetPoint("TOPLEFT", 0, 25)
+	ctab:SetTemplate("Default", true)
+	ctab:CreateShadow("Default")
+	ctab:Hide()
+	
+	ctab.text = T.SetFontString(ctab, C["media"].dfont, C["datatext"].fsize, "OUTLINE")
+	ctab.text:SetPoint("LEFT", ctab, "LEFT", 10, 0)
+	ctab.text:SetText(T.cStart.."Skada")
+	
+	TukuiInfoRightLButton.hovered = false
+	TukuiInfoRightLButton:SetScript("OnMouseDown", function(self)
+		
+		if TukuiInfoRightLButton.hovered == true then
+			GameTooltip:ClearLines()
+			if IsAddOnLoaded("Skada") and Skada:GetWindows()[1].bargroup:IsShown() then
+				GameTooltip:AddDoubleLine("Toggle Skada", SHOW,1,1,1,unpack(C["media"].txtcolor))
+				TukuiInfoRightLButton.text:SetTextColor(unpack(C["media"].txtcolor))
+				Skada:SetActive(false)
+				ctab:Hide()
+			else
+				GameTooltip:AddDoubleLine("Toggle Skada", HIDE,1,1,1,unpack(C["media"].txtcolor))
+				TukuiInfoRightLButton.text:SetTextColor(1,1,1)
+				Skada:SetActive(true)
+				ctab:Show()
+			end
+		end
+	end)
+	
+	TukuiInfoRightLButton:SetScript("OnEnter", function(self)
+		TukuiInfoRightLButton.hovered = true
+		if InCombatLockdown() then return end
+		GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, T.Scale(6));
+		GameTooltip:ClearAllPoints()
+		GameTooltip:SetPoint("BOTTOM", self, "TOP", 0, T.mult)
+		GameTooltip:ClearLines()
+		
+		if IsAddOnLoaded("Skada") and Skada:GetWindows()[1].bargroup:IsShown() then
+			GameTooltip:AddDoubleLine("Toggle Skada", HIDE,1,1,1,unpack(C["media"].txtcolor))
+		else
+			GameTooltip:AddDoubleLine("Toggle Skada", SHOW,1,1,1,unpack(C["media"].txtcolor))
+		end
+		GameTooltip:Show()
+	end)
+
+	TukuiInfoRightLButton:SetScript("OnLeave", function(self)
+		TukuiInfoRightLButton.hovered = false
+		GameTooltip:Hide()
+	end)
 	
 	
-	local x = CreateFrame("Frame")
+	--[[local x = CreateFrame("Frame")
 	x:RegisterEvent("PLAYER_ENTERING_WORLD")
 	x:SetScript("OnEvent", function(self, event)
 		if not Skada then return end
@@ -210,5 +263,5 @@ if C["addonskins"].embed == "Skada" then
 		end)
 		
 		self:UnregisterAllEvents()
-	end)
+	end)--]]
 end

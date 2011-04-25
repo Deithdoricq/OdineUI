@@ -4,7 +4,7 @@ local T, C, L, DB = unpack(select(2, ...)) -- Import: T - functions, constants, 
 --------------------------------------------------------------------------
 
 local anchor = CreateFrame("Frame", "TukuiVehicleAnchor", UIParent)
-anchor:Point("TOPRIGHT", UIParent, "TOPRIGHT", -19, -315)
+anchor:Point("TOPRIGHT", UIParent, "TOPRIGHT", -19, -275)
 anchor:Size(120, 20)
 anchor:SetMovable(true)
 anchor:SetClampedToScreen(true)

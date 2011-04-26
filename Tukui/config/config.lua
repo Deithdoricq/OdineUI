@@ -222,7 +222,6 @@ DB["nameplate"] = {
 	["enable"] = true,                                  -- enable nice skinned nameplates that fit into tukui
 	["showhealth"] = true,				                -- show health text on nameplate
 	["enhancethreat"] = true,			                -- threat features based on if your a tank or not
-	["overlap"] = false,				                -- allow nameplates to overlap
 	["combat"] = false,					                -- only show enemy nameplates in-combat.
 	["goodcolor"] = {75/255,  175/255, 76/255},	        -- good threat color (tank shows this with threat, everyone else without)
 	["badcolor"] = {0.78, 0.25, 0.25},			        -- bad threat color (opposite of above)

@@ -113,15 +113,11 @@ local utf8sub = function(string, i, dots)
 	end
 end
 
-local _, build = GetBuildInfo()
 oUF.TagEvents['Tukui:getnamecolor'] = 'UNIT_POWER'
 oUF.Tags['Tukui:getnamecolor'] = function(unit)
 	if not unit then return end
 	local reaction = UnitReaction(unit, 'player')
-	if (unit == 'pet' and tonumber(build) > 13623 and GetPetHappiness and GetPetHappiness()) then
-		local c = T.oUF_colors.happiness[GetPetHappiness()]
-		return string.format('|cff%02x%02x%02x', c[1] * 255, c[2] * 255, c[3] * 255)
-	elseif (UnitIsPlayer(unit)) then
+	if (UnitIsPlayer(unit)) then
 		return _TAGS['raidcolor'](unit)
 	elseif (reaction) then
 		local c = T.oUF_colors.reaction[reaction]

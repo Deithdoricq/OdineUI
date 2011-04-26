@@ -1,7 +1,6 @@
 -- here we kill all shit stuff on default UI that we don't need!
 local T, C, L = unpack(select(2, ...)) -- Import: T - functions, constants, variables; C - config; L - locales
 
-local _, build = GetBuildInfo() -- THIS FILE FOR 4.1
 
 local Kill = CreateFrame("Frame")
 Kill:RegisterEvent("ADDON_LOADED")
@@ -16,9 +15,7 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 			InterfaceOptionsFrameCategoriesButton11:SetScale(0.00001)
 			InterfaceOptionsFrameCategoriesButton11:SetAlpha(0)
 			CompactRaidFrameContainer:Kill()
-			if tonumber(build) <= 13623 then
-				CompactPartyFrame:Kill()
-			end
+			SetCVar("useCompactPartyFrames", 0)
 		end	
 	else
 		if addon == "Blizzard_AchievementUI" then
@@ -28,7 +25,6 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 		end
 		
 		if addon ~= "Tukui" then return end
-		
 		StreamingIcon:Kill()
 		Advanced_UseUIScale:Kill()
 		Advanced_UIScaleSlider:Kill()
@@ -44,28 +40,32 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 		
 		InterfaceOptionsUnitFramePanelPartyBackground:Kill()
 
-		-- make sure boss or arena frame is always disabled when running tukui
-		SetCVar("showArenaEnemyFrames", 0)
-		
 		if C.arena.unitframes then
+			SetCVar("showArenaEnemyFrames", 0)
 			InterfaceOptionsUnitFramePanelArenaEnemyFrames:Kill()
 			InterfaceOptionsUnitFramePanelArenaEnemyCastBar:Kill()
 			InterfaceOptionsUnitFramePanelArenaEnemyPets:Kill()
 		end
-		
+	
 		if C.chat.enable then
 			SetCVar("WholeChatWindowClickable", 0)
 			SetCVar("ConversationMode", "inline")
 			InterfaceOptionsSocialPanelWholeChatWindowClickable:Kill()
 			InterfaceOptionsSocialPanelConversationMode:Kill()
+			InterfaceOptionsSocialPanelChatStyleButton:EnableMouse(false)
+			InterfaceOptionsSocialPanelChatStyle:EnableMouse(false)
+			InterfaceOptionsSocialPanelChatStyle:SetAlpha(0)
+			InterfaceOptionsSocialPanelChatHoverDelay:Kill()
 		end
 		
 		if C.unitframes.enable then
-			PlayerFrame:Kill() -- Just to be sure we are safe
 			InterfaceOptionsFrameCategoriesButton9:SetScale(0.00001)
 			InterfaceOptionsFrameCategoriesButton9:SetAlpha(0)	
-			InterfaceOptionsFrameCategoriesButton9:SetScale(0.00001)
-			InterfaceOptionsFrameCategoriesButton9:SetAlpha(0)
+			InterfaceOptionsCombatPanelTargetOfTarget:Kill()
+			InterfaceOptionsDisplayPanelShowAggroPercentage:Kill()
+			InterfaceOptionsBuffsPanelDispellableDebuffs:Kill()
+			InterfaceOptionsBuffsPanelShowCastableDebuffs:Kill()
+			InterfaceOptionsBuffsPanelCastableBuffs:Kill()
 		end
 		
 		if C.actionbar.enable then

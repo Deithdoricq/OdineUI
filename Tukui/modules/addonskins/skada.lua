@@ -192,12 +192,14 @@ if C["addonskins"].embed == "Skada" then
 			GameTooltip:ClearLines()
 			if IsAddOnLoaded("Skada") and Skada:GetWindows()[1].bargroup:IsShown() then
 				GameTooltip:AddDoubleLine("Toggle Skada", SHOW,1,1,1,unpack(C["media"].txtcolor))
-				TukuiInfoRightLButton.text:SetTextColor(unpack(C["media"].txtcolor))
+				--TukuiInfoRightLButton.text:SetTextColor(unpack(C["media"].txtcolor))
+				TukuiInfoRightLButton.text:SetTextColor(1,1,1)
 				Skada:SetActive(false)
 				ctab:Hide()
 			else
 				GameTooltip:AddDoubleLine("Toggle Skada", HIDE,1,1,1,unpack(C["media"].txtcolor))
-				TukuiInfoRightLButton.text:SetTextColor(1,1,1)
+				--TukuiInfoRightLButton.text:SetTextColor(1,1,1)
+				TukuiInfoRightLButton.text:SetTextColor(unpack(C["media"].txtcolor))
 				Skada:SetActive(true)
 				ctab:Show()
 			end

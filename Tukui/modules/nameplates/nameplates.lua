@@ -3,9 +3,6 @@
 --Base code by Dawn (dNameplates), Rewritten by Elv22
 if not C["nameplate"].enable == true then return end
 
-local _, build = GetBuildInfo() -- THIS FILE FOR 4.1
-if tonumber(build) <= 13623 then return end
-
 local TEXTURE = C["media"].normTex
 local FONT = C["media"].font
 local FONTSIZE = 10

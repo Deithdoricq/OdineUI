@@ -1,8 +1,8 @@
-## Interface: 40000
+## Interface: 40100
 ## Title: |cffC495DDTukui|r Config
 ## Notes: Config for TukUI
 ## Author: Odine
-## Version: 6.1c
+## Version: 6.1d
 ## SavedVariables: OUIDB
 ## RequiredDeps: Tukui
 

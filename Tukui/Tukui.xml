@@ -97,7 +97,6 @@
 	<Script file="modules\tooltip\tooltip.lua"/>
 	<Script file="modules\tooltip\tooltipids.lua"/>
 	<Script file="modules\nameplates\nameplates.lua"/>
-	<Script file="modules\nameplates\nameplates_.lua"/>
 	<Script file="modules\bags\bags.lua"/>
 	<Script file="modules\loot\lootframe.lua"/>
 	<Script file="modules\loot\rollframe.lua"/>

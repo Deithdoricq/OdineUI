@@ -1,10 +1,10 @@
 local T, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
--- KLE is loaded by demand. we need to load it to skin it!
+--[[ KLE is loaded by demand. we need to load it to skin it!
 if IsAddOnLoadOnDemand("KLE") then
 	LoadAddOn("KLE")
-end
+end--]]
 
 if not IsAddOnLoaded("KLE") or C["addonskins"].kle == false then return end
 

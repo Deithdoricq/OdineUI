@@ -4,7 +4,7 @@ if C["misc"].announceint == false then return end
 
 local announce = CreateFrame("Frame")
 announce:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-announce:SetScript("OnEvent", function(self, _, _, event, _, sourceName, _, _, destName, _, _, _, _, spellID, spellName)
+announce:SetScript("OnEvent", function(self, _, _, event, _, _, sourceName, _, _, destName, _, _, _, _, spellID, spellName)
 	if not (event == "SPELL_INTERRUPT" and sourceName == T.myname) then return end
 
 	if GetRealNumRaidMembers() > 0 then

@@ -1,3 +1,7 @@
+V6.1f - [04/27/2011]
+* fixed bugs with nameplates, arena trinkets, some other varios odd bugs
+* Addons like tinydps, recount, xct are no longer included with my package, still supported just need to download them seperatly!
+
 V6.1e - [04/26/2011]
 * removed old code PRE 4.1 (build no longer works on 4.0.6a)
 

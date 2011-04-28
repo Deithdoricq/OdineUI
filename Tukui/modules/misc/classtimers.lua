@@ -726,8 +726,8 @@ function T.LoadClassTimers(TukuiPlayer, TukuiTarget)
 			playerFrame:Point( "BOTTOMLEFT", TukuiPlayer.Buffs, "TOPLEFT", xOffset1, yOffset );
 			playerFrame:Point( "BOTTOMRIGHT", TukuiPlayer.Buffs, "TOPRIGHT", xOffset2, yOffset );		
 		else
-			playerFrame:Point( "BOTTOMLEFT", TukuiPlayer, "TOPLEFT", xOffset1, yOffset );
-			playerFrame:Point( "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", xOffset2, yOffset );			
+			playerFrame:Point( "BOTTOMLEFT", TukuiPlayer.panel, "TOPLEFT", xOffset1, yOffset);
+			playerFrame:Point( "BOTTOMRIGHT", TukuiPlayer.panel, "TOPRIGHT", xOffset2, yOffset);
 		end
 		
 		playerFrame:Show(); 
@@ -771,8 +771,8 @@ function T.LoadClassTimers(TukuiPlayer, TukuiTarget)
 			playerFrame:Point( "BOTTOMLEFT", TukuiPlayer.Buffs, "TOPLEFT", xOffset1, yOffset );
 			playerFrame:Point( "BOTTOMRIGHT", TukuiPlayer.Buffs, "TOPRIGHT", xOffset2, yOffset );		
 		else
-			playerFrame:Point( "BOTTOMLEFT", TukuiPlayer, "TOPLEFT", xOffset1, yOffset );
-			playerFrame:Point( "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", xOffset2, yOffset );			
+			playerFrame:Point( "BOTTOMLEFT", TukuiPlayer.panel, "TOPLEFT", xOffset1, yOffset );
+			playerFrame:Point( "BOTTOMRIGHT", TukuiPlayer.panel, "TOPRIGHT", xOffset2, yOffset );			
 		end
 		playerFrame:Show();
 
@@ -824,8 +824,8 @@ function T.LoadClassTimers(TukuiPlayer, TukuiTarget)
 			playerFrame:Point( "BOTTOMLEFT", TukuiPlayer.Buffs, "TOPLEFT", xOffset1, yOffset );
 			playerFrame:Point( "BOTTOMRIGHT", TukuiPlayer.Buffs, "TOPRIGHT", xOffset2, yOffset );		
 		else
-			playerFrame:Point( "BOTTOMLEFT", TukuiPlayer, "TOPLEFT", xOffset1, yOffset );
-			playerFrame:Point( "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", xOffset2, yOffset );			
+			playerFrame:Point( "BOTTOMLEFT", TukuiPlayer.panel, "TOPLEFT", xOffset1, yOffset );
+			playerFrame:Point( "BOTTOMRIGHT", TukuiPlayer.panel, "TOPRIGHT", xOffset2, yOffset );			
 		end
 
 		playerFrame:Show();
@@ -883,8 +883,8 @@ function T.LoadClassTimers(TukuiPlayer, TukuiTarget)
 			playerFrame:Point( "BOTTOMLEFT", TukuiPlayer.Buffs, "TOPLEFT", xOffset1, yOffset );
 			playerFrame:Point( "BOTTOMRIGHT", TukuiPlayer.Buffs, "TOPRIGHT", xOffset2, yOffset );		
 		else
-			playerFrame:Point( "BOTTOMLEFT", TukuiPlayer, "TOPLEFT", xOffset1, yOffset );
-			playerFrame:Point( "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", xOffset2, yOffset );			
+			playerFrame:Point( "BOTTOMLEFT", TukuiPlayer.panel, "TOPLEFT", xOffset1, yOffset );
+			playerFrame:Point( "BOTTOMRIGHT", TukuiPlayer.panel, "TOPRIGHT", xOffset2, yOffset );			
 		end
 		playerFrame:Show();
 
@@ -903,8 +903,8 @@ function T.LoadClassTimers(TukuiPlayer, TukuiTarget)
 			targetFrame:Point( "BOTTOMLEFT", TukuiTarget.Buffs, "TOPLEFT", xOffset1, yOffset );
 			targetFrame:Point( "BOTTOMRIGHT", TukuiTarget.Buffs, "TOPRIGHT", xOffset2, yOffset );		
 		else
-			targetFrame:Point( "BOTTOMLEFT", TukuiTarget, "TOPLEFT", xOffset1, yOffset );
-			targetFrame:Point( "BOTTOMRIGHT", TukuiTarget, "TOPRIGHT", xOffset2, yOffset );		
+			targetFrame:Point( "BOTTOMLEFT", TukuiTarget.panel, "TOPLEFT", xOffset1, yOffset );
+			targetFrame:Point( "BOTTOMRIGHT", TukuiTarget.panel, "TOPRIGHT", xOffset2, yOffset );		
 		end		
 		targetFrame:Show();
 	elseif ( LAYOUT == 5 ) then
@@ -945,8 +945,8 @@ function T.LoadClassTimers(TukuiPlayer, TukuiTarget)
 			playerFrame:Point( "BOTTOMLEFT", TukuiPlayer.Buffs, "TOPLEFT", xOffset1, yOffset );
 			playerFrame:Point( "BOTTOMRIGHT", TukuiPlayer.Buffs, "TOPRIGHT", xOffset2, yOffset );		
 		else
-			playerFrame:Point( "BOTTOMLEFT", TukuiPlayer, "TOPLEFT", xOffset1, yOffset );
-			playerFrame:Point( "BOTTOMRIGHT", TukuiPlayer, "TOPRIGHT", xOffset2, yOffset );			
+			playerFrame:Point( "BOTTOMLEFT", TukuiPlayer.panel, "TOPLEFT", xOffset1, yOffset );
+			playerFrame:Point( "BOTTOMRIGHT", TukuiPlayer.panel, "TOPRIGHT", xOffset2, yOffset );			
 		end
 		playerFrame:Show();
 

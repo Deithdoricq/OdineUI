@@ -1,6 +1,7 @@
 V6.1g - p04/28/2011]
 * fixed problems with petbars and some other issues found in the process with rightbars!
 * added support for showing castbar ticks, and added a filter section for the spells as well! (requested)
+* fixed bug with classtimers when buffs, debuffs, etc are disabled so they do not anchor in the UF
 
 V6.1f - [04/27/2011]
 * fixed bugs with nameplates, arena trinkets, some other varios odd bugs

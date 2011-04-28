@@ -50,11 +50,14 @@ DB["unitframes"] = {
 		["healthBgColor"] = { .7, .1, .1 },
 	
 	-- Castbar
-	["unitcastbar"] = true,                             -- enable tukui castbar
-	["cblatency"] = false,                              -- enable castbar latency
+	["unitcastbar"] = true,                          	-- enable tukui castbar
+	["cblatency"] = false,                           	-- enable castbar latency
 	["cbicons"] = true,                                 -- enable icons on castbar
 	["cbinside"] = false,								-- castbar inside unit frames, disable for outside of them (will not work if using large player castbar)
 	["large_player"] = true,							-- enable larger player castbar above actionbar
+	["cbticks"] = true,									-- shows ticks for spells listed in Castbar Ticks in the filters section
+	["castbarcolor"] = DB["media"].bordercolor, 		-- Color of player castbar
+	["nointerruptcolor"] = { 0.78, 0.25, 0.25},			-- Color of target castbar
 	["cbclasscolor"] = false,
 		["cbcustomcolor"] = { .20, .21, .19 },
 		
@@ -87,7 +90,7 @@ DB["unitframes"] = {
 	-- misc
 	["vengeance"] = true,								-- vengeance bar for tanks
 	["swingbar"] = false,								-- swing bar
-	["percentage"] = true,            					-- shows a hp/pp percent number next to a unitframe on selected frames	
+	["percentage"] = true,            					-- shows a hp/pp percent number next to a unitframe on selected frames
 
 	-- Party / Raid
 		-- Gen.

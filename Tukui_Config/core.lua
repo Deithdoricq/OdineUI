@@ -43,7 +43,8 @@ function OUI:LoadDefaults()
 				DPSBuffIDs = T["DPSBuffIDs"],
 				PetBuffs = T["PetBuffs"],
 				TRINKET_FILTER = TRINKET_FILTER,
-				CLASS_FILTERS = CLASS_FILTERS
+				CLASS_FILTERS = CLASS_FILTERS,
+				ChannelTicks = T["ChannelTicks"]
 			},
 		},
 	}	
@@ -149,7 +150,20 @@ function OUI.GenerateOptionsInternal()
 		if not spelltable then error("db.spellfilter could not find value 'tab'") return {} end
 		local newtable = {}
 		
-		if ClassTimer[tab] then
+		if tab == "ChannelTicks" then
+			for spell, value in pairs(spelltable) do
+				if db.spellfilter[tab][spell] ~= nil then
+					newtable[spell] = {
+						name = spell,
+						desc = L["To disable set to zero, otherwise set to the amount of times the spell ticks in a cast"],
+						type = "range",
+						get = function(info) return db.spellfilter[tab][spell] end,
+						set = function(info, val) db.spellfilter[tab][spell] = val; StaticPopup_Show("RELOAD_UI") end,
+						min = 0, max = 15, step = 1,	
+					}
+				end
+			end
+		elseif ClassTimer[tab] then
 			newtable["SelectSpellFilter"] = {
 				name = L["Choose Filter"],
 				desc = L["Choose the filter you want to modify."],
@@ -457,13 +471,17 @@ function OUI.GenerateOptionsInternal()
 			return "These buffs are displayed no matter your class you must have a layout enabled that uses trinkets however for them to show"
 		elseif db.spellfilter.FilterPicker == "CLASS_FILTERS" then
 			return "These buffs/debuffs are displayed as a classtimer, where they get positioned is based on your layout option choice"
+		elseif db.spellfilter.FilterPicker == "ChannelTicks" then
+			return "These spells when cast will display tick marks on the castbar"
 		else
 			return ""
 		end
 	end
 	
 	local function GetFilterName()
-		if db.spellfilter.FilterPicker == "PlateBlacklist" then
+		if db.spellfilter.FilterPicker == "ChannelTicks" then
+			return "Spells"
+		elseif db.spellfilter.FilterPicker == "PlateBlacklist" then
 			return "Nameplate Names"
 		elseif db.spellfilter.FilterPicker == "ErrorList" then
 			return "Error Filters"
@@ -2196,7 +2214,8 @@ function OUI.GenerateOptionsInternal()
 							["DPSBuffIDs"] = "Raid Buffs (DPS)",
 							["PetBuffs"] = "Pet Buffs",
 							["TRINKET_FILTER"] = "Trinket Procs",
-							["CLASS_FILTERS"] = "Class Timers"
+							["CLASS_FILTERS"] = "Class Timers",
+							["ChannelTicks"] = "Castbar Ticks"
 						},						
 					},			
 					spacer = {
@@ -2216,7 +2235,12 @@ function OUI.GenerateOptionsInternal()
 						desc = L["Add a new spell name / ID to the list."],
 						get = function(info) return "" end,
 						set = function(info, value)
-							if ClassTimer[db.spellfilter.FilterPicker] then
+							if db.spellfilter.FilterPicker == "ChannelTicks" then
+								local name_list = db.spellfilter[db.spellfilter.FilterPicker]
+								name_list[value] = 0
+								UpdateSpellFilter()
+								StaticPopup_Show("RELOAD_UI")
+							elseif ClassTimer[db.spellfilter.FilterPicker] then
 								if not GetSpellInfo(value) then
 									print(L["Not valid spell id"])
 								elseif not db.spellfilter["SelectSpellFilter"] then

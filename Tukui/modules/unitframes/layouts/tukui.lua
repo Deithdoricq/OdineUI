@@ -617,8 +617,8 @@ local function Shared(self, unit)
 			
 				castbar.CustomTimeText = T.CustomCastTimeText
 				castbar.CustomDelayText = T.CustomCastDelayText
-				castbar.PostCastStart = T.CheckCast
-				castbar.PostChannelStart = T.CheckChannel
+				castbar.PostCastStart = T.PostCastStart
+				castbar.PostChannelStart = T.PostCastStart
 
 				castbar.time = T.SetFontString(castbar, font, fonts - 1, fontf)
 				castbar.time:Point("RIGHT", panel, "RIGHT", -4, 0)
@@ -679,8 +679,8 @@ local function Shared(self, unit)
 					
 				castbar.CustomTimeText = T.CustomCastTimeText
 				castbar.CustomDelayText = T.CustomCastDelayText
-				castbar.PostCastStart = T.CheckCast
-				castbar.PostChannelStart = T.CheckChannel
+				castbar.PostCastStart = T.PostCastStart
+				castbar.PostChannelStart = T.PostCastStart
 
 				castbar.time = T.SetFontString(castbar, font, fonts, fontf)
 				castbar.time:Point("RIGHT", castbar, "RIGHT", -T.buttonspacing, 0)
@@ -932,9 +932,9 @@ local function Shared(self, unit)
 			castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 			
 			castbar.CustomTimeText = CustomCastTimeText
-			castbar.CustomDelayText = TukuiDB.CustomCastDelayText
-			castbar.PostCastStart = TukuiDB.CheckCast
-			castbar.PostChannelStart = TukuiDB.CheckChannel
+			castbar.CustomDelayText = T.CustomCastDelayText
+			castbar.PostCastStart = T.PostCastStart
+			castbar.PostChannelStart = T.PostCastStart
 			
 			if C["unitframes"].cbicons then
 				castbar.button = CreateFrame("Frame", nil, castbar)
@@ -1183,9 +1183,9 @@ local function Shared(self, unit)
 		castbar.Text:Point("LEFT", castbar, "LEFT", 4, 0)
 		castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 		
-		castbar.CustomDelayText = T.CustomCastDelayText
-		castbar.PostCastStart = T.CheckCast
-		castbar.PostChannelStart = T.CheckChannel
+		castbar.CustomDelayText = T.CustomCastDelayText	
+		castbar.PostCastStart = T.PostCastStart
+		castbar.PostChannelStart = T.PostCastStart
 								
 		castbar.button = CreateFrame("Frame", nil, castbar)
 		castbar.button:Height(castbar:GetHeight()+4)

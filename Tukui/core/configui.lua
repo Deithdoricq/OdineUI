@@ -54,6 +54,9 @@ if IsAddOnLoaded("Tukui_Config") then
 	--PetBuffIDs
 	T.PetBuffs = OUI.db.profile.spellfilter.PetBuffs
 	
+	--CastTicks
+	T.ChannelTicks = OUI.db.profile.spellfilter.ChannelTicks
+	
 	--ClassTimers
 	TRINKET_FILTER = OUI.db.profile.spellfilter.TRINKET_FILTER
 	CLASS_FILTERS = OUI.db.profile.spellfilter.CLASS_FILTERS

@@ -458,6 +458,64 @@ T.PostUpdateAura = function(icons, unit, icon, index, offset, filter, isDebuff, 
 	icon:SetScript("OnUpdate", CreateAuraTimer)
 end
 
+--Credit Monolit
+local ticks = {}
+local function SetCastTicks(self, num)
+	if num and num > 0 then
+		local d = self:GetWidth() / num
+		for i = 1, num do
+			if not ticks[i] then
+				ticks[i] = self:CreateTexture(nil, 'OVERLAY')
+				ticks[i]:SetTexture(C["media"].blank)
+				ticks[i]:SetVertexColor(0, 0, 0)
+				ticks[i]:SetWidth(2)
+				ticks[i]:SetHeight(self:GetHeight())
+			end
+			ticks[i]:ClearAllPoints()
+			ticks[i]:SetPoint("CENTER", self, "LEFT", d * i, 0)
+			ticks[i]:Show()
+		end
+	else
+		for _, tick in pairs(ticks) do
+			tick:Hide()
+		end
+	end
+end
+
+T.PostCastStart = function(self, unit, name, rank, castid)
+	if unit == "vehicle" then unit = "player" end
+	--Fix blank castbar with opening text
+	if name == "Opening" then
+		self.Text:SetText(OPENING)
+	else
+		self.Text:SetText(string.sub(name, 0, math.floor((((32/245) * self:GetWidth()) / 12) * 12)))
+	end
+	
+	if C["unitframes"].cbticks == true and unit == "player" then
+		if T.ChannelTicks[name] then
+			SetCastTicks(self, T.ChannelTicks[name])
+		else
+			for _, tick in pairs(ticks) do
+				tick:Hide()
+			end		
+		end
+	end
+	
+	if self.interrupt and unit ~= "player" then
+		if UnitCanAttack("player", unit) then
+			self:SetStatusBarColor(unpack(C["unitframes"].nointerruptcolor))
+		else
+			self:SetStatusBarColor(unpack(C["unitframes"].castbarcolor))	
+		end
+	else
+		if C["unitframes"].cbclasscolor == true then
+			self:SetStatusBarColor(unpack(oUF.colors.class[select(2, UnitClass(unit))]))
+		else
+			self:SetStatusBarColor(unpack(C["unitframes"].cbcustomcolor))
+		end	
+	end
+end
+
 T.HidePortrait = function(self, unit)
 	if self.unit == "target" then
 		if not UnitExists(self.unit) or not UnitIsConnected(self.unit) or not UnitIsVisible(self.unit) then
@@ -466,28 +524,6 @@ T.HidePortrait = function(self, unit)
 			self.Portrait:SetAlpha(1)
 		end
 	end
-end
-
-local CheckInterrupt = function(self, unit)
-	if unit == "vehicle" then unit = "player" end
-
-	if self.interrupt and UnitCanAttack("player", unit) then
-		self:SetStatusBarColor(1, 0, 0, 0.5)	
-	else
-		if C["unitframes"].cbclasscolor == true then
-			self:SetStatusBarColor(unpack(oUF.colors.class[select(2, UnitClass(unit))]))
-		else
-			self:SetStatusBarColor(unpack(C["unitframes"].cbcustomcolor))		
-		end
-	end
-end
-
-T.CheckCast = function(self, unit, name, rank, castid)
-	CheckInterrupt(self, unit)
-end
-
-T.CheckChannel = function(self, unit, name, rank)
-	CheckInterrupt(self, unit)
 end
 
 T.UpdateShards = function(self, event, unit, powerType)

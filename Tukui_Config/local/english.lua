@@ -331,3 +331,4 @@ L["All"] = true
 L["Friendly"] = true
 L["Enemy"] = true
 L["Fill only if you want to see line on bar that indicates if its safe to start casting spell and not clip the last tick, also note that this can be different from aura id."] = true
+L["To disable set to zero, otherwise set to the amount of times the spell ticks in a cast"] = true

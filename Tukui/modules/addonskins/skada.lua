@@ -172,7 +172,7 @@ if C["addonskins"].embed == "Skada" then
 		EmbedSkada()
 	end)
 	
-	local ctab = CreateFrame("Frame", "TukuiAddonBar", ChatRBackground2)
+	local ctab = CreateFrame("Frame", "TukuiEmbedBar", ChatRBackground2)
 	ctab:SetHeight(T.Scale(22))
 	ctab:SetWidth(T.Scale(T.InfoLeftRightWidth))
 	ctab:SetFrameLevel(3)	

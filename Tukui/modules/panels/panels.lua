@@ -9,7 +9,6 @@ f:SetFrameStrata("BACKGROUND")
 f:SetFrameLevel(0)
 
 -- Bottom Data Panels
-
 local dbottom = CreateFrame("Frame", "TukuiDataBottom", UIParent)
 dbottom:CreatePanel("Default", (T.buttonsize * 12 + T.buttonspacing * 13) + 2, 23, "BOTTOM", UIParent, "BOTTOM", 0, T.Scale(8))
 dbottom:SetFrameLevel(2)
@@ -173,7 +172,11 @@ if C["actionbar"].enable then
 	end
 
 	local TukuiPetBar = CreateFrame("Frame", "TukuiPetBar", UIParent)
-	TukuiPetBar:CreatePanel("Default", 1, 1, "BOTTOMRIGHT", TukuiRightBar, "TOPRIGHT", 0, 3)
+	if C["actionbar"].vertical_rightbars == true then
+		TukuiPetBar:CreatePanel("Default", 1, 1, "BOTTOMRIGHT", TukuiRightBar, "TOPRIGHT", 0, T.Scale(175))
+	else
+		TukuiPetBar:CreatePanel("Default", 1, 1, "BOTTOMRIGHT", TukuiRightBar, "TOPRIGHT", 0, 3)
+	end
 	if C["actionbar"].vertical_rightbars == true then
 		TukuiPetBar:Width((T.petbuttonsize + T.buttonspacing * 2) + 2)
 		TukuiPetBar:Height((T.petbuttonsize * NUM_PET_ACTION_SLOTS + T.buttonspacing * 11) + 2)

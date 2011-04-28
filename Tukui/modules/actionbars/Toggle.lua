@@ -88,7 +88,7 @@ local RightBars = function()
 		if not C["chat"].background then
 			TukuiPetBar:Point("RIGHT", UIParent, "RIGHT", -8, 0)
 		else
-			TukuiPetBar:Point("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", 0, 3)
+			TukuiPetBar:Point("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", 0, 26)
 		end
 	end
 
@@ -154,6 +154,13 @@ local RightBars = function()
 	elseif TukuiSaved.rightbars == 0 then
 		TukuiRightBar:Hide()
 		TukuiBar4:Hide()
+		
+		-- just to make it stay in its position
+		if C["actionbar"].vertical_rightbars == true then
+			if C["chat"].background then
+				TukuiPetBar:Point("BOTTOMRIGHT", ChatRBackground2, "TOPRIGHT", 0, T.Scale(175))
+			end
+		end
 
 		if TukuiSaved.splitbars ~= true then
 			MultiBarLeft:SetParent(TukuiBar3)
@@ -274,12 +281,12 @@ for i = 1, 5 do
 		end)
 		Toggle[i]:SetScript("OnEvent", MainBars)
 	elseif i == 2 then
+		Toggle[i]:CreatePanel("Default", 15, 15, "TOPRIGHT", ChatRBackground2, "TOPRIGHT", -215, 22)
+		Toggle[i]:SetFrameLevel(ChatRBackground2:GetFrameLevel() + 3)
 		if C["actionbar"].vertical_rightbars then
 			ToggleText(i, ">", false, true)
-			Toggle[i]:CreatePanel("Default", 15, TukuiRightBar:GetHeight(), "RIGHT", TukuiRightBar, "LEFT", -3, 0)
 		else
 			ToggleText(i, "-", false, true)
-			Toggle[i]:CreatePanel("Default", TukuiRightBar:GetHeight(), 15, "BOTTOM", TukuiRightBar, "TOP", 0, 3)
 		end
 
 		Toggle[i]:SetScript("OnMouseDown", function()
@@ -299,13 +306,13 @@ for i = 1, 5 do
 			RightBars()
 		end)
 		Toggle[i]:SetScript("OnEvent", RightBars)	
-	elseif i == 3 then	
+	elseif i == 3 then
+		Toggle[i]:CreatePanel("Default", Toggle[i-1]:GetWidth(), Toggle[i-1]:GetHeight(), "TOPRIGHT", Toggle[i-1], "TOPLEFT", -3, 0)
+		Toggle[i]:SetFrameLevel(Toggle[i-1]:GetFrameLevel())
 		if C["actionbar"].vertical_rightbars then
 			ToggleText(i, "<", true, false)
-			Toggle[i]:CreatePanel("Default", Toggle[i-1]:GetWidth(), Toggle[i-1]:GetHeight(), "TOPRIGHT", Toggle[i-1], "TOPLEFT", -3, 0)
 		else
 			ToggleText(i, "+", true, false)
-			Toggle[i]:CreatePanel("Default", Toggle[i-1]:GetWidth(), Toggle[i-1]:GetHeight(), "BOTTOM", Toggle[i-1], "TOP", 0, 1)
 		end
 
 		Toggle[i]:SetScript("OnMouseDown", function()

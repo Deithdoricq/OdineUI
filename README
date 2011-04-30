@@ -2,6 +2,7 @@ V6.1h - [04/30/2011]
 * added new API functions from latest commit
 * skinned character frame
 * rename style names of UF to account for old named versions, might fix problems for users not deleting old folders
+* fixed bug when battle.net is down causing friend datatext to error out
 * many other misc bug fixes
 
 V6.1g - {04/28/2011]

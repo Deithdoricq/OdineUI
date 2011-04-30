@@ -130,6 +130,7 @@ local function Shared(self, unit)
 		    portrait:SetPoint("TOPLEFT", panel, "TOPLEFT", 2, -2)
 		    portrait:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -2, 2)
 			table.insert(self.__elements, T.HidePortrait)
+			portrait.PostUpdate = T.PortraitUpdate --Worgen Fix (Hydra)
       
 				portrait.PostUpdate = function(self) -- hide the portrait partionally for a cool effect
 				self:SetAlpha(0) 

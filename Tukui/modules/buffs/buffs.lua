@@ -6,11 +6,11 @@ local font, fonts, fontf = C["media"].uffont, 14, "OUTLINE"
 local FormatTime = function(s)
 	local day, hour, minute = 86400, 3600, 60
 	if s >= day then
-		return format("|cffeeeeee%d " .. T.cStart .. "d|r", ceil(s / day))
+		return format("|cffeeeeee%d d|r", ceil(s / day))
 	elseif s >= hour then
-		return format("|cffeeeeee%d " .. T.cStart .. "h|r", ceil(s / hour))
+		return format("|cffeeeeee%d h|r", ceil(s / hour))
 	elseif s >= minute then
-		return format("|cffeeeeee%d " .. T.cStart .. "m|r", ceil(s / minute))
+		return format("|cffeeeeee%d m|r", ceil(s / minute))
 	elseif s >= minute / 12 then
 		return floor(s)
 	end
@@ -25,17 +25,13 @@ local function UpdateTime(self, elapsed)
 		else
 			local time = FormatTime(self.expiration)
 			if self.expiration <= 86400.5 and self.expiration > 3600.5 then
-				self.time:SetText(time)
-				self.time:SetTextColor(1, 1, 1)
+				self.time:SetText("|cffcccccc"..time.."|r")
 			elseif self.expiration <= 3600.5 and self.expiration > 60.5 then
-				self.time:SetText(time)
-				self.time:SetTextColor(1, 1, 1)
+				self.time:SetText("|cffcccccc"..time.."|r")
 			elseif self.expiration <= 60.5 and self.expiration > 10.5 then
-				self.time:SetText(time)
-				self.time:SetTextColor(.83, .63, 0)
+				self.time:SetText("|cffE8D911"..time.."|r")
 			elseif self.expiration <= 10.5 then
-				self.time:SetText(time)
-				self.time:SetTextColor(.69, .31, .31)
+				self.time:SetText("|cffff0000"..time.."|r")
 			end
 		end
 	end
@@ -48,7 +44,7 @@ local function UpdateWeapons(button, slot, active, expiration)
 		
 		button.time = button:CreateFontString(nil, "ARTWORK")
 		button.time:SetPoint("BOTTOM", 0, -17)
-		button.time:SetFont(font, fonts, fontf)
+		button.time:SetFont(C.media.font, 12, "OUTLINE")
 
 		button.bg = CreateFrame("Frame", nil, button)
 		button.bg:CreatePanel("Default", 30, 30, "CENTER", button, "CENTER", 0, 0)
@@ -61,9 +57,17 @@ local function UpdateWeapons(button, slot, active, expiration)
 		button.id = GetInventorySlotInfo(slot)
 		button.icon = GetInventoryItemTexture("player", button.id)
 		button.texture:SetTexture(button.icon)
-		button.texture:SetTexCoord(.09, .91, .09, .91)		
+		button.texture:SetTexCoord(0.08, 0.92, 0.08, 0.92)
 		button.expiration = (expiration/1000)
-		button.bg:SetAlpha(1)
+		
+		if UnitHasVehicleUI("player") then
+			button:SetAlpha(0.3)
+			button.bg:SetAlpha(0.3)
+		else
+			button:SetAlpha(1)
+			button.bg:SetAlpha(1)
+		end
+		
 		button:SetScript("OnUpdate", UpdateTime)		
 	elseif not active then
 		button.texture:SetTexture(nil)
@@ -74,6 +78,8 @@ local function UpdateWeapons(button, slot, active, expiration)
 end
 
 local function UpdateAuras(header, button, weapon)
+	local name, _, texture, count, dtype, duration, expiration, caster = UnitAura(header:GetAttribute("unit"), button:GetID(), header:GetAttribute("filter"))
+	
 	if(not button.texture) then
 		button.texture = button:CreateTexture(nil, "BORDER")
 		button.texture:SetAllPoints()
@@ -93,19 +99,29 @@ local function UpdateAuras(header, button, weapon)
 		button.bg:SetFrameLevel(button:GetFrameLevel() - 1)
 		button.bg:SetFrameStrata(button:GetFrameStrata())
 	end
-	
-	local name, _, texture, count, dtype, duration, expiration = UnitAura(header:GetAttribute("unit"), button:GetID(), header:GetAttribute("filter"))
-	
+		
 	if(name) then
 		button.texture:SetTexture(texture)
-		button.texture:SetTexCoord(.09, .91, .09, .91)		
+		button.texture:SetTexCoord(0.08, 0.92, 0.08, 0.92)
 		button.count:SetText(count > 1 and count or "")
 		button.expiration = expiration - GetTime()
 		
 		if(header:GetAttribute("filter") == "HARMFUL") then
 			local color = DebuffTypeColor[dtype] or DebuffTypeColor.none
 			button.bg:SetBackdropBorderColor(color.r * 3/5, color.g * 3/5, color.b * 3/5)
+		else
+			if caster == "vehicle" then
+				button.bg:SetBackdropBorderColor(75/255,  175/255, 76/255)
+			else
+				button.bg:SetBackdropBorderColor(unpack(C.media.bordercolor))
+			end
 		end
+	end
+	
+	if UnitHasVehicleUI("player") and caster ~= "vehicle" then
+		button:SetAlpha(0.3)
+	else
+		button:SetAlpha(1)
 	end
 end
 
@@ -149,11 +165,12 @@ local function CreateAuraHeader(filter, ...)
 	if filter == "HELPFUL" then name = "TukuiPlayerBuffs" else name = "TukuiPlayerDebuffs" end
 
 	local header = CreateFrame("Frame", name, UIParent, "SecureAuraHeaderTemplate")
+	header:RegisterEvent("UNIT_ENTERED_VEHICLE")
+	header:RegisterEvent("UNIT_EXITED_VEHICLE")
 	header:SetPoint(...)
 	header:SetClampedToScreen(true)
 	header:SetMovable(true)
-	header:HookScript("OnEvent", ScanAuras)
-	
+	header:HookScript("OnEvent", ScanAuras)	
 	header:SetAttribute("unit", "player")
 	header:SetAttribute("sortMethod", "TIME")
 	header:SetAttribute("template", "TukuiAuraTemplate")
@@ -161,9 +178,9 @@ local function CreateAuraHeader(filter, ...)
 	header:SetAttribute("point", "TOPRIGHT")
 	header:SetAttribute("minWidth", 300)
 	header:SetAttribute("minHeight", 94)
-	header:SetAttribute("xOffset", -34)
-	header:SetAttribute("wrapYOffset", -64)
-	header:SetAttribute("wrapAfter", 14)
+	header:SetAttribute("xOffset", -36)
+	header:SetAttribute("wrapYOffset", -68)
+	header:SetAttribute("wrapAfter", 16)
 	header:SetAttribute("maxWraps", 2)
 	
 	-- look for weapons buffs
@@ -173,12 +190,12 @@ local function CreateAuraHeader(filter, ...)
 		header:HookScript("OnUpdate", CheckWeapons)
 	end
 	
-	header:SetTemplate("Transparent")
+	header:SetTemplate("Default")
 	header:SetBackdropColor(0,0,0,0)
 	header:SetBackdropBorderColor(0,0,0,0)
 	header:Show()
 	
-	header.text = T.SetFontString(header, font, fonts, fontf)
+	header.text = T.SetFontString(header, C.media.uffont, 12)
 	header.text:SetPoint("CENTER")
 	if filter == "HELPFUL" then
 		header.text:SetText(L.move_buffs)
@@ -211,7 +228,7 @@ start:SetScript("OnEvent", function(self)
 			frame:SetAttribute("wrapYOffset", 64)
 		end
 		if T.lowversion then
-			frame:SetAttribute("wrapAfter", 14)
+			frame:SetAttribute("wrapAfter", 8)
 		end
 	end
 end)

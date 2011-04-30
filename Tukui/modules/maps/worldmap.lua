@@ -179,6 +179,9 @@ addon:RegisterEvent("PLAYER_REGEN_ENABLED")
 addon:RegisterEvent("PLAYER_REGEN_DISABLED")
 addon:SetScript("OnEvent", function(self, event)
 	if event == "PLAYER_ENTERING_WORLD" then
+		-- bug fix when entering world
+		WorldMapFrame_SetFullMapView = T.dummy
+	
 		ShowUIPanel(WorldMapFrame)
 		HideUIPanel(WorldMapFrame)
 	elseif event == "PLAYER_REGEN_DISABLED" then

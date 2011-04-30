@@ -39,22 +39,18 @@ local function OnEvent(self, event, ...)
 	local party = GetNumPartyMembers()
 	local raid = GetNumRaidMembers()
 	local pet = select(1, HasPetUI())
-	
 	if event == "PLAYER_ENTERING_WORLD" then
 		self:Hide()
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 	elseif event == "PLAYER_REGEN_ENABLED" then
 		self:Hide()
 	elseif event == "PLAYER_REGEN_DISABLED" then
-		-- look if we have a pet, party or raid active
-		-- having threat bar solo is totally useless
 		if party > 0 or raid > 0 or pet == 1 then
 			self:Show()
 		else
 			self:Hide()
 		end
 	else
-		-- update when pet, party or raid change.
 		if (InCombatLockdown()) and (party > 0 or raid > 0 or pet == 1) then
 			self:Show()
 		else
@@ -72,14 +68,9 @@ local function OnUpdate(self, event, unit)
 		self:SetValue(threatval)
 		self.text:SetFormattedText("%3.1f", threatval)
 		
-		if( threatval < 30 ) then
-			self:SetStatusBarColor(unpack(self.Colors[1]))
-		elseif( threatval >= 30 and threatval < 70 ) then
-			self:SetStatusBarColor(unpack(self.Colors[2]))
-		else
-			self:SetStatusBarColor(unpack(self.Colors[3]))
-		end
-				
+		local r, g, b = oUFTukui.ColorGradient(threatval/100, 0,.8,0,.8,.8,0,.8,0,0)
+		self:SetStatusBarColor(r, g, b)
+
 		if threatval > 0 then
 			self:SetAlpha(1)
 		else

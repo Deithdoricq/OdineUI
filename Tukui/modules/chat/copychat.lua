@@ -78,7 +78,7 @@ end
 local function ChatCopyButtons(id)
 	for i = 1, NUM_CHAT_WINDOWS do
 		local cf = _G[format("ChatFrame%d",  i)]
-		local button = CreateFrame("Button", format("ButtonCF%d", i), cf)
+		local button = CreateFrame("Button", format("TukuiButtonCF%d", i), cf)
 		if i == 1 then
 			button:Point("TOPRIGHT", 0, -4)
 		elseif i == 4 then

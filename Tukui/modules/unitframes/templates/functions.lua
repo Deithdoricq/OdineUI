@@ -516,6 +516,13 @@ T.PostCastStart = function(self, unit, name, rank, castid)
 	end
 end
 
+T.PortraitUpdate = function(self, unit) 
+	--Fucking Furries
+	if self:GetModel() and self:GetModel().find and self:GetModel():find("worgenmale") then
+		self:SetCamera(1)
+	end
+end
+
 T.HidePortrait = function(self, unit)
 	if self.unit == "target" then
 		if not UnitExists(self.unit) or not UnitIsConnected(self.unit) or not UnitIsVisible(self.unit) then

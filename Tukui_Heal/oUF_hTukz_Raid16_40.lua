@@ -266,11 +266,11 @@ local function Shared(self, unit)
 	return self
 end
 
-oUF:RegisterStyle('TukuiHealRaid', Shared)
+oUF:RegisterStyle('OUIHealRaid', Shared)
 oUF:Factory(function(self)
-	oUF:SetActiveStyle("TukuiHealRaid")	
+	oUF:SetActiveStyle("OUIHealRaid")	
 
-	local raid = self:SpawnHeader("TukuiHealRaid", nil, "raid",
+	local raid = self:SpawnHeader("OUIHealRaid", nil, "raid",
 		'oUF-initialConfigFunction', [[
 			local header = self:GetParent()
 			self:SetWidth(header:GetAttribute('initial-width'))
@@ -300,8 +300,8 @@ MaxGroup:SetScript("OnEvent", function(self)
 	local inInstance, instanceType = IsInInstance()
 	local _, _, _, _, maxPlayers, _, _ = GetInstanceInfo()
 	if inInstance and instanceType == "raid" and maxPlayers ~= 40 then
-		TukuiHealRaid:SetAttribute("groupFilter", "1,2,3,4,5")
+		OUIHealRaid:SetAttribute("groupFilter", "1,2,3,4,5")
 	else
-		TukuiHealRaid:SetAttribute("groupFilter", "1,2,3,4,5,6,7,8")
+		OUIHealRaid:SetAttribute("groupFilter", "1,2,3,4,5,6,7,8")
 	end
 end)

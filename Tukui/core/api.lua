@@ -191,6 +191,32 @@ local function CreatePanel(f, t, w, h, a1, p, a2, x, y)
 	f:CreateShadow("Default")
 end
 
+local function CreateBackdrop(f, t)
+	if not t then t = "Default" end
+
+	local b = CreateFrame("Frame", nil, f)
+	b:Point("TOPLEFT", -2, 2)
+	b:Point("BOTTOMRIGHT", 2, -2)
+	b:SetTemplate(t)
+
+	if f:GetFrameLevel() - 1 >= 0 then
+		b:SetFrameLevel(f:GetFrameLevel() - 1)
+	else
+		b:SetFrameLevel(0)
+	end
+	
+	f.backdrop = b
+end
+
+local function StripTextures(object)
+	for i=1, object:GetNumRegions() do
+		local region = select(i, object:GetRegions())
+		if region:GetObjectType() == "Texture" then
+			region:SetTexture(nil)
+		end
+	end		
+end
+
 local function Kill(object)
 	if object.UnregisterAllEvents then
 		object:UnregisterAllEvents()
@@ -268,6 +294,8 @@ local function addapi(object)
 	mt.Kill = Kill
 	mt.StyleButton = StyleButton
 	mt.FontString = FontString
+	mt.StripTextures = StripTextures
+	mt.CreateBackdrop = CreateBackdrop
 end
 
 local handled = {["Frame"] = true}

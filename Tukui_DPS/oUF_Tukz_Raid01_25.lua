@@ -149,11 +149,11 @@ local function Shared(self, unit)
 	return self
 end
 
-oUF:RegisterStyle("TukuiDpsPR10", Shared)
+oUF:RegisterStyle("OUIDpsPR10", Shared)
 oUF:Factory(function(self)
-	oUF:SetActiveStyle("TukuiDpsPR10")
+	oUF:SetActiveStyle("OUIDpsPR10")
 
-	local raid = self:SpawnHeader("oUF_TukuiDpsPR10", nil, "custom [@raid16,exists] hide;show", 
+	local raid = self:SpawnHeader("oUF_OUIDpsPR10", nil, "custom [@raid16,exists] hide;show", 
 		'oUF-initialConfigFunction', [[
 			local header = self:GetParent()
 			self:SetWidth(header:GetAttribute('initial-width'))

@@ -272,11 +272,11 @@ local function Shared(self, unit)
 	return self
 end
 
-oUF:RegisterStyle('TukuiHealParty', Shared)
+oUF:RegisterStyle('OUIHealParty', Shared)
 oUF:Factory(function(self)
-	oUF:SetActiveStyle("TukuiHealParty")
+	oUF:SetActiveStyle("OUIHealParty")
 
-	local raid = self:SpawnHeader("oUF_TukuiHealParty", nil, "party", 
+	local raid = self:SpawnHeader("oUF_OUIHealParty", nil, "party", 
 	'oUF-initialConfigFunction', [[
 		local header = self:GetParent()
 		self:SetWidth(header:GetAttribute('initial-width'))
